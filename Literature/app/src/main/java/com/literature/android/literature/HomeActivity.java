@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -17,12 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.literature.android.literature.adapter.PagerAdapter;
+import com.literature.android.literature.tab.Poem;
+import com.literature.android.literature.tab.Story;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    FragmentPagerAdapter adapterViewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +48,16 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        adapterViewPager = new PagerAdapter(getSupportFragmentManager());
+        PagerAdapter adapterViewPager = new PagerAdapter(getSupportFragmentManager());
+        adapterViewPager.addTabPages(Poem.newInstance(Poem.class.getSimpleName()));
+        adapterViewPager.addTabPages(Story.newInstance(Story.class.getSimpleName()));
         viewPager.setAdapter(adapterViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(listener(viewPager));
-
     }
-
 
     private TabLayout.OnTabSelectedListener listener(final ViewPager pager) {
         return new TabLayout.OnTabSelectedListener() {
@@ -93,19 +91,13 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -116,7 +108,6 @@ public class HomeActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {

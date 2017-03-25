@@ -1,5 +1,7 @@
 package com.literature.android.literature.adapter;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,26 +16,28 @@ import java.util.List;
  */
 
 public class LiteratureRecyclerAdapter extends RecyclerView.Adapter<LiteratureViewHolder> {
-    List<String> mAuthorsList;
+    private List<Drawable> mAuthorsImages;
+    private Context mContext;
 
-    public LiteratureRecyclerAdapter(List<String> itemsList) {
-        mAuthorsList = itemsList;
+    public LiteratureRecyclerAdapter(List<Drawable> itemsImageList, Context context) {
+        mAuthorsImages = itemsImageList;
+        mContext = context;
     }
 
     @Override
     public LiteratureViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.literature_item, null);
-        return new LiteratureViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.literature_tab_item, null);
+        return new LiteratureViewHolder(view, mContext);
     }
 
     @Override
     public void onBindViewHolder(LiteratureViewHolder holder, int position) {
-        String authorName = mAuthorsList.get(position);
-        holder.bindDrawable(authorName);
+        Drawable authorImage = mAuthorsImages.get(position);
+        holder.bindDrawable(authorImage);
     }
 
     @Override
     public int getItemCount() {
-        return mAuthorsList.size();
+        return mAuthorsImages.size();
     }
 }

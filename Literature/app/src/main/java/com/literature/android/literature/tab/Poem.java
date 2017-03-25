@@ -1,5 +1,6 @@
 package com.literature.android.literature.tab;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapter.LiteratureRecyclerAdapter;
+import com.literature.android.literature.adapter.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,26 +22,19 @@ import java.util.List;
 
 public class Poem extends Fragment {
 
-    // Store instance variables
-    private String title;
-    private int page;
-
     // newInstance constructor for creating fragment with arguments
-    public static Poem newInstance(int page, String title) {
-        Poem fragmentFirst = new Poem();
+    public static Poem newInstance(String title) {
+        Poem poemFragment = new Poem();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragmentFirst.setArguments(args);
-        return fragmentFirst;
+        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
+        poemFragment.setArguments(args);
+        return poemFragment;
     }
 
     // Store instance variables based on arguments passed
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -49,10 +44,23 @@ public class Poem extends Fragment {
         View view = inflater.inflate(R.layout.poem_tab_layout, container, false);
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.poem_recycler_view);
         literatureRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        List<String> authors = new ArrayList<>();
-        authors.add("Hovhannes Tumanyan");
-        authors.add("Paruyr Sevak");
-        literatureRecyclerView.setAdapter(new LiteratureRecyclerAdapter(authors));
+        List<Drawable> autorsImages = new ArrayList<>();
+        Drawable hovhannesTumanyanImage;
+        Drawable paruyrSevakImage;
+        Drawable hovhannesShirazImage;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian, getContext().getTheme());
+            paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak, getContext().getTheme());
+            hovhannesShirazImage = getResources().getDrawable(R.drawable.hovhannes_shiraz, getContext().getTheme());
+        } else {
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian);
+            paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak);
+            hovhannesShirazImage = getResources().getDrawable(R.drawable.hovhannes_shiraz);
+        }
+        autorsImages.add(hovhannesTumanyanImage);
+        autorsImages.add(paruyrSevakImage);
+        autorsImages.add(hovhannesShirazImage);
+        literatureRecyclerView.setAdapter(new LiteratureRecyclerAdapter(autorsImages, getContext()));
         return view;
     }
 }

@@ -1,5 +1,6 @@
 package com.literature.android.literature.tab;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapter.LiteratureRecyclerAdapter;
+import com.literature.android.literature.adapter.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +23,13 @@ import java.util.List;
 public class Story extends Fragment {
 
 
-    public static Story newInstance(int page, String title) {
-        Story fragmentFirst = new Story();
+    public static Story newInstance(String title) {
+        Story storyFragment = new Story();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragmentFirst.setArguments(args);
-        return fragmentFirst;
+        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
+
+        storyFragment.setArguments(args);
+        return storyFragment;
     }
 
     // Store instance variables based on arguments passed
@@ -43,10 +45,19 @@ public class Story extends Fragment {
         View view = inflater.inflate(R.layout.story_tab_layout, container, false);
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.story_recycler_view);
         literatureRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        List<String> authors = new ArrayList<>();
-        authors.add("Grigoryan Mher");
-        authors.add("Grigoryan David");
-        literatureRecyclerView.setAdapter(new LiteratureRecyclerAdapter(authors));
+        List<Drawable> autorsImages = new ArrayList<>();
+        Drawable hovhannesTumanyanImage;
+        Drawable paruyrSevakImage;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian, getContext().getTheme());
+            paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak, getContext().getTheme());
+        } else {
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian);
+            paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak);
+        }
+        autorsImages.add(hovhannesTumanyanImage);
+        autorsImages.add(paruyrSevakImage);
+        literatureRecyclerView.setAdapter(new LiteratureRecyclerAdapter(autorsImages, getContext()));
         return view;
     }
 }

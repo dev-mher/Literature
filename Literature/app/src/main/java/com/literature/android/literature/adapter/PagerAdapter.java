@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.literature.android.literature.tab.Poem;
-import com.literature.android.literature.tab.Story;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mher on 3/24/17.
@@ -13,34 +13,37 @@ import com.literature.android.literature.tab.Story;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 1;
+    public static final String TAB_FRAGMENT_PAGE_TITLE = "TabFragmentTitle";
+
+    private List<Fragment> tabPages = new ArrayList<>();
 
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 
+    public void addTabPages(Fragment tabPage) {
+        tabPages.add(tabPage);
+    }
+
     // Returns total number of pages
     @Override
     public int getCount() {
-        return NUM_ITEMS;
+        return tabPages.size();
     }
 
     // Returns the fragment to display for that page
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0: // Fragment # 0 - This will show FirstFragment
-                return Poem.newInstance(0, "Page # 1");
-            case 1: // Fragment # 0 - This will show FirstFragment
-                return Story.newInstance(0, "Page # 2");
-            default:
-                return Poem.newInstance(0, "Page # 1");
-        }
+        return tabPages.get(position);
     }
 
     // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
+        Fragment fragment = tabPages.get(position);
+        if (null != fragment.getArguments()) {
+            return fragment.getArguments().getString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE).toLowerCase();
+        }
         return "Page " + position;
     }
 }
