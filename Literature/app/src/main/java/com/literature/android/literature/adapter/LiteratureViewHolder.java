@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.literature.android.literature.ListActivity;
+import com.literature.android.literature.CaptionActivity;
 import com.literature.android.literature.R;
 
 /**
@@ -20,12 +20,12 @@ public class LiteratureViewHolder extends RecyclerView.ViewHolder {
 
     public LiteratureViewHolder(View itemView, final Context context) {
         super(itemView);
-        mItemImageView = (ImageView) itemView.findViewById(R.id.item_author_image_view);
+        mItemImageView = (ImageView) itemView.findViewById(R.id.author_item_image_view);
         mContext = context;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, ListActivity.class);
+                Intent intent = new Intent(mContext, CaptionActivity.class);
                 mContext.startActivity(intent);
             }
         });

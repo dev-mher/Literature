@@ -19,9 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".HomeActivity">
+            android:name=".CaptionActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
