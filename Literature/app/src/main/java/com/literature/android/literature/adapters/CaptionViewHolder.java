@@ -1,4 +1,4 @@
-package com.literature.android.literature.adapter;
+package com.literature.android.literature.adapters;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.literature.android.literature.R;
-import com.literature.android.literature.innerFragment.Description;
+import com.literature.android.literature.innerFragments.Description;
 
 /**
  * Created by mher on 3/26/17.

@@ -1,4 +1,4 @@
-package com.literature.android.literature;
+package com.literature.android.literature.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,9 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.literature.android.literature.adapter.PagerAdapter;
-import com.literature.android.literature.tab.Poem;
-import com.literature.android.literature.tab.Story;
+import com.literature.android.literature.Manager;
+import com.literature.android.literature.R;
+import com.literature.android.literature.adapters.PagerAdapter;
+import com.literature.android.literature.tabFragments.Poem;
+import com.literature.android.literature.tabFragments.Story;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +25,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Manager.sharedManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

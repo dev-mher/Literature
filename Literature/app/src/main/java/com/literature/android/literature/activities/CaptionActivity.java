@@ -1,4 +1,4 @@
-package com.literature.android.literature;
+package com.literature.android.literature.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.literature.android.literature.innerFragment.Caption;
+import com.literature.android.literature.R;
+import com.literature.android.literature.innerFragments.Caption;
 
 public class CaptionActivity extends AppCompatActivity {
 

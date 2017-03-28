@@ -1,4 +1,4 @@
-package com.literature.android.literature.adapter;
+package com.literature.android.literature.adapters;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;

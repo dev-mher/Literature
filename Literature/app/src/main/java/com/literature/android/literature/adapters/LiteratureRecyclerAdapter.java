@@ -1,4 +1,4 @@
-package com.literature.android.literature.adapter;
+package com.literature.android.literature.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

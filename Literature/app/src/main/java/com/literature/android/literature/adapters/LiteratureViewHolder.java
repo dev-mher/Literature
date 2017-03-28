@@ -1,4 +1,4 @@
-package com.literature.android.literature.adapter;
+package com.literature.android.literature.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.literature.android.literature.CaptionActivity;
+import com.literature.android.literature.activities.CaptionActivity;
 import com.literature.android.literature.R;
 
 /**

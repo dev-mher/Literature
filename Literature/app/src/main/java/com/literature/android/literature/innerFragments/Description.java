@@ -1,4 +1,4 @@
-package com.literature.android.literature.innerFragment;
+package com.literature.android.literature.innerFragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.literature.android.literature.R;
-import com.literature.android.literature.adapter.PagerAdapter;
+import com.literature.android.literature.adapters.PagerAdapter;
 
 /**
  * Created by mher on 3/26/17.
