@@ -47,9 +47,11 @@ public class Description extends Fragment {
         TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         Button descriptionButton = (Button) view.findViewById(R.id.description_item_button);
         descriptionText.setMovementMethod(new ScrollingMovementMethod());
-        List<Model> authorModels = Manager.sharedManager(getContext()).jsonParser();
-        Model authorModel = authorModels.get(0);
-        descriptionText.setText(authorModel.getContent().get("content"));
+        List<List<Model>> authorModels = Manager.sharedManager(getContext()).getAllAuthorsInfo();
+        if (null != authorModels) {
+            Model authorModel = authorModels.get(0).get(0);
+            descriptionText.setText(authorModel.getContent().get("content"));
+        }
         descriptionButton.setText("---- Description Button ----");
         return view;
     }

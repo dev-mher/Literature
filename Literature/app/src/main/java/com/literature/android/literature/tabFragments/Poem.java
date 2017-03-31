@@ -49,11 +49,11 @@ public class Poem extends Fragment {
         Drawable paruyrSevakImage;
         Drawable hovhannesShirazImage;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian, getContext().getTheme());
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanyan, getContext().getTheme());
             paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak, getContext().getTheme());
             hovhannesShirazImage = getResources().getDrawable(R.drawable.hovhannes_shiraz, getContext().getTheme());
         } else {
-            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian);
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanyan);
             paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak);
             hovhannesShirazImage = getResources().getDrawable(R.drawable.hovhannes_shiraz);
         }

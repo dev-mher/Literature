@@ -49,10 +49,10 @@ public class Story extends Fragment {
         Drawable hovhannesTumanyanImage;
         Drawable paruyrSevakImage;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian, getContext().getTheme());
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanyan, getContext().getTheme());
             paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak, getContext().getTheme());
         } else {
-            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanian);
+            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanyan);
             paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak);
         }
         autorsImages.add(hovhannesTumanyanImage);
