@@ -3,14 +3,19 @@ package com.literature.android.literature.innerFragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.literature.android.literature.Manager;
+import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
+
+import java.util.List;
 
 /**
  * Created by mher on 3/26/17.
@@ -41,7 +46,10 @@ public class Description extends Fragment {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         Button descriptionButton = (Button) view.findViewById(R.id.description_item_button);
-        descriptionText.setText("---- Description Text ----");
+        descriptionText.setMovementMethod(new ScrollingMovementMethod());
+        List<Model> authorModels = Manager.sharedManager(getContext()).jsonParser();
+        Model authorModel = authorModels.get(0);
+        descriptionText.setText(authorModel.getContent().get("content"));
         descriptionButton.setText("---- Description Button ----");
         return view;
     }

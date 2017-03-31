@@ -9,7 +9,8 @@ import java.util.Map;
 public class Model {
 
     private String mAuthorName;
-    private Map<String, String> mArticle;
+    private Map<String, String> mCaption;
+    private Map<String, String> mContent;
 
     public String getAuthorName() {
         return mAuthorName;
@@ -19,11 +20,19 @@ public class Model {
         mAuthorName = authorName;
     }
 
-    public Map<String, String> getArticle() {
-        return mArticle;
+    public Map<String, String> getCaption() {
+        return mCaption;
     }
 
-    public void setArticle(Map<String, String> article) {
-        mArticle = article;
+    public void setCaption(Map<String, String> caption) {
+        mCaption = caption;
+    }
+
+    public Map<String, String> getContent() {
+        return mContent;
+    }
+
+    public void setContent(Map<String, String> content) {
+        this.mContent = content;
     }
 }
