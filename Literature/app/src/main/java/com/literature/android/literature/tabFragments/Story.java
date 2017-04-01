@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.LiteratureRecyclerAdapter;
 import com.literature.android.literature.adapters.PagerAdapter;
@@ -46,17 +47,15 @@ public class Story extends Fragment {
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.story_recycler_view);
         literatureRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<Drawable> autorsImages = new ArrayList<>();
-        Drawable hovhannesTumanyanImage;
-        Drawable paruyrSevakImage;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanyan, getContext().getTheme());
-            paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak, getContext().getTheme());
-        } else {
-            hovhannesTumanyanImage = getResources().getDrawable(R.drawable.hovhannes_tumanyan);
-            paruyrSevakImage = getResources().getDrawable(R.drawable.paruyr_sevak);
+        List<String> authorsFileNames = Manager.sharedManager(getContext()).getAuthorsFilesNames();
+        for (int i = 0; i < authorsFileNames.size(); ++i) {
+            int id = getResources().getIdentifier(authorsFileNames.get(i), "drawable", getContext().getPackageName());
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                autorsImages.add(getResources().getDrawable(id, getContext().getTheme()));
+            } else {
+                autorsImages.add(getResources().getDrawable(id));
+            }
         }
-        autorsImages.add(hovhannesTumanyanImage);
-        autorsImages.add(paruyrSevakImage);
         literatureRecyclerView.setAdapter(new LiteratureRecyclerAdapter(autorsImages, getContext()));
         return view;
     }

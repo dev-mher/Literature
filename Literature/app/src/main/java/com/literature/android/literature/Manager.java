@@ -34,6 +34,7 @@ public class Manager {
     private Manager() {
         mDb = Database.getInstance(context);
         allAuthorsInfo = runParserThread();
+        addAuthorsNamesToDB();
     }
 
     public static Manager sharedManager(Context ctx) {
@@ -58,11 +59,19 @@ public class Manager {
         return null;
     }
 
+    public void addAuthorsNamesToDB() {
+        boolean result = mDb.saveAllInfo(getAllAuthorsInfo());
+        if (!result) {
+            System.out.println("ERROR: an error occurred while data saving");
+        }
+    }
+
     private class JsonParser extends AsyncTask<String, Void, List<List<Model>>> {
 
         public static final String BASE_FILE_NAME = "authors_names";
         private static final String ALL_AUTHORS_NAMES_KEY = "names";
         //keys to parse author json
+        private static final String AUTHOR_FILE_NAME_KEY = "file";
         private static final String AUTHOR_NAME_KEY = "author";
         private static final String LIST_KEY = "list";
         private static final String CAPTION_KEY = "caption";
@@ -111,6 +120,7 @@ public class Manager {
                 JSONObject mainObject = new JSONObject(loadJson(fileName));
                 authorModels = new ArrayList<>();
                 Model model;
+                final String authorFileName = mainObject.getString(AUTHOR_FILE_NAME_KEY);
                 final String authorName = mainObject.getString(AUTHOR_NAME_KEY);
                 final JSONArray authorList = mainObject.getJSONArray(LIST_KEY);
                 for (int i = 0; i < authorList.length(); ++i) {
@@ -120,6 +130,7 @@ public class Manager {
                     final JSONObject listObject = authorList.getJSONObject(i);
                     final String caption = listObject.getString(CAPTION_KEY);
                     final String content = listObject.getString(CONTENT_KEY);
+                    model.setAuthorFileName(authorFileName);
                     model.setAuthorName(authorName);
                     captionMap.put(CAPTION_KEY, caption);
                     contentMap.put(CONTENT_KEY, content);
@@ -148,5 +159,9 @@ public class Manager {
             }
             return resourceContentToString;
         }
+    }
+
+    public List<String> getAuthorsFilesNames() {
+        return mDb.getAuthorsFileNames();
     }
 }

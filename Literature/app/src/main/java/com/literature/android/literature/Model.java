@@ -9,6 +9,7 @@ import java.util.Map;
 public class Model {
 
     private String mAuthorName;
+    private String mAuthorFileName;
     private Map<String, String> mCaption;
     private Map<String, String> mContent;
 
@@ -18,6 +19,14 @@ public class Model {
 
     public void setAuthorName(String authorName) {
         mAuthorName = authorName;
+    }
+
+    public String getAuthorFileName() {
+        return mAuthorFileName;
+    }
+
+    public void setAuthorFileName(String authorFileName) {
+        mAuthorFileName = authorFileName;
     }
 
     public Map<String, String> getCaption() {
