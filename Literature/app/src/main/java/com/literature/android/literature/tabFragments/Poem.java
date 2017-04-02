@@ -46,7 +46,7 @@ public class Poem extends Fragment {
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.poem_recycler_view);
         literatureRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<Drawable> autorsImages = new ArrayList<>();
-        List<String> authorsFileNames = Manager.sharedManager(getContext()).getAuthorsFilesNames();
+        List<String> authorsFileNames = Manager.sharedManager().getAuthorsFilesNames();
         for (int i = 0; i < authorsFileNames.size(); ++i) {
             int id = getResources().getIdentifier(authorsFileNames.get(i), "drawable", getContext().getPackageName());
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {

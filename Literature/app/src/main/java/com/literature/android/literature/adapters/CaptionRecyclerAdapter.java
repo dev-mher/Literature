@@ -17,16 +17,18 @@ import java.util.List;
 public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHolder> {
     private List<String> mCaptions;
     private FragmentManager mFragmentManager;
+    private int mAuthorId;
 
-    public CaptionRecyclerAdapter(List<String> itemsCaptionList, FragmentManager fragmentManager) {
+    public CaptionRecyclerAdapter(List<String> itemsCaptionList, FragmentManager fragmentManager, int authorId) {
         mCaptions = itemsCaptionList;
         mFragmentManager = fragmentManager;
+        mAuthorId = authorId;
     }
 
     @Override
     public CaptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
-        return new CaptionViewHolder(view, mFragmentManager);
+        return new CaptionViewHolder(view, mFragmentManager, mAuthorId);
     }
 
     @Override

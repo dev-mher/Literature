@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.literature.android.literature.Manager;
+import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
+import com.literature.android.literature.activities.CaptionActivity;
 import com.literature.android.literature.adapters.CaptionRecyclerAdapter;
 import com.literature.android.literature.adapters.PagerAdapter;
 
@@ -21,11 +24,13 @@ import java.util.List;
  */
 
 public class Caption extends Fragment {
+    private int mAuthorId;
 
-    public static Caption newInstance(String title) {
+    public static Caption newInstance(String title, int authorId) {
         Caption captionFragment = new Caption();
         Bundle args = new Bundle();
         args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putInt(CaptionActivity.CLICKED_ITEM_ID, authorId);
         captionFragment.setArguments(args);
         return captionFragment;
     }
@@ -34,6 +39,9 @@ public class Caption extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            mAuthorId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
+        }
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -45,12 +53,13 @@ public class Caption extends Fragment {
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
         RecyclerView captionRecyclerView = (RecyclerView) view.findViewById(R.id.caption_recycler_view);
         captionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
+        List<Model> authorInfo = allInfo.get(mAuthorId);
         List<String> captionList = new ArrayList<>();
-        captionList.add("------ First Caption ------");
-        captionList.add("------ Second Caption ------");
-        captionList.add("------ Threeth Caption ------");
-        captionList.add("------ Fourth Caption ------");
-        captionRecyclerView.setAdapter(new CaptionRecyclerAdapter(captionList, getFragmentManager()));
+        for (int i = 0; i < authorInfo.size(); ++i) {
+            captionList.add(authorInfo.get(i).getCaption().get("caption"));
+        }
+        captionRecyclerView.setAdapter(new CaptionRecyclerAdapter(captionList, getFragmentManager(), mAuthorId));
         return view;
     }
 }

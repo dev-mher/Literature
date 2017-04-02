@@ -17,23 +17,26 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mItemTextView;
     private FragmentManager mFragmentManager;
+    private int mAuthorId;
 
 
-    public CaptionViewHolder(View itemView, FragmentManager fragmentManager) {
+    public CaptionViewHolder(View itemView, FragmentManager fragmentManager, int authorId) {
         super(itemView);
         mItemTextView = (TextView) itemView.findViewById(R.id.caption_item_text_view);
         mFragmentManager = fragmentManager;
+        mAuthorId = authorId;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int captionId = getAdapterPosition();
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                 if (null != mFragmentManager.findFragmentById(R.id.caption_activity_fragment_container)) {
                     fragmentTransaction.replace(R.id.caption_activity_fragment_container
-                            , Description.newInstance(Description.class.getSimpleName())
+                            , Description.newInstance(Description.class.getSimpleName(), mAuthorId, captionId)
                             , Description.class.getSimpleName());
                 } else {
                     fragmentTransaction.add(R.id.caption_activity_fragment_container
-                            , Description.newInstance(Description.class.getSimpleName())
+                            , Description.newInstance(Description.class.getSimpleName(), mAuthorId, captionId)
                             , Description.class.getSimpleName());
                 }
                 fragmentTransaction.addToBackStack(null).commit();

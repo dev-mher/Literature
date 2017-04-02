@@ -34,11 +34,15 @@ public class Manager {
     private Manager() {
         mDb = Database.getInstance(context);
         allAuthorsInfo = runParserThread();
-        addAuthorsNamesToDB();
+        addAllInfoToDB();
     }
 
     public static Manager sharedManager(Context ctx) {
         context = ctx;
+        return SingletonHolder.INSTANCE;
+    }
+
+    public static Manager sharedManager() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -59,7 +63,7 @@ public class Manager {
         return null;
     }
 
-    public void addAuthorsNamesToDB() {
+    public void addAllInfoToDB() {
         boolean result = mDb.saveAllInfo(getAllAuthorsInfo());
         if (!result) {
             System.out.println("ERROR: an error occurred while data saving");

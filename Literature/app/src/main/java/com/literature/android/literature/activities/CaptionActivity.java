@@ -15,6 +15,8 @@ import com.literature.android.literature.innerFragments.Caption;
 
 public class CaptionActivity extends AppCompatActivity {
 
+    public static final String CLICKED_ITEM_ID = "clickedItemID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,7 @@ public class CaptionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ImageView backButton = (ImageView) findViewById(R.id.caption_activity_back_button);
+        int itemId = getIntent().getIntExtra(CLICKED_ITEM_ID, 0);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,7 +39,7 @@ public class CaptionActivity extends AppCompatActivity {
         });
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.caption_activity_fragment_container
-                , Caption.newInstance(Caption.class.getSimpleName()))
+                , Caption.newInstance(Caption.class.getSimpleName(), itemId))
                 .commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -47,8 +50,6 @@ public class CaptionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
     }
 
     @Override

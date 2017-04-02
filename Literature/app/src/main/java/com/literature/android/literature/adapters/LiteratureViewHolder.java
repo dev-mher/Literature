@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.literature.android.literature.activities.CaptionActivity;
 import com.literature.android.literature.R;
+import com.literature.android.literature.activities.CaptionActivity;
 
 /**
  * Created by mher on 3/24/17.
@@ -25,7 +25,9 @@ public class LiteratureViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int authorId = getAdapterPosition();
                 Intent intent = new Intent(mContext, CaptionActivity.class);
+                intent.putExtra(CaptionActivity.CLICKED_ITEM_ID, authorId);
                 mContext.startActivity(intent);
             }
         });
