@@ -168,4 +168,13 @@ public class Manager {
     public List<String> getAuthorsFilesNames() {
         return mDb.getAuthorsFileNames();
     }
+
+    public boolean changeFavoriteStatus(int authorId, String caption, boolean isFavorite) {
+        int numberOfUpdatedRows = mDb.changeFavoriteStatus(authorId, caption, isFavorite);
+        if (0 < numberOfUpdatedRows) {
+            return true;
+        }
+        System.out.println("ERROR! Update falied");
+        return false;
+    }
 }

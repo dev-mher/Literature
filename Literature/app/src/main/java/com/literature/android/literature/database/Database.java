@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.literature.android.literature.Model;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.literature.android.literature.Model;
 
 /**
  * Created by mher on 3/28/17.
@@ -60,7 +60,6 @@ public class Database extends SQLiteOpenHelper {
             + " INTEGER"
             + ")";
 
-
     private static class SingletonHolder {
         private static final Database INSTANCE = new Database();
     }
@@ -86,6 +85,10 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public boolean saveAllInfo(List<List<Model>> allInfo) {
+        boolean isAuthorsNamesExist = checkAuthorsExisting();
+        if (isAuthorsNamesExist) {
+            return true;
+        }
         for (int i = 0; i < allInfo.size(); ++i) {
             List<Model> author = allInfo.get(i);
             if (null != author.get(0) && null != author.get(0).getAuthorName()) {
@@ -100,8 +103,8 @@ public class Database extends SQLiteOpenHelper {
                 for (int j = 0; j < author.size(); ++j) {
                     String caption = author.get(j).getCaption().get("caption");
                     int authorId = i + 1;
-                    boolean saved = saveRelatedDataToDB(authorId, caption, 0);
-                    if (!saved) {
+                    boolean isSaved = saveRelatedDataToDB(authorId, caption, 0);
+                    if (!isSaved) {
                         System.out.println("ERROR: an error occurred while "
                                 + authorName + " author's "
                                 + caption + " saving");
@@ -113,20 +116,22 @@ public class Database extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean saveAuthorNameToDB(String authorFileName, String authorName) {
+
+    public boolean checkAuthorsExisting() {
         Cursor cursor = null;
         try {
             cursor = _db.rawQuery("SELECT * FROM "
-                    + AUTHORS_TABLE_NAME
-                    + " WHERE "
-                    + AUTHOR_NAME
-                    + " = ? ", new String[]{authorName});
+                    + AUTHORS_TABLE_NAME, new String[]{});
             if (0 < cursor.getCount()) {
                 return true;
             }
         } finally {
             cursor.close();
         }
+        return false;
+    }
+
+    public boolean saveAuthorNameToDB(String authorFileName, String authorName) {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(AUTHOR_FILE_NAME, authorFileName);
         contentValues.put(AUTHOR_NAME, authorName);
@@ -136,19 +141,6 @@ public class Database extends SQLiteOpenHelper {
     }
 
     private boolean saveRelatedDataToDB(int authorId, String caption, int isFavorite) {
-        Cursor cursor = null;
-        try {
-            cursor = _db.rawQuery("SELECT * FROM "
-                    + RELATED_TABLE_NAME
-                    + " WHERE "
-                    + AUTHOR_ID
-                    + " = ? AND " + CAPTION + " = ? ", new String[]{String.valueOf(authorId), caption});
-            if (0 < cursor.getCount()) {
-                return true;
-            }
-        } finally {
-            cursor.close();
-        }
         final ContentValues contentValues = new ContentValues();
         contentValues.put(AUTHOR_ID, authorId);
         contentValues.put(CAPTION, caption);
@@ -173,5 +165,18 @@ public class Database extends SQLiteOpenHelper {
             cursor.close();
         }
         return authorsFileNames;
+    }
+
+    public int changeFavoriteStatus(int authorId, String caption, boolean isFavorite) {
+        final String[] condition = new String[]{String.valueOf(authorId), caption};
+        final ContentValues contentValues = new ContentValues();
+        if (isFavorite) {
+            contentValues.put(IS_FAVORITE, 1);
+        } else {
+            contentValues.put(IS_FAVORITE, 0);
+        }
+        int numberOfRows = _db.update(RELATED_TABLE_NAME, contentValues,
+                AUTHOR_ID + " = ? AND " + CAPTION + " = ? ", condition);
+        return numberOfRows;
     }
 }
