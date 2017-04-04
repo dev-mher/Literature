@@ -1,7 +1,9 @@
 package com.literature.android.literature;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.literature.android.literature.database.Database;
 
@@ -169,12 +171,39 @@ public class Manager {
         return mDb.getAuthorsFileNames();
     }
 
-    public boolean changeFavoriteStatus(int authorId, String caption, boolean isFavorite) {
+    public void changeFavoriteStatus(int authorId, String caption, boolean isFavorite, Context cxt) {
         int numberOfUpdatedRows = mDb.changeFavoriteStatus(authorId, caption, isFavorite);
         if (0 < numberOfUpdatedRows) {
-            return true;
+            if (isFavorite) {
+                Toast.makeText(cxt, caption + " added into your Favorite list successfully!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(cxt, caption + " removed from your Favorite list successfully!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            System.out.println("ERROR! Update falied");
+            Toast.makeText(cxt, "ERROR! Sorry but " + caption + " can't add into your Favorite list", Toast.LENGTH_SHORT).show();
         }
-        System.out.println("ERROR! Update falied");
-        return false;
+    }
+
+    public boolean getCaptionStatus(int authorId, String caption) {
+        return mDb.checkCaptionStatus(authorId, caption);
+    }
+
+    public Drawable getFavoriteDrawable(boolean isFavorite) {
+        Drawable favImage;
+        if (isFavorite) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                favImage = getContext().getResources().getDrawable(R.drawable.favorite, getContext().getTheme());
+            } else {
+                favImage = getContext().getResources().getDrawable(R.drawable.favorite);
+            }
+            return favImage;
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            favImage = getContext().getResources().getDrawable(R.drawable.no_favorite, getContext().getTheme());
+        } else {
+            favImage = getContext().getResources().getDrawable(R.drawable.no_favorite);
+        }
+        return favImage;
     }
 }

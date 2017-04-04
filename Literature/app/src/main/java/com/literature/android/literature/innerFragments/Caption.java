@@ -59,7 +59,7 @@ public class Caption extends Fragment {
         for (int i = 0; i < authorInfo.size(); ++i) {
             captionList.add(authorInfo.get(i).getCaption().get("caption"));
         }
-        captionRecyclerView.setAdapter(new CaptionRecyclerAdapter(captionList, getFragmentManager(), mAuthorId));
+        captionRecyclerView.setAdapter(new CaptionRecyclerAdapter(captionList, getFragmentManager(), mAuthorId, getContext()));
         return view;
     }
 }

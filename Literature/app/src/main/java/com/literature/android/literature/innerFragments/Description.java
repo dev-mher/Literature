@@ -1,5 +1,6 @@
 package com.literature.android.literature.innerFragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
@@ -29,16 +29,18 @@ public class Description extends Fragment {
     public static final String AUTHOR_ID = "authorId";
     private int mAuthorId;
     private int mCaptionId;
-    //TODO add the initially checking mechanism
-    private boolean isFavorite = false;
+    private boolean isFavorite;
     private String mCaption;
 
-    public static Description newInstance(String title, int authorId, int captionId) {
+    private static final String IS_FAVORITE = "isFavorite";
+
+    public static Description newInstance(String title, int authorId, int captionId, boolean isFavorite) {
         Description descriptionFragment = new Description();
         Bundle args = new Bundle();
         args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
         args.putInt(AUTHOR_ID, authorId);
         args.putInt(CaptionActivity.CLICKED_ITEM_ID, captionId);
+        args.putBoolean(IS_FAVORITE, isFavorite);
         descriptionFragment.setArguments(args);
         return descriptionFragment;
     }
@@ -52,6 +54,7 @@ public class Description extends Fragment {
         fab.hide();
         mAuthorId = getArguments().getInt(AUTHOR_ID);
         mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
+        isFavorite = getArguments().getBoolean(IS_FAVORITE);
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -71,6 +74,13 @@ public class Description extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
+        favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.caption_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -80,24 +90,12 @@ public class Description extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.favorite:
-                if (!isFavorite) {
-                    item.setIcon(android.R.drawable.star_big_on);
-                } else {
-                    item.setIcon(android.R.drawable.star_big_off);
-                }
+            case R.id.favorite_menu_item:
                 isFavorite = !isFavorite;
+                Drawable favImage = Manager.sharedManager().getFavoriteDrawable(isFavorite);
+                item.setIcon(favImage);
                 int authorIdForDb = mAuthorId + 1;
-                boolean isUpdated = Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite);
-                if (isUpdated) {
-                    if (isFavorite) {
-                        Toast.makeText(getActivity(), mCaption + " added into your Favorite list successfully!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), mCaption + " removed from your Favorite list successfully!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "ERROR! Sorry but " + mCaption + " can't add into your Favorite list", Toast.LENGTH_SHORT).show();
-                }
+                Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

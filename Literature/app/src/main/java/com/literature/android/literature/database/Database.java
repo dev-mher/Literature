@@ -183,4 +183,31 @@ public class Database extends SQLiteOpenHelper {
                 AUTHOR_ID + " = ? AND " + CAPTION + " = ? ", condition);
         return numberOfRows;
     }
+
+
+    public boolean checkCaptionStatus(int authorId, String caption) {
+        final String[] condition = new String[]{String.valueOf(authorId), caption};
+        Cursor cursor = null;
+        try {
+            cursor = _db.rawQuery("SELECT "
+                    + IS_FAVORITE + " FROM "
+                    + RELATED_TABLE_NAME
+                    + " WHERE "
+                    + AUTHOR_ID + " = ? AND "
+                    + CAPTION + " = ? ", condition);
+            while (cursor.moveToFirst()) {
+                int isFavorite = cursor.getInt(cursor.getColumnIndex(IS_FAVORITE));
+                if (0 == isFavorite) {
+                    return false;
+                }
+                return true;
+            }
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+        }
+        System.out.println("ERROR! an error occured while getting " + caption + " status");
+        return false;
+    }
 }
