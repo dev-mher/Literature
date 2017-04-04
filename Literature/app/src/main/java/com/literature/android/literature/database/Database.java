@@ -126,7 +126,9 @@ public class Database extends SQLiteOpenHelper {
                 return true;
             }
         } finally {
-            cursor.close();
+            if (null != cursor) {
+                cursor.close();
+            }
         }
         return false;
     }
@@ -162,7 +164,9 @@ public class Database extends SQLiteOpenHelper {
                 authorsFileNames.add(cursor.getString(cursor.getColumnIndex(AUTHOR_FILE_NAME)));
             }
         } finally {
-            cursor.close();
+            if (null != cursor) {
+                cursor.close();
+            }
         }
         return authorsFileNames;
     }

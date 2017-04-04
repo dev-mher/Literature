@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.literature.android.literature.R;
@@ -16,9 +17,9 @@ import com.literature.android.literature.innerFragments.Description;
 public class CaptionViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mItemTextView;
+    private Button mItemFavoButton;
     private FragmentManager mFragmentManager;
     private int mAuthorId;
-
 
     public CaptionViewHolder(View itemView, FragmentManager fragmentManager, int authorId) {
         super(itemView);
@@ -42,6 +43,8 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
                 fragmentTransaction.addToBackStack(null).commit();
             }
         });
+
+        mItemFavoButton = (Button) itemView.findViewById(R.id.caption_item_favorite_button);
     }
 
     public void bindDrawable(String captionText) {

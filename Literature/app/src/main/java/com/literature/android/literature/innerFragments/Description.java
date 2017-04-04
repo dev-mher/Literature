@@ -83,13 +83,11 @@ public class Description extends Fragment {
             case R.id.favorite:
                 if (!isFavorite) {
                     item.setIcon(android.R.drawable.star_big_on);
-                    isFavorite = true;
                 } else {
                     item.setIcon(android.R.drawable.star_big_off);
-                    isFavorite = false;
                 }
+                isFavorite = !isFavorite;
                 int authorIdForDb = mAuthorId + 1;
-                //TODO verify having either the common function or two separate(add,remove)
                 boolean isUpdated = Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite);
                 if (isUpdated) {
                     if (isFavorite) {
