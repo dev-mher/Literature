@@ -41,6 +41,6 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mModelList.size();
     }
 }
