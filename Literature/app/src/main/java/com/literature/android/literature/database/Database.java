@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mher on 3/28/17.
@@ -209,5 +212,69 @@ public class Database extends SQLiteOpenHelper {
         }
         System.out.println("ERROR! an error occured while getting " + caption + " status");
         return false;
+    }
+
+    public List<Model> getFavoriteList() {
+        List<Model> favoriteList = new ArrayList<>();
+        Model model;
+        Map<String, String> captionMap;
+        Map<String, String> contentMap;
+        List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
+        Cursor cursor = null;
+        try {
+            cursor = _db.rawQuery("SELECT "
+                    + AUTHOR_ID + ","
+                    + CAPTION
+                    + " FROM "
+                    + RELATED_TABLE_NAME
+                    + " WHERE "
+                    + IS_FAVORITE + " = ? ", new String[]{String.valueOf(1)});
+            while (cursor.moveToNext()) {
+                int authorId = cursor.getInt(cursor.getColumnIndex(AUTHOR_ID)) - 1;
+                String caption = cursor.getString(cursor.getColumnIndex(CAPTION));
+                List<Model> authorModel = allInfo.get(authorId);
+                for (int i = 0; i < authorModel.size(); ++i) {
+                    if (!authorModel.get(i).getCaption().get("caption").equals(caption)) {
+                        continue;
+                    }
+                    String authorName = getAuthorNameById(authorId + 1);
+                    model = new Model();
+                    captionMap = new HashMap<>();
+                    captionMap.put("caption", caption);
+                    model.setCaption(captionMap);
+                    contentMap = new HashMap<>();
+                    contentMap.put("content", authorModel.get(i).getContent().get("content"));
+                    model.setContent(contentMap);
+                    model.setAuthorName(authorName);
+                    favoriteList.add(model);
+                }
+            }
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+        }
+        return favoriteList;
+    }
+
+    private String getAuthorNameById(int authorId) {
+        Cursor cursor = null;
+        try {
+            cursor = _db.rawQuery("SELECT "
+                            + AUTHOR_NAME
+                            + " FROM "
+                            + AUTHORS_TABLE_NAME
+                            + " WHERE "
+                            + AUTHOR_ID + " = ? "
+                    , new String[]{String.valueOf(authorId)});
+            if (cursor.moveToFirst()) {
+                return cursor.getString(cursor.getColumnIndex(AUTHOR_NAME));
+            }
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+        }
+        return null;
     }
 }

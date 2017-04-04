@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
-import com.literature.android.literature.adapters.LiteratureRecyclerAdapter;
+import com.literature.android.literature.adapters.WriterRecyclerAdapter;
 import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class Writer extends Fragment {
                 autorsImages.add(getResources().getDrawable(id));
             }
         }
-        literatureRecyclerView.setAdapter(new LiteratureRecyclerAdapter(autorsImages, getContext()));
+        literatureRecyclerView.setAdapter(new WriterRecyclerAdapter(autorsImages, getContext()));
         return view;
     }
 }

@@ -1,5 +1,6 @@
 package com.literature.android.literature.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -15,8 +16,8 @@ import android.view.MenuItem;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
-import com.literature.android.literature.tabFragments.Writer;
 import com.literature.android.literature.tabFragments.Story;
+import com.literature.android.literature.tabFragments.Writer;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -102,7 +103,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_favorite) {
-            // Handle the camera action
+            Intent intent = new Intent(this, FavoriteActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
         }
 

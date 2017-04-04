@@ -14,11 +14,11 @@ import com.literature.android.literature.activities.CaptionActivity;
  * Created by mher on 3/24/17.
  */
 
-public class LiteratureViewHolder extends RecyclerView.ViewHolder {
+public class WriterViewHolder extends RecyclerView.ViewHolder {
     private ImageView mItemImageView;
     private Context mContext;
 
-    public LiteratureViewHolder(View itemView, final Context context) {
+    public WriterViewHolder(View itemView, final Context context) {
         super(itemView);
         mItemImageView = (ImageView) itemView.findViewById(R.id.author_item_image_view);
         mContext = context;

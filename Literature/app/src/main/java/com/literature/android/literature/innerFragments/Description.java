@@ -32,7 +32,8 @@ public class Description extends Fragment {
     private int mCaptionId;
     private boolean isFavorite;
     private String mCaption;
-    TextView toolBarText;
+    private TextView toolBarText;
+
 
     private static final String IS_FAVORITE = "isFavorite";
 

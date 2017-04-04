@@ -206,4 +206,8 @@ public class Manager {
         }
         return favImage;
     }
+
+    public List<Model> getFavoriteList() {
+        return mDb.getFavoriteList();
+    }
 }

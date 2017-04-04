@@ -15,23 +15,23 @@ import java.util.List;
  * Created by mher on 3/24/17.
  */
 
-public class LiteratureRecyclerAdapter extends RecyclerView.Adapter<LiteratureViewHolder> {
+public class WriterRecyclerAdapter extends RecyclerView.Adapter<WriterViewHolder> {
     private List<Drawable> mAuthorsImages;
     private Context mContext;
 
-    public LiteratureRecyclerAdapter(List<Drawable> itemsImageList, Context context) {
+    public WriterRecyclerAdapter(List<Drawable> itemsImageList, Context context) {
         mAuthorsImages = itemsImageList;
         mContext = context;
     }
 
     @Override
-    public LiteratureViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.literature_tab_item, null);
-        return new LiteratureViewHolder(view, mContext);
+    public WriterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.writer_tab_item, null);
+        return new WriterViewHolder(view, mContext);
     }
 
     @Override
-    public void onBindViewHolder(LiteratureViewHolder holder, int position) {
+    public void onBindViewHolder(WriterViewHolder holder, int position) {
         Drawable authorImage = mAuthorsImages.get(position);
         holder.bindDrawable(authorImage);
     }
