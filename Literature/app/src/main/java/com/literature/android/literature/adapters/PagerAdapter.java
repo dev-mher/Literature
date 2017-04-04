@@ -42,7 +42,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         Fragment fragment = tabPages.get(position);
         if (null != fragment.getArguments()) {
-            return fragment.getArguments().getString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE).toLowerCase();
+            return fragment.getArguments().getString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE);
         }
         return "Page " + position;
     }

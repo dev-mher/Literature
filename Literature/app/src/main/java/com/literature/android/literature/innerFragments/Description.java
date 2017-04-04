@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ public class Description extends Fragment {
     private int mCaptionId;
     private boolean isFavorite;
     private String mCaption;
+    TextView toolBarText;
 
     private static final String IS_FAVORITE = "isFavorite";
 
@@ -55,6 +57,8 @@ public class Description extends Fragment {
         mAuthorId = getArguments().getInt(AUTHOR_ID);
         mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -70,6 +74,7 @@ public class Description extends Fragment {
             descriptionText.setText(authorModel.getContent().get("content"));
             mCaption = authorModel.getCaption().get("caption");
         }
+        toolBarText.setText(mCaption);
         return view;
     }
 

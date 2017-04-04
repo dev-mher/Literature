@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
-import com.literature.android.literature.tabFragments.Poem;
+import com.literature.android.literature.tabFragments.Writer;
 import com.literature.android.literature.tabFragments.Story;
 
 public class HomeActivity extends AppCompatActivity
@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PagerAdapter adapterViewPager = new PagerAdapter(getSupportFragmentManager());
-        adapterViewPager.addTabPages(Poem.newInstance(Poem.class.getSimpleName()));
+        adapterViewPager.addTabPages(Writer.newInstance(getString(R.string.writer_title)));
         adapterViewPager.addTabPages(Story.newInstance(Story.class.getSimpleName()));
         viewPager.setAdapter(adapterViewPager);
 
@@ -101,18 +101,9 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_favorite) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

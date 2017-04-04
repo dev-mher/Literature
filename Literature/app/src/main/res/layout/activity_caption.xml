@@ -32,7 +32,7 @@
                     <ImageView
                         android:id="@+id/caption_activity_back_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
                         android:src="@drawable/back_button"/>
 
@@ -40,11 +40,12 @@
                         android:id="@+id/caption_activity_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/caption_activity_back_button"
-                        android:text="Caption List"
                         android:textAlignment="center"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:layout_margin="16dp"
+                        android:layout_toRightOf="@id/caption_activity_back_button"/>
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 

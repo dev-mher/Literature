@@ -5,9 +5,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class Caption extends Fragment {
     private int mAuthorId;
+    private TextView toolBarText;
 
     public static Caption newInstance(String title, int authorId) {
         Caption captionFragment = new Caption();
@@ -42,12 +45,15 @@ public class Caption extends Fragment {
         if (null != getArguments()) {
             mAuthorId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
         }
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        toolBarText.setText(getContext().getString(R.string.caption_title));
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.show();
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);

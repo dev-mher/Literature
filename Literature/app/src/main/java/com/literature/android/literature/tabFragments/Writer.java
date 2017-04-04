@@ -21,15 +21,15 @@ import java.util.List;
  * Created by mher on 3/24/17.
  */
 
-public class Poem extends Fragment {
+public class Writer extends Fragment {
 
     // newInstance constructor for creating fragment with arguments
-    public static Poem newInstance(String title) {
-        Poem poemFragment = new Poem();
+    public static Writer newInstance(String title) {
+        Writer writerFragment = new Writer();
         Bundle args = new Bundle();
         args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
-        poemFragment.setArguments(args);
-        return poemFragment;
+        writerFragment.setArguments(args);
+        return writerFragment;
     }
 
     // Store instance variables based on arguments passed
@@ -42,8 +42,8 @@ public class Poem extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.poem_tab_layout, container, false);
-        RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.poem_recycler_view);
+        View view = inflater.inflate(R.layout.writer_tab_layout, container, false);
+        RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.writer_recycler_view);
         literatureRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<Drawable> autorsImages = new ArrayList<>();
         List<String> authorsFileNames = Manager.sharedManager().getAuthorsFilesNames();
