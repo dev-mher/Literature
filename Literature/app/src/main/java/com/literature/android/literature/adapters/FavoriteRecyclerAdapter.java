@@ -17,32 +17,30 @@ import java.util.List;
  */
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
-    private List<Model> mModelList;
-    private List<Integer> mAuthorIds;
+    private List<Model> mFavModelList;
     private Context mContext;
     private FragmentManager mFragmentManager;
 
-    public FavoriteRecyclerAdapter(List<Model> models, List<Integer> authorIds, Context ctx, FragmentManager fm) {
-        mModelList = models;
-        mAuthorIds = authorIds;
+    public FavoriteRecyclerAdapter(List<Model> FavModels, Context ctx, FragmentManager fm) {
+        mFavModelList = FavModels;
         mContext = ctx;
         mFragmentManager = fm;
     }
 
     @Override
     public FavoriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_fragment_item, null);
-        return new FavoriteViewHolder(view, mAuthorIds, mContext, mFragmentManager);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
+        return new FavoriteViewHolder(view, mFavModelList, mContext, mFragmentManager);
     }
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        Model favModel = mModelList.get(position);
+        Model favModel = mFavModelList.get(position);
         holder.bindDrawable(favModel);
     }
 
     @Override
     public int getItemCount() {
-        return mModelList.size();
+        return mFavModelList.size();
     }
 }

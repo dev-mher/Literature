@@ -229,12 +229,13 @@ public class Database extends SQLiteOpenHelper {
                     + " WHERE "
                     + IS_FAVORITE + " = ? ", new String[]{String.valueOf(1)});
             while (cursor.moveToNext()) {
-                int authorId = cursor.getInt(cursor.getColumnIndex(AUTHOR_ID)) - 1;
+                int authorIdForDb = cursor.getInt(cursor.getColumnIndex(AUTHOR_ID));
+                int authorIdForList = authorIdForDb - 1;
                 String caption = cursor.getString(cursor.getColumnIndex(CAPTION));
-                List<Model> authorModel = allInfo.get(authorId);
+                List<Model> authorModel = allInfo.get(authorIdForList);
                 for (int i = 0; i < authorModel.size(); ++i) {
                     if (authorModel.get(i).getCaption().get("caption").equals(caption)) {
-                        String authorName = getAuthorNameById(authorId + 1);
+                        String authorName = getAuthorNameById(authorIdForDb);
                         model = new Model();
                         captionMap = new HashMap<>();
                         captionMap.put("caption", caption);
@@ -243,6 +244,7 @@ public class Database extends SQLiteOpenHelper {
                         contentMap.put("content", authorModel.get(i).getContent().get("content"));
                         model.setContent(contentMap);
                         model.setAuthorName(authorName);
+                        model.setAuthorId(authorIdForDb);
                         favoriteList.add(model);
                     }
                 }

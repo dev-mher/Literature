@@ -45,7 +45,7 @@ public class Caption extends Fragment {
         if (null != getArguments()) {
             mAuthorId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
         }
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
         toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
     }
 

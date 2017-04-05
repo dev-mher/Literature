@@ -2,7 +2,6 @@ package com.literature.android.literature.innerFragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
@@ -17,19 +16,18 @@ import android.widget.TextView;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
-import com.literature.android.literature.activities.CaptionActivity;
 import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.List;
 
 /**
- * Created by mher on 3/26/17.
+ * Created by mher on 4/5/17.
  */
 
-public class Description extends Fragment {
+public class FavDescription extends Fragment {
     public static final String AUTHOR_ID = "authorId";
+    public static final String CAPTION = "caption";
     private int mAuthorId;
-    private int mCaptionId;
     private boolean isFavorite;
     private String mCaption;
     private TextView toolBarText;
@@ -37,15 +35,15 @@ public class Description extends Fragment {
 
     private static final String IS_FAVORITE = "isFavorite";
 
-    public static Description newInstance(String title, int authorId, int captionId, boolean isFavorite) {
-        Description descriptionFragment = new Description();
+    public static FavDescription newInstance(String title, int authorId, String caption, boolean isFavorite) {
+        FavDescription favDescFragment = new FavDescription();
         Bundle args = new Bundle();
         args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
         args.putInt(AUTHOR_ID, authorId);
-        args.putInt(CaptionActivity.CLICKED_ITEM_ID, captionId);
+        args.putString(CAPTION, caption);
         args.putBoolean(IS_FAVORITE, isFavorite);
-        descriptionFragment.setArguments(args);
-        return descriptionFragment;
+        favDescFragment.setArguments(args);
+        return favDescFragment;
     }
 
     // Store instance variables based on arguments passed
@@ -53,13 +51,11 @@ public class Description extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.hide();
         mAuthorId = getArguments().getInt(AUTHOR_ID);
-        mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
+        mCaption = getArguments().getString(CAPTION);
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
-        toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.favorite_toolbar);
+        toolBarText = (TextView) toolbar.findViewById(R.id.favorite_activity_title);
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -69,11 +65,12 @@ public class Description extends Fragment {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         descriptionText.setMovementMethod(new ScrollingMovementMethod());
-        List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
-        if (null != authorModels) {
-            Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
-            descriptionText.setText(authorModel.getContent().get("content"));
-            mCaption = authorModel.getCaption().get("caption");
+        List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
+        List<Model> authorModels = allInfo.get(mAuthorId);
+        for (int i = 0; i < authorModels.size(); ++i) {
+            if (authorModels.get(i).getCaption().get("caption").equals(mCaption)) {
+                descriptionText.setText(authorModels.get(i).getContent().get("content"));
+            }
         }
         toolBarText.setText(mCaption);
         return view;

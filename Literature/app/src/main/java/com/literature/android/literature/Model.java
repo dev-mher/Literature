@@ -10,6 +10,7 @@ public class Model {
 
     private String mAuthorName;
     private String mAuthorFileName;
+    private int mAuthorId;
     private Map<String, String> mCaption;
     private Map<String, String> mContent;
 
@@ -27,6 +28,14 @@ public class Model {
 
     public void setAuthorFileName(String authorFileName) {
         mAuthorFileName = authorFileName;
+    }
+
+    public int getAuthorId() {
+        return mAuthorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        mAuthorId = authorId;
     }
 
     public Map<String, String> getCaption() {

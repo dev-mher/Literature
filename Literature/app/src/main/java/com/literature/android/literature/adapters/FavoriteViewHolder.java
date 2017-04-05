@@ -3,6 +3,7 @@ package com.literature.android.literature.adapters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
+import com.literature.android.literature.innerFragments.FavDescription;
 
 import java.util.List;
 
@@ -23,22 +25,39 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     private TextView mItemTextView;
     private ImageButton mItemFavImageButton;
     private boolean mIsFavorite = true;
-    private int mAuthorId;
     private String mCaption;
     private Context mContext;
     private FragmentManager mFragmentManager;
+    private List<Model> mFavModelList;
 
 
-    public FavoriteViewHolder(View itemView, List<Integer> authorIds, Context context, FragmentManager fm) {
+    public FavoriteViewHolder(View itemView, List<Model> FavModels, Context context, FragmentManager fm) {
         super(itemView);
         mContext = context;
         mFragmentManager = fm;
-        mItemTextView = (TextView) itemView.findViewById(R.id.favorite_item_text_view);
-        mItemFavImageButton = (ImageButton) itemView.findViewById(R.id.favorite_item_favorite_button);
+        mFavModelList = FavModels;
+        mItemTextView = (TextView) itemView.findViewById(R.id.caption_item_text_view);
+        mItemFavImageButton = (ImageButton) itemView.findViewById(R.id.caption_item_favorite_button);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int selectedItemId = getAdapterPosition();
+                Model chosenModel = mFavModelList.get(selectedItemId);
+                int authorId = chosenModel.getAuthorId();
+                int authorIdForList = authorId - 1;
+                FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                if (null != mFragmentManager.findFragmentById(R.id.favorite_activity_fragment_container)) {
+                    fragmentTransaction.replace(R.id.favorite_activity_fragment_container
+                            , FavDescription.newInstance(FavDescription.class.getSimpleName()
+                                    , authorIdForList, mCaption, mIsFavorite)
+                            , FavDescription.class.getSimpleName());
+                } else {
+                    fragmentTransaction.add(R.id.favorite_activity_fragment_container
+                            , FavDescription.newInstance(FavDescription.class.getSimpleName()
+                                    , authorIdForList, mCaption, mIsFavorite)
+                            , FavDescription.class.getSimpleName());
+                }
+                fragmentTransaction.addToBackStack(null).commit();
             }
         });
     }

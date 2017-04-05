@@ -45,11 +45,13 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                 if (null != mFragmentManager.findFragmentById(R.id.caption_activity_fragment_container)) {
                     fragmentTransaction.replace(R.id.caption_activity_fragment_container
-                            , Description.newInstance(Description.class.getSimpleName(), mAuthorId, captionId, mIsFavorite)
+                            , Description.newInstance(Description.class.getSimpleName(),
+                                    mAuthorId, captionId, mIsFavorite)
                             , Description.class.getSimpleName());
                 } else {
                     fragmentTransaction.add(R.id.caption_activity_fragment_container
-                            , Description.newInstance(Description.class.getSimpleName(), mAuthorId, captionId, mIsFavorite)
+                            , Description.newInstance(Description.class.getSimpleName(),
+                                    mAuthorId, captionId, mIsFavorite)
                             , Description.class.getSimpleName());
                 }
                 fragmentTransaction.addToBackStack(null).commit();

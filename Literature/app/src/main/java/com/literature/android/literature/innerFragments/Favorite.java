@@ -16,7 +16,6 @@ import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.FavoriteRecyclerAdapter;
 import com.literature.android.literature.adapters.PagerAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +23,6 @@ import java.util.List;
  */
 
 public class Favorite extends Fragment {
-    private int mAuthorId;
     private TextView toolBarText;
 
     public static Favorite newInstance(String title) {
@@ -48,15 +46,11 @@ public class Favorite extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         toolBarText.setText(getContext().getString(R.string.favorite_title));
-        View view = inflater.inflate(R.layout.favorite_fragment_layout, container, false);
-        RecyclerView favoriteRecyclerView = (RecyclerView) view.findViewById(R.id.favorite_recycler_view);
+        View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
+        RecyclerView favoriteRecyclerView = (RecyclerView) view.findViewById(R.id.caption_recycler_view);
         favoriteRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<Model> favoriteList = Manager.sharedManager().getFavoriteList();
-        List<Integer> authorIds = new ArrayList<>();
-        for (int i = 0; i < favoriteList.size(); ++i) {
-            favoriteList.get(i).getAuthorName();
-        }
-        favoriteRecyclerView.setAdapter(new FavoriteRecyclerAdapter(favoriteList, authorIds, getContext(), getFragmentManager()));
+        favoriteRecyclerView.setAdapter(new FavoriteRecyclerAdapter(favoriteList, getContext(), getFragmentManager()));
         return view;
     }
 
