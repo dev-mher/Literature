@@ -18,19 +18,21 @@ import java.util.List;
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
     private List<Model> mModelList;
+    private List<Integer> mAuthorIds;
     private Context mContext;
     private FragmentManager mFragmentManager;
 
-    public FavoriteRecyclerAdapter(List<Model> models, Context ctx, FragmentManager fm) {
+    public FavoriteRecyclerAdapter(List<Model> models, List<Integer> authorIds, Context ctx, FragmentManager fm) {
         mModelList = models;
+        mAuthorIds = authorIds;
         mContext = ctx;
         mFragmentManager = fm;
     }
 
     @Override
     public FavoriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_fragment_layout, null);
-        return new FavoriteViewHolder(view, mContext, mFragmentManager);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_fragment_item, null);
+        return new FavoriteViewHolder(view, mAuthorIds, mContext, mFragmentManager);
     }
 
     @Override

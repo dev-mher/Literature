@@ -187,7 +187,6 @@ public class Database extends SQLiteOpenHelper {
         return numberOfRows;
     }
 
-
     public boolean checkCaptionStatus(int authorId, String caption) {
         final String[] condition = new String[]{String.valueOf(authorId), caption};
         Cursor cursor = null;
@@ -234,19 +233,18 @@ public class Database extends SQLiteOpenHelper {
                 String caption = cursor.getString(cursor.getColumnIndex(CAPTION));
                 List<Model> authorModel = allInfo.get(authorId);
                 for (int i = 0; i < authorModel.size(); ++i) {
-                    if (!authorModel.get(i).getCaption().get("caption").equals(caption)) {
-                        continue;
+                    if (authorModel.get(i).getCaption().get("caption").equals(caption)) {
+                        String authorName = getAuthorNameById(authorId + 1);
+                        model = new Model();
+                        captionMap = new HashMap<>();
+                        captionMap.put("caption", caption);
+                        model.setCaption(captionMap);
+                        contentMap = new HashMap<>();
+                        contentMap.put("content", authorModel.get(i).getContent().get("content"));
+                        model.setContent(contentMap);
+                        model.setAuthorName(authorName);
+                        favoriteList.add(model);
                     }
-                    String authorName = getAuthorNameById(authorId + 1);
-                    model = new Model();
-                    captionMap = new HashMap<>();
-                    captionMap.put("caption", caption);
-                    model.setCaption(captionMap);
-                    contentMap = new HashMap<>();
-                    contentMap.put("content", authorModel.get(i).getContent().get("content"));
-                    model.setContent(contentMap);
-                    model.setAuthorName(authorName);
-                    favoriteList.add(model);
                 }
             }
         } finally {

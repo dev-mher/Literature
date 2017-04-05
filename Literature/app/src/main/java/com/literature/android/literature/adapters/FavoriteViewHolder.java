@@ -23,13 +23,13 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     private TextView mItemTextView;
     private ImageButton mItemFavImageButton;
     private boolean mIsFavorite = true;
-    private boolean mAuthorId;
+    private int mAuthorId;
     private String mCaption;
     private Context mContext;
     private FragmentManager mFragmentManager;
 
 
-    public FavoriteViewHolder(View itemView, Context context, FragmentManager fm) {
+    public FavoriteViewHolder(View itemView, List<Integer> authorIds, Context context, FragmentManager fm) {
         super(itemView);
         mContext = context;
         mFragmentManager = fm;
@@ -38,13 +38,14 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
     }
 
     public void bindDrawable(final Model favModel) {
         mCaption = favModel.getCaption().get("caption");
-        final int[] authorId = new int[1];
+        final int[] authorIdForDb = new int[1];
         mItemTextView.setText(mCaption);
         setFavImage();
         mItemFavImageButton.setOnClickListener(new View.OnClickListener() {
@@ -54,11 +55,12 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
                 List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
                 for (int i = 0; i < allInfo.size(); ++i) {
                     if (allInfo.get(i).get(0).getAuthorName().equals(favModel.getAuthorName())) {
-                        authorId[0] = i;
+                        authorIdForDb[0] = i + 1;
                         break;
                     }
                 }
-                Manager.sharedManager().changeFavoriteStatus(authorId[0], mCaption, mIsFavorite, mContext);
+                Manager.sharedManager().changeFavoriteStatus(authorIdForDb[0], mCaption, mIsFavorite, mContext);
+                //TODO remove item from list immediately
                 setFavImage();
             }
         });
