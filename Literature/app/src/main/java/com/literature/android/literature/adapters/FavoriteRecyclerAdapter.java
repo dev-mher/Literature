@@ -30,7 +30,16 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
     @Override
     public FavoriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
-        return new FavoriteViewHolder(view, mFavModelList, mContext, mFragmentManager);
+        FavoriteViewHolder holder = new FavoriteViewHolder(view, mFavModelList, mContext, mFragmentManager);
+        holder.setRemoveItemListener(new FavoriteViewHolder.RemoveItemCallBack() {
+            @Override
+            public void removeItem(int position) {
+                mFavModelList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mFavModelList.size());
+            }
+        });
+        return holder;
     }
 
     @Override

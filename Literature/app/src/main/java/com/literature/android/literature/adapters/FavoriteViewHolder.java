@@ -22,6 +22,10 @@ import java.util.List;
 
 public class FavoriteViewHolder extends RecyclerView.ViewHolder {
 
+    public interface RemoveItemCallBack {
+        void removeItem(int position);
+    }
+
     private TextView mItemTextView;
     private ImageButton mItemFavImageButton;
     private boolean mIsFavorite = true;
@@ -29,6 +33,7 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     private Context mContext;
     private FragmentManager mFragmentManager;
     private List<Model> mFavModelList;
+    private RemoveItemCallBack removeItemListener;
 
 
     public FavoriteViewHolder(View itemView, List<Model> FavModels, Context context, FragmentManager fm) {
@@ -79,8 +84,7 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
                     }
                 }
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb[0], mCaption, mIsFavorite, mContext);
-                //TODO remove item from list immediately
-                setFavImage();
+                removeItemListener.removeItem(getAdapterPosition());
             }
         });
     }
@@ -88,5 +92,9 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     private void setFavImage() {
         Drawable favImage = Manager.sharedManager().getFavoriteDrawable(mIsFavorite);
         mItemFavImageButton.setBackground(favImage);
+    }
+
+    public void setRemoveItemListener(RemoveItemCallBack deleteItemListener) {
+        removeItemListener = deleteItemListener;
     }
 }
