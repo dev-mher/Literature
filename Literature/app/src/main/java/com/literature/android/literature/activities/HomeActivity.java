@@ -105,6 +105,9 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_favorite) {
             Intent intent = new Intent(this, FavoriteActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_fb_login) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
         }
 

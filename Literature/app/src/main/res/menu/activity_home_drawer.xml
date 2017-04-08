@@ -7,6 +7,10 @@
             android:icon="@drawable/favorite"
             android:title="@string/favorite_title"/>
         <item
+            android:id="@+id/nav_fb_login"
+            android:icon="@android:drawable/ic_dialog_email"
+            android:title="@string/nav_facebook"/>
+        <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/action_settings"/>
