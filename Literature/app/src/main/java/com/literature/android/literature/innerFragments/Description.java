@@ -1,6 +1,7 @@
 package com.literature.android.literature.innerFragments;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.activities.CaptionActivity;
+import com.literature.android.literature.activities.HomeActivity;
 import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.List;
@@ -32,7 +36,10 @@ public class Description extends Fragment {
     private int mCaptionId;
     private boolean isFavorite;
     private String mCaption;
+    private String mContent;
     private TextView toolBarText;
+    ShareDialog mShareDialog;
+    TextView descriptionText;
 
 
     private static final String IS_FAVORITE = "isFavorite";
@@ -67,12 +74,13 @@ public class Description extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
-        TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
+        descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         descriptionText.setMovementMethod(new ScrollingMovementMethod());
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
         if (null != authorModels) {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
-            descriptionText.setText(authorModel.getContent().get("content"));
+            mContent = authorModel.getContent().get("content");
+            descriptionText.setText(mContent);
             mCaption = authorModel.getCaption().get("caption");
         }
         toolBarText.setText(mCaption);
@@ -83,6 +91,10 @@ public class Description extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
         favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
+        MenuItem shareItem = menu.findItem(R.id.facebook_share_menu_item);
+        if (!HomeActivity.isConnectedUserToFacebook) {
+            shareItem.setVisible(false);
+        }
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -103,8 +115,23 @@ public class Description extends Fragment {
                 int authorIdForDb = mAuthorId + 1;
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
                 return true;
+            case R.id.facebook_share_menu_item:
+                shareContent();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void shareContent() {
+        mShareDialog = new ShareDialog(this);
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle(mCaption)
+                    .setImageUrl(Uri.parse("https://i.ytimg.com/vi/EYGOf56ux2o/0.jpg?time=1454060557625"))
+                    .setContentDescription(mContent)
+                    .setContentUrl(Uri.parse("http://www.delaroystudios.com/channel/android-development/how-to-develop-an-android-camera-and-video-app/#.Vqsd0iorK00"))
+                    .build();
+            mShareDialog.show(linkContent);
         }
     }
 }

@@ -15,14 +15,14 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.literature.android.literature.R;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.literature.android.literature.Manager.getContext;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String FACEBOOK_USER_DATA = "facebook.profile.data";
     LoginButton mLoginButton;
     TextView mLoginStatus;
     CallbackManager mCallbackManager;
@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mLoginButton = (LoginButton) findViewById(R.id.fb_login_button);
+        mLoginButton.setReadPermissions("email,publish_actions");
         mLoginStatus = (TextView) findViewById(R.id.fb_login_status_text_view);
         mNavImageView = (ImageView) findViewById(R.id.fb_owner_image_view);
         mCallbackManager = CallbackManager.Factory.create();
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 graphRequest(loginResult.getAccessToken());
                 mLoginStatus.setText("Login success");
+                HomeActivity.isConnectedUserToFacebook = true;
             }
 
             @Override
@@ -61,20 +63,15 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                try {
-                    JSONObject allJsonData = new JSONObject(object.toString());
-                    JSONObject pictureData = allJsonData.getJSONObject("picture");
-                    JSONObject data = pictureData.getJSONObject("data");
-                    String url = data.getString("url");
-                    Picasso.with(getContext()).load(url).resize(220, 220).into(mNavImageView);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                //TODO parse the response and put it into the intent
+                Intent intent = new Intent(getContext(), HomeActivity.class);
+                intent.putExtra(FACEBOOK_USER_DATA, object.toString());
+                startActivity(intent);
             }
         });
 
         Bundle b = new Bundle();
-        b.putString("fields", "id,email,first_name,last_name,picture.type(large)");
+        b.putString("fields", "id,name,email,picture.width(120).height(120)");
         request.setParameters(b);
         request.executeAsync();
     }
