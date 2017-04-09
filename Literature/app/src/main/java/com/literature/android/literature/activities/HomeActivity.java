@@ -1,6 +1,7 @@
 package com.literature.android.literature.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -10,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,12 +24,11 @@ import com.literature.android.literature.tabFragments.Story;
 import com.literature.android.literature.tabFragments.Writer;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    NavigationView mNavigationView;
     TextView mFacebookUserName;
     ImageView mFacebookUserPicture;
     public static boolean isConnectedUserToFacebook;
@@ -61,11 +60,11 @@ public class HomeActivity extends AppCompatActivity
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(listener(viewPager));
-        if (null != getIntent() && null != getIntent().getStringExtra(LoginActivity.FACEBOOK_USER_DATA)) {
-            String imageUrl = getIntent().getStringExtra(LoginActivity.FACEBOOK_USER_DATA);
-            setNavigationHeader();
-            setUserProfile(imageUrl);
-        }
+
+        View header = navigationView.getHeaderView(0);
+        mFacebookUserName = (TextView) header.findViewById(R.id.nav_facebook_user_name);
+        mFacebookUserPicture = (ImageView) header.findViewById(R.id.nav_facebook_user_picture);
+        setUserProfileData();
     }
 
     private TabLayout.OnTabSelectedListener listener(final ViewPager pager) {
@@ -121,9 +120,11 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_favorite:
                 Intent favIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favIntent);
+                break;
             case R.id.nav_fb_login:
                 Intent fbIntent = new Intent(this, LoginActivity.class);
                 startActivity(fbIntent);
+                break;
             case R.id.nav_manage:
                 //TODO some action
         }
@@ -132,29 +133,35 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-
-    public void setNavigationHeader() {
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_home, null);
-        mNavigationView.addHeaderView(header);
-        mFacebookUserName = (TextView) header.findViewById(R.id.nav_facebook_user_name);
-        mFacebookUserPicture = (ImageView) header.findViewById(R.id.nav_facebook_user_picture);
+    public void setUserProfileData() {
+        String userName;
+        String picUrl;
+        Map<String, String> userData = Manager.sharedManager().getFacebookUserData();
+        if (null != userData) {
+            isConnectedUserToFacebook = true;
+            userName = userData.get("userName").toString();
+            picUrl = userData.get("url").toString();
+            setUserProfile(userName, picUrl);
+            return;
+        }
+        setUserProfile(null, null);
     }
 
     /*
        Set User Profile Information in Navigation Bar.
      */
-    public void setUserProfile(String userData) {
-        //TODO move the parsing mechanism into the LoginActivity and here get data from intent
-        try {
-            JSONObject response = new JSONObject(userData);
-            mFacebookUserName.setText(response.get("name").toString());
-            JSONObject userPicData = new JSONObject(response.get("picture").toString());
-            JSONObject userProfilePicUrl = new JSONObject(userPicData.getString("data"));
-            Picasso.with(this).load(userProfilePicUrl.getString("url"))
-                    .into(mFacebookUserPicture);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void setUserProfile(String userName, String picUrl) {
+        if (null != userName && null != picUrl) {
+            mFacebookUserName.setText(userName);
+            Picasso.with(this).load(picUrl).into(mFacebookUserPicture);
+            return;
+        }
+        isConnectedUserToFacebook = false;
+        mFacebookUserName.setText(getResources().getString(R.string.facebook_default_user));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mFacebookUserPicture.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon, getTheme()));
+        } else {
+            mFacebookUserPicture.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon));
         }
     }
 }

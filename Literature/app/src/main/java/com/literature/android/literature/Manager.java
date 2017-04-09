@@ -210,4 +210,22 @@ public class Manager {
     public List<Model> getFavoriteList() {
         return mDb.getFavoriteList();
     }
+
+    public void saveFacebookUserData(String userName, String picUrl) {
+        boolean result = mDb.saveFacebookUserData(userName, picUrl);
+        if (!result) {
+            System.out.println("ERROR: an error occurred while facebook user data saving");
+        }
+    }
+
+    public Map<String, String> getFacebookUserData() {
+        return mDb.getFacebookUserData();
+    }
+
+    public void removeFacebookUserData() {
+        boolean isRemoved = mDb.removeFacebookUserData();
+        if (!isRemoved) {
+            System.out.println("ERROR! an error occurred while removing facebook user data");
+        }
+    }
 }

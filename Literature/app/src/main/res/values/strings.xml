@@ -10,4 +10,5 @@
     <string name="nav_facebook">Մուտք Facebook</string>
     <string name="facebook_app_id">166087673913779</string>
     <string name="facebook_share_menu_title">Share</string>
+    <string name="facebook_default_user">User</string>
 </resources>

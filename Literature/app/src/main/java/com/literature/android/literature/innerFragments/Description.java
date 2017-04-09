@@ -127,9 +127,9 @@ public class Description extends Fragment {
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(mCaption)
-                    .setImageUrl(Uri.parse("https://i.ytimg.com/vi/EYGOf56ux2o/0.jpg?time=1454060557625"))
+                    .setImageUrl(Uri.parse("https://web.facebook.com/photo.php?fbid=1330581636973230&l=fb4358ce02"))
                     .setContentDescription(mContent)
-                    .setContentUrl(Uri.parse("http://www.delaroystudios.com/channel/android-development/how-to-develop-an-android-camera-and-video-app/#.Vqsd0iorK00"))
+                    .setContentUrl(Uri.parse("https://web.facebook.com/mhergrigoryan92"))
                     .build();
             mShareDialog.show(linkContent);
         }

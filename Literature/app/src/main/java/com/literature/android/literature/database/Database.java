@@ -27,6 +27,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "literatureBase.sqlite";
     private static final String AUTHORS_TABLE_NAME = "authors";
     private static final String RELATED_TABLE_NAME = "related";
+    private static final String FACEBOOK_USER_TABLE_NAME = "user";
 
     //authors table's columns
     private static final String AUTHOR_ID = "authorId";
@@ -36,6 +37,10 @@ public class Database extends SQLiteOpenHelper {
     //related table's columns
     private static final String CAPTION = "caption";
     private static final String IS_FAVORITE = "isFavorite";
+
+    //user table's columns
+    private static final String USER_NAME = "userName";
+    private static final String PIC_URL = "url";
 
     //create authors table
     private static final String CREATE_AUTHORS_TABLE
@@ -63,6 +68,17 @@ public class Database extends SQLiteOpenHelper {
             + " INTEGER"
             + ")";
 
+    //create facebook user table
+    private static final String CREATE_FACEBOOK_TABLE
+            = "CREATE TABLE IF NOT EXISTS "
+            + FACEBOOK_USER_TABLE_NAME
+            + "("
+            + USER_NAME
+            + " TEXT DEFAULT (null),"
+            + PIC_URL
+            + " TEXT DEFAULT (null)"
+            + ")";
+
     private static class SingletonHolder {
         private static final Database INSTANCE = new Database();
     }
@@ -81,6 +97,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(CREATE_AUTHORS_TABLE);
         database.execSQL(CREATE_RELATED_TABLE);
+        database.execSQL(CREATE_FACEBOOK_TABLE);
     }
 
     @Override
@@ -276,5 +293,57 @@ public class Database extends SQLiteOpenHelper {
             }
         }
         return null;
+    }
+
+    public boolean saveFacebookUserData(String userName, String picUrl) {
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_NAME, userName);
+        contentValues.put(PIC_URL, picUrl);
+        Cursor cursor = null;
+        try {
+            if (removeFacebookUserData()) {
+                long numberOfRows = _db.insert(FACEBOOK_USER_TABLE_NAME, null, contentValues);
+                return (-1 != numberOfRows);
+            }
+            System.out.println("ERROR! an error occurred while removing user data befor saving");
+            return false;
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+        }
+    }
+
+    public Map<String, String> getFacebookUserData() {
+        Map<String, String> userData;
+        Cursor cursor = null;
+        try {
+            cursor = _db.rawQuery("SELECT * FROM "
+                    + FACEBOOK_USER_TABLE_NAME, new String[]{});
+            if (0 < cursor.getCount()) {
+                userData = new HashMap<>();
+                while (cursor.moveToNext()) {
+                    String userName = cursor.getString(cursor.getColumnIndex(USER_NAME));
+                    String url = cursor.getString(cursor.getColumnIndex(PIC_URL));
+                    userData.put("userName", userName);
+                    userData.put("url", url);
+                    return userData;
+                }
+            }
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+
+    public boolean removeFacebookUserData() {
+        try {
+            _db.delete(FACEBOOK_USER_TABLE_NAME, null, null);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

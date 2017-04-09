@@ -1,6 +1,7 @@
 package com.literature.android.literature.innerFragments;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
+import com.literature.android.literature.activities.HomeActivity;
 import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.List;
@@ -31,6 +35,8 @@ public class FavDescription extends Fragment {
     private boolean isFavorite;
     private String mCaption;
     private TextView toolBarText;
+    private String mContent;
+    ShareDialog mShareDialog;
 
 
     private static final String IS_FAVORITE = "isFavorite";
@@ -69,7 +75,8 @@ public class FavDescription extends Fragment {
         List<Model> authorModels = allInfo.get(mAuthorId);
         for (int i = 0; i < authorModels.size(); ++i) {
             if (authorModels.get(i).getCaption().get("caption").equals(mCaption)) {
-                descriptionText.setText(authorModels.get(i).getContent().get("content"));
+                mContent = authorModels.get(i).getContent().get("content");
+                descriptionText.setText(mContent);
             }
         }
         toolBarText.setText(mCaption);
@@ -80,6 +87,10 @@ public class FavDescription extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
         favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
+        MenuItem shareItem = menu.findItem(R.id.facebook_share_menu_item);
+        if (!HomeActivity.isConnectedUserToFacebook) {
+            shareItem.setVisible(false);
+        }
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -100,8 +111,23 @@ public class FavDescription extends Fragment {
                 int authorIdForDb = mAuthorId + 1;
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
                 return true;
+            case R.id.facebook_share_menu_item:
+                shareContent();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void shareContent() {
+        mShareDialog = new ShareDialog(this);
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle(mCaption)
+                    .setImageUrl(Uri.parse("https://web.facebook.com/photo.php?fbid=1330581636973230&l=fb4358ce02"))
+                    .setContentDescription(mContent)
+                    .setContentUrl(Uri.parse("https://web.facebook.com/mhergrigoryan92"))
+                    .build();
+            mShareDialog.show(linkContent);
         }
     }
 }
