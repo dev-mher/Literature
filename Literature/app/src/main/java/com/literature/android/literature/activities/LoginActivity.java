@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     ImageView mNavImageView;
     AccessTokenTracker fbTracker;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (currentAccessToken == null) {
                     Manager.sharedManager().removeFacebookUserData();
                     Intent intent = new Intent(getContext(), HomeActivity.class);
-                    HomeActivity.isConnectedUserToFacebook = false;
+                    getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                            .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false).commit();
                     startActivity(intent);
                 }
             }
@@ -83,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                     String url = userProfilePicUrl.getString("url");
                     Manager.sharedManager().saveFacebookUserData(userName, url);
                     Intent intent = new Intent(getContext(), HomeActivity.class);
-                    HomeActivity.isConnectedUserToFacebook = true;
+                    getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                            .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).commit();
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();

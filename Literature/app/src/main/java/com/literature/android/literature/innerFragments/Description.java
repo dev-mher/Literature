@@ -1,5 +1,6 @@
 package com.literature.android.literature.innerFragments;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class Description extends Fragment {
     private TextView toolBarText;
     ShareDialog mShareDialog;
     TextView descriptionText;
-
+    Toolbar toolbar;
 
     private static final String IS_FAVORITE = "isFavorite";
 
@@ -65,7 +66,7 @@ public class Description extends Fragment {
         mAuthorId = getArguments().getInt(AUTHOR_ID);
         mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
         toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
     }
 
@@ -92,7 +93,9 @@ public class Description extends Fragment {
         MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
         favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
         MenuItem shareItem = menu.findItem(R.id.facebook_share_menu_item);
-        if (!HomeActivity.isConnectedUserToFacebook) {
+        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                getContext().MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+        if (!isconnected) {
             shareItem.setVisible(false);
         }
         super.onPrepareOptionsMenu(menu);
@@ -116,22 +119,32 @@ public class Description extends Fragment {
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
                 return true;
             case R.id.facebook_share_menu_item:
-                shareContent();
+                share();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void shareContent() {
+    private void shareContentByFb() {
         mShareDialog = new ShareDialog(this);
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(mCaption)
-                    .setImageUrl(Uri.parse("https://web.facebook.com/photo.php?fbid=1330581636973230&l=fb4358ce02"))
-                    .setContentDescription(mContent)
+//                    .setImageUrl(Uri.parse("https://web.facebook.com/photo.php?fbid=1330581636973230&l=fb4358ce02"))
+//                    .setContentDescription(mContent)
+                    .setQuote(mContent)
                     .setContentUrl(Uri.parse("https://web.facebook.com/mhergrigoryan92"))
                     .build();
             mShareDialog.show(linkContent);
         }
+    }
+
+    private void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mCaption);
+        String shareMessage = mContent;
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+        startActivity(Intent.createChooser(shareIntent, "Choose the messenger to share this App"));
     }
 }

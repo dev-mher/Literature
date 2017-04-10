@@ -31,7 +31,8 @@ public class HomeActivity extends AppCompatActivity
 
     TextView mFacebookUserName;
     ImageView mFacebookUserPicture;
-    public static boolean isConnectedUserToFacebook;
+    public static final String FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME = "facebook.shared.user.connection.status";
+    public static final String FACEBOOK_USER_ISCONNECTED = "facebook.user.isconnected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class HomeActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         mFacebookUserName = (TextView) header.findViewById(R.id.nav_facebook_user_name);
         mFacebookUserPicture = (ImageView) header.findViewById(R.id.nav_facebook_user_picture);
-        setUserProfileData();
+        initializeSharedPreferences();
     }
 
     private TabLayout.OnTabSelectedListener listener(final ViewPager pager) {
@@ -133,18 +134,33 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
+    public void initializeSharedPreferences() {
+        if (getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                .contains(FACEBOOK_USER_ISCONNECTED)) {
+            boolean isconnected = getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                    .getBoolean(FACEBOOK_USER_ISCONNECTED, false);
+            if (isconnected) {
+                setUserProfileData();
+            } else {
+                setUserProfile(null, null);
+            }
+        } else {
+            getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                    .edit().putBoolean(FACEBOOK_USER_ISCONNECTED, false).commit();
+            setUserProfile(null, null);
+        }
+    }
+
     public void setUserProfileData() {
         String userName;
         String picUrl;
         Map<String, String> userData = Manager.sharedManager().getFacebookUserData();
         if (null != userData) {
-            isConnectedUserToFacebook = true;
             userName = userData.get("userName").toString();
             picUrl = userData.get("url").toString();
             setUserProfile(userName, picUrl);
             return;
         }
-        setUserProfile(null, null);
     }
 
     /*
@@ -156,7 +172,6 @@ public class HomeActivity extends AppCompatActivity
             Picasso.with(this).load(picUrl).into(mFacebookUserPicture);
             return;
         }
-        isConnectedUserToFacebook = false;
         mFacebookUserName.setText(getResources().getString(R.string.facebook_default_user));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mFacebookUserPicture.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon, getTheme()));

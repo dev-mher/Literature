@@ -88,7 +88,9 @@ public class FavDescription extends Fragment {
         MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
         favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
         MenuItem shareItem = menu.findItem(R.id.facebook_share_menu_item);
-        if (!HomeActivity.isConnectedUserToFacebook) {
+        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                getContext().MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+        if (!isconnected) {
             shareItem.setVisible(false);
         }
         super.onPrepareOptionsMenu(menu);
