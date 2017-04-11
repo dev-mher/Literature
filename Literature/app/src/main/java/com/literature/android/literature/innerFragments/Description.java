@@ -76,7 +76,6 @@ public class Description extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
-        descriptionText.setMovementMethod(new ScrollingMovementMethod());
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
         if (null != authorModels) {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);

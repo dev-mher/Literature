@@ -1,21 +1,28 @@
 package com.literature.android.literature.activities;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.literature.android.literature.Manager;
+import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.innerFragments.Caption;
+
+import java.util.List;
 
 public class CaptionActivity extends AppCompatActivity {
 
     public static final String CLICKED_ITEM_ID = "clickedItemID";
+    int mAuthorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +32,7 @@ public class CaptionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ImageView backButton = (ImageView) findViewById(R.id.caption_activity_back_button);
-        int itemId = getIntent().getIntExtra(CLICKED_ITEM_ID, 0);
+        mAuthorId = getIntent().getIntExtra(CLICKED_ITEM_ID, 0);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,15 +46,34 @@ public class CaptionActivity extends AppCompatActivity {
         });
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.caption_activity_fragment_container
-                , Caption.newInstance(Caption.class.getSimpleName(), itemId))
+                , Caption.newInstance(Caption.class.getSimpleName(), mAuthorId))
                 .commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(CaptionActivity.this);
+                View layout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.alert_dialog, null);
+                builder.setView(layout);
+                final AlertDialog alert = builder.create();
+                ImageView close = (ImageView) layout.findViewById(R.id.alert_dialog_close_image_view);
+                TextView about = (TextView) layout.findViewById(R.id.alert_dialog_text_view);
+                List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
+                if (null != allInfo && !allInfo.isEmpty()) {
+                    List<Model> authorInfo = allInfo.get(mAuthorId);
+                    if (null != authorInfo && !authorInfo.isEmpty()) {
+                        String aboutAuthor = authorInfo.get(0).getAbout();
+                        about.setText(aboutAuthor);
+                    }
+                }
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alert.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
     }

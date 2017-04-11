@@ -70,7 +70,6 @@ public class FavDescription extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
-        descriptionText.setMovementMethod(new ScrollingMovementMethod());
         List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
         List<Model> authorModels = allInfo.get(mAuthorId);
         for (int i = 0; i < authorModels.size(); ++i) {
