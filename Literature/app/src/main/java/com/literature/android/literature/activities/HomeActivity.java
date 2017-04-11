@@ -16,7 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
@@ -24,7 +28,7 @@ import com.literature.android.literature.tabFragments.Story;
 import com.literature.android.literature.tabFragments.Writer;
 import com.squareup.picasso.Picasso;
 
-import java.util.Map;
+import org.json.JSONObject;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -119,6 +123,14 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_favorite:
+                boolean isconnected = getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                        MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+                if (!isconnected) {
+                    Toast.makeText(this, getString(R.string.facebook_connecting_message), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    break;
+                }
                 Intent favIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favIntent);
                 break;
@@ -152,15 +164,34 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void setUserProfileData() {
-        String userName;
-        String picUrl;
-        Map<String, String> userData = Manager.sharedManager().getFacebookUserData();
-        if (null != userData) {
-            userName = userData.get("userName").toString();
-            picUrl = userData.get("url").toString();
-            setUserProfile(userName, picUrl);
-            return;
+        AccessToken token = AccessToken.getCurrentAccessToken();
+        if (null != token) {
+            GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+
+                @Override
+                public void onCompleted(JSONObject object, GraphResponse response) {
+                    try {
+                        JSONObject userData = new JSONObject(object.toString());
+                        String userName = userData.getString("name");
+                        JSONObject userPicData = new JSONObject(userData.get("picture").toString());
+                        JSONObject userProfilePicUrl = new JSONObject(userPicData.getString("data"));
+                        String url = userProfilePicUrl.getString("url");
+                        getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                                .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).commit();
+                        setUserProfile(userName, url);
+                        return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("ERROR! an error occurred while getting user data");
+                    }
+                }
+            });
+            Bundle b = new Bundle();
+            b.putString("fields", "id,name,email,picture.width(100).height(100)");
+            request.setParameters(b);
+            request.executeAsync();
         }
+        setUserProfile(null, null);
     }
 
     /*

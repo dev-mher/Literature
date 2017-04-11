@@ -12,4 +12,5 @@
     <string name="facebook_app_id">166087673913779</string>
     <string name="facebook_share_menu_title">Share</string>
     <string name="facebook_default_user">User</string>
+    <string name="facebook_connecting_message">You can perform this action after connecting with Facebook</string>
 </resources>

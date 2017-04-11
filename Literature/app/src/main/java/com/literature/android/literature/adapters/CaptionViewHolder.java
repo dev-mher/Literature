@@ -1,6 +1,7 @@
 package com.literature.android.literature.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,10 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
+import com.literature.android.literature.activities.HomeActivity;
+import com.literature.android.literature.activities.LoginActivity;
 import com.literature.android.literature.innerFragments.Description;
 
 import java.util.List;
@@ -66,6 +70,12 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
         mItemFavImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isconnected = mContext.getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                        mContext.MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+                if (!isconnected) {
+                    Toast.makeText(mContext, mContext.getString(R.string.facebook_connecting_message), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
                 List<Model> authorList = authorModels.get(mAuthorId);
                 Model authorModel = authorList.get(captionId);

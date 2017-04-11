@@ -2,12 +2,10 @@ package com.literature.android.literature.innerFragments;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,9 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -39,7 +36,6 @@ public class Description extends Fragment {
     private String mCaption;
     private String mContent;
     private TextView toolBarText;
-    ShareDialog mShareDialog;
     TextView descriptionText;
     Toolbar toolbar;
 
@@ -91,12 +87,6 @@ public class Description extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
         favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
-        MenuItem shareItem = menu.findItem(R.id.facebook_share_menu_item);
-        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
-                getContext().MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
-        if (!isconnected) {
-            shareItem.setVisible(false);
-        }
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -111,6 +101,12 @@ public class Description extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.favorite_menu_item:
+                boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                        getContext().MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+                if (!isconnected) {
+                    Toast.makeText(getContext(), getString(R.string.facebook_connecting_message), Toast.LENGTH_LONG).show();
+                    return true;
+                }
                 isFavorite = !isFavorite;
                 Drawable favImage = Manager.sharedManager().getFavoriteDrawable(isFavorite);
                 item.setIcon(favImage);
@@ -121,20 +117,6 @@ public class Description extends Fragment {
                 share();
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void shareContentByFb() {
-        mShareDialog = new ShareDialog(this);
-        if (ShareDialog.canShow(ShareLinkContent.class)) {
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle(mCaption)
-//                    .setImageUrl(Uri.parse("https://web.facebook.com/photo.php?fbid=1330581636973230&l=fb4358ce02"))
-//                    .setContentDescription(mContent)
-                    .setQuote(mContent)
-                    .setContentUrl(Uri.parse("https://web.facebook.com/mhergrigoryan92"))
-                    .build();
-            mShareDialog.show(linkContent);
         }
     }
 
