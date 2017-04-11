@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class Story extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.story_tab_layout, container, false);
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.story_recycler_view);
-        literatureRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        literatureRecyclerView.setLayoutManager((new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)));
         List<Drawable> autorsImages = new ArrayList<>();
         List<String> authorsFileNames = Manager.sharedManager(getContext()).getAuthorsFilesNames();
         for (int i = 0; i < authorsFileNames.size(); ++i) {
