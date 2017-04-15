@@ -1,8 +1,10 @@
 package com.literature.android.literature.innerFragments;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,7 @@ import com.literature.android.literature.activities.CaptionActivity;
 import com.literature.android.literature.activities.HomeActivity;
 import com.literature.android.literature.adapters.PagerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +40,7 @@ public class Description extends Fragment {
     private String mContent;
     private TextView toolBarText;
     TextView descriptionText;
+    TextView titleTextView;
     Toolbar toolbar;
 
     private static final String IS_FAVORITE = "isFavorite";
@@ -72,14 +76,22 @@ public class Description extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
+        titleTextView = (TextView) view.findViewById(R.id.description_title_text_view);
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
+        String authorName = null;
         if (null != authorModels) {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
+            authorName = authorModel.getAuthorName();
+            mCaption = authorModel.getCaption().get("caption");
+            titleTextView.setText(mCaption);
             mContent = authorModel.getContent().get("content");
             descriptionText.setText(mContent);
-            mCaption = authorModel.getCaption().get("caption");
         }
-        toolBarText.setText(mCaption);
+        if (null != authorName) {
+            toolBarText.setText(authorName);
+        } else {
+            System.out.println("ERROR! an error occurred while getting the author name");
+        }
         return view;
     }
 
@@ -121,11 +133,27 @@ public class Description extends Fragment {
     }
 
     private void share() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mCaption);
-        String shareMessage = mContent;
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-        startActivity(Intent.createChooser(shareIntent, "Choose the messenger to share this App"));
+        // get available share intents
+        List<Intent> targets = new ArrayList<Intent>();
+        Intent template = new Intent(Intent.ACTION_SEND);
+        template.setType("text/plain");
+        List<ResolveInfo> candidates = getContext().getPackageManager().
+                queryIntentActivities(template, 0);
+
+        // remove facebook which has a broken share intent
+        for (ResolveInfo candidate : candidates) {
+            String packageName = candidate.activityInfo.packageName;
+            if (!packageName.equals("com.facebook.katana")) {
+                Intent target = new Intent(android.content.Intent.ACTION_SEND);
+                target.setType("text/plain");
+                target.putExtra(Intent.EXTRA_SUBJECT, mCaption);
+                target.putExtra(Intent.EXTRA_TEXT, mContent);
+                target.setPackage(packageName);
+                targets.add(target);
+            }
+        }
+        Intent chooser = Intent.createChooser(targets.remove(0), "Share Via");
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targets.toArray(new Parcelable[]{}));
+        startActivity(chooser);
     }
 }

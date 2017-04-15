@@ -53,7 +53,6 @@ public class Caption extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        toolBarText.setText(getContext().getString(R.string.caption_title));
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.show();
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
@@ -61,6 +60,8 @@ public class Caption extends Fragment {
         captionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
         List<Model> authorInfo = allInfo.get(mAuthorId);
+        String authorName = authorInfo.get(0).getAuthorName();
+        toolBarText.setText(authorName);
         List<String> captionList = new ArrayList<>();
         for (int i = 0; i < authorInfo.size(); ++i) {
             captionList.add(authorInfo.get(i).getCaption().get("caption"));

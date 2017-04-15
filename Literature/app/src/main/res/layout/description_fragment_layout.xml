@@ -4,6 +4,16 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/description_title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +22,8 @@
         <TextView
             android:id="@+id/description_item_text_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
     </ScrollView>
 
 </LinearLayout>
