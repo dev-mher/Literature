@@ -17,15 +17,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.activities.CaptionActivity;
 import com.literature.android.literature.activities.HomeActivity;
+import com.literature.android.literature.activities.LoginActivity;
 import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by mher on 3/26/17.
@@ -68,6 +75,7 @@ public class Description extends Fragment {
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
         toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
         toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
+        toolBarText.setSelected(true);
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -125,8 +133,12 @@ public class Description extends Fragment {
                 int authorIdForDb = mAuthorId + 1;
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
                 return true;
-            case R.id.facebook_share_menu_item:
+            case R.id.share_menu_item:
                 share();
+                return true;
+            case R.id.share_facebook_menu_item:
+                shareFacebook();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -134,7 +146,7 @@ public class Description extends Fragment {
 
     private void share() {
         // get available share intents
-        List<Intent> targets = new ArrayList<Intent>();
+        List<Intent> targets = new ArrayList<>();
         Intent template = new Intent(Intent.ACTION_SEND);
         template.setType("text/plain");
         List<ResolveInfo> candidates = getContext().getPackageManager().
@@ -155,5 +167,28 @@ public class Description extends Fragment {
         Intent chooser = Intent.createChooser(targets.remove(0), "Share Via");
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targets.toArray(new Parcelable[]{}));
         startActivity(chooser);
+    }
+
+    private void shareFacebook() {
+        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+        if (!isconnected) {
+            Toast.makeText(getContext(), "Please connect with Facebook", Toast.LENGTH_SHORT).show();
+            Intent goToLoginPage = new Intent(getContext(), LoginActivity.class);
+            startActivity(goToLoginPage);
+            return;
+        }
+        Bundle postContent = new Bundle();
+        postContent.putString("message", mContent);
+        GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
+                "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse response) {
+                if (null == response.getError()) {
+                    Toast.makeText(getContext(), "Your post succeed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        request.executeAsync();
     }
 }

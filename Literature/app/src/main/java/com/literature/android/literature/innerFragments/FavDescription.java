@@ -103,7 +103,7 @@ public class FavDescription extends Fragment {
                 int authorIdForDb = mAuthorId + 1;
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
                 return true;
-            case R.id.facebook_share_menu_item:
+            case R.id.share_menu_item:
                 share();
             default:
                 return super.onOptionsItemSelected(item);

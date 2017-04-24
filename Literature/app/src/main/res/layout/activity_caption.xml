@@ -40,12 +40,18 @@
                         android:id="@+id/caption_activity_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
                         android:layout_margin="16dp"
-                        android:layout_toRightOf="@id/caption_activity_back_button"/>
+                        android:layout_toRightOf="@id/caption_activity_back_button"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 

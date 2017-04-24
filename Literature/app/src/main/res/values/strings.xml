@@ -13,4 +13,5 @@
     <string name="facebook_share_menu_title">Share</string>
     <string name="facebook_default_user">User</string>
     <string name="facebook_connecting_message">You can perform this action after connecting with Facebook</string>
+    <string name="facebook_share_facebook_menu_title">Share FB</string>
 </resources>

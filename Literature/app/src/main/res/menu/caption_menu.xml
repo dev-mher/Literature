@@ -8,9 +8,15 @@
         android:title="@string/favorite_title"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/facebook_share_menu_item"
+        android:id="@+id/share_menu_item"
         android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="99"
         android:title="@string/facebook_share_menu_title"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/share_facebook_menu_item"
+        android:icon="@drawable/facebook_share"
+        android:orderInCategory="99"
+        android:title="@string/facebook_share_facebook_menu_title"
         app:showAsAction="ifRoom"/>
 </menu>
