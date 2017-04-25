@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -123,14 +122,6 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_favorite:
-                boolean isconnected = getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
-                        MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
-                if (!isconnected) {
-                    Toast.makeText(this, getString(R.string.facebook_connecting_message), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                    break;
-                }
                 Intent favIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favIntent);
                 break;

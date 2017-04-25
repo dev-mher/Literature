@@ -1,8 +1,10 @@
 package com.literature.android.literature.innerFragments;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -12,14 +14,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.share.widget.ShareDialog;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
+import com.literature.android.literature.activities.HomeActivity;
+import com.literature.android.literature.activities.LoginActivity;
 import com.literature.android.literature.adapters.PagerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by mher on 4/5/17.
@@ -105,17 +117,60 @@ public class FavDescription extends Fragment {
                 return true;
             case R.id.share_menu_item:
                 share();
+                return true;
+            case R.id.share_facebook_menu_item:
+                shareFacebook();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void share() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mCaption);
-        String shareMessage = mContent;
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-        startActivity(Intent.createChooser(shareIntent, "Choose the messenger to share this App"));
+        // get available share intents
+        List<Intent> targets = new ArrayList<>();
+        Intent template = new Intent(Intent.ACTION_SEND);
+        template.setType("text/plain");
+        List<ResolveInfo> candidates = getContext().getPackageManager().
+                queryIntentActivities(template, 0);
+
+        // remove facebook which has a broken share intent
+        for (ResolveInfo candidate : candidates) {
+            String packageName = candidate.activityInfo.packageName;
+            if (!packageName.equals("com.facebook.katana")) {
+                Intent target = new Intent(android.content.Intent.ACTION_SEND);
+                target.setType("text/plain");
+                target.putExtra(Intent.EXTRA_SUBJECT, mCaption);
+                target.putExtra(Intent.EXTRA_TEXT, mContent);
+                target.setPackage(packageName);
+                targets.add(target);
+            }
+        }
+        Intent chooser = Intent.createChooser(targets.remove(0), "Share Via");
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targets.toArray(new Parcelable[]{}));
+        startActivity(chooser);
+    }
+
+    private void shareFacebook() {
+        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+        if (!isconnected) {
+            Toast.makeText(getContext(), "Please connect with Facebook", Toast.LENGTH_SHORT).show();
+            Intent goToLoginPage = new Intent(getContext(), LoginActivity.class);
+            startActivity(goToLoginPage);
+            return;
+        }
+        Bundle postContent = new Bundle();
+        postContent.putString("message", mContent);
+        GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
+                "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse response) {
+                if (null == response.getError()) {
+                    Toast.makeText(getContext(), "Your post succeed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        request.executeAsync();
     }
 }

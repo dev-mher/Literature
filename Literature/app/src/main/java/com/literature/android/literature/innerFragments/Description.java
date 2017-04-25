@@ -121,12 +121,6 @@ public class Description extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.favorite_menu_item:
-                boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
-                        getContext().MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
-                if (!isconnected) {
-                    Toast.makeText(getContext(), getString(R.string.facebook_connecting_message), Toast.LENGTH_LONG).show();
-                    return true;
-                }
                 isFavorite = !isFavorite;
                 Drawable favImage = Manager.sharedManager().getFavoriteDrawable(isFavorite);
                 item.setIcon(favImage);
