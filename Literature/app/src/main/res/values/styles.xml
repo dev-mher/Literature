@@ -13,8 +13,32 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="alert_dialog_title_text">
+        <item name="android:layout_marginTop">@dimen/alert_title_marginTop</item>
+        <item name="android:layout_marginBottom">@dimen/alert_title_marginBottom</item>
+        <item name="android:layout_marginLeft">@dimen/alert_title_marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/alert_title_marginRight</item>
+    </style>
+
+    <style name="alert_dialog_scroll_view">
+        <item name="android:layout_marginBottom">@dimen/alert_scroll_marginBottom</item>
+        <item name="android:layout_marginLeft">@dimen/alert_scroll_marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/alert_scroll_marginRight</item>
+    </style>
+
+    <style name="description_title_text">
+        <item name="android:layout_marginTop">@dimen/description_title_marginTop</item>
+        <item name="android:layout_marginLeft">@dimen/description_title_marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/description_title_marginRight</item>
+    </style>
+
+    <style name="description_content_text">
+        <item name="android:layout_marginBottom">@dimen/description_content_marginBottom</item>
+        <item name="android:layout_marginLeft">@dimen/description_content_marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/description_content_marginRight</item>
+    </style>
 </resources>
