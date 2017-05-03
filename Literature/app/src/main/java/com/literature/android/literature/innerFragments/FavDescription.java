@@ -77,15 +77,23 @@ public class FavDescription extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
+        TextView titleText = (TextView) view.findViewById(R.id.description_title_text_view);
         List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
         List<Model> authorModels = allInfo.get(mAuthorId);
+        String authorName = null;
         for (int i = 0; i < authorModels.size(); ++i) {
             if (authorModels.get(i).getCaption().get("caption").equals(mCaption)) {
+                authorName = authorModels.get(i).getAuthorName();
+                titleText.setText(mCaption);
                 mContent = authorModels.get(i).getContent().get("content");
                 descriptionText.setText(mContent);
             }
         }
-        toolBarText.setText(mCaption);
+        if (null != authorName) {
+            toolBarText.setText(authorName);
+        } else {
+            System.out.println("ERROR! an error occurred while getting the author name");
+        }
         return view;
     }
 
