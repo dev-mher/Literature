@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,19 +30,9 @@ public class CaptionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.caption_activity_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        ImageView backButton = (ImageView) findViewById(R.id.caption_activity_back_button);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mAuthorId = getIntent().getIntExtra(CLICKED_ITEM_ID, 0);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int fragmentsCount = getSupportFragmentManager().getBackStackEntryCount();
-                if (0 == fragmentsCount) {
-                    finish();
-                } else {
-                    getSupportFragmentManager().popBackStack();
-                }
-            }
-        });
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.caption_activity_fragment_container
                 , Caption.newInstance(Caption.class.getSimpleName(), mAuthorId))
@@ -79,12 +68,13 @@ public class CaptionActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                finish();
+    public boolean onSupportNavigateUp() {
+        int fragmentsCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (0 == fragmentsCount) {
+            finish();
+        } else {
+            getSupportFragmentManager().popBackStack();
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

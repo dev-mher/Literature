@@ -12,25 +12,29 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:clickable="true"
-        android:src="@android:drawable/ic_delete"/>
+        android:src="@android:drawable/ic_delete" />
 
     <TextView
         android:id="@+id/alert_dialog_title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
         android:gravity="center_horizontal"
         android:text="@string/about_title"
         android:textColor="@android:color/white"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alert_dialog_title_text_view"
-        android:layout_margin="10dp">
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +45,7 @@
                 android:id="@+id/alert_dialog_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
 

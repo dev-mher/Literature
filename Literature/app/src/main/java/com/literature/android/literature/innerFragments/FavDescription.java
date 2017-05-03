@@ -20,7 +20,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.share.widget.ShareDialog;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -45,8 +44,6 @@ public class FavDescription extends Fragment {
     private String mCaption;
     private TextView toolBarText;
     private String mContent;
-    ShareDialog mShareDialog;
-
 
     private static final String IS_FAVORITE = "isFavorite";
 
@@ -71,6 +68,7 @@ public class FavDescription extends Fragment {
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.favorite_toolbar);
         toolBarText = (TextView) toolbar.findViewById(R.id.favorite_activity_title);
+        toolBarText.setSelected(true);
     }
 
     // Inflate the view for the fragment based on layout XML

@@ -29,19 +29,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/caption_activity_back_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:src="@drawable/back_button"/>
-
                     <TextView
                         android:id="@+id/caption_activity_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_toRightOf="@id/caption_activity_back_button"
                         android:ellipsize="marquee"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
@@ -51,7 +42,7 @@
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
@@ -61,7 +52,7 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/caption_activity_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -70,5 +61,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_info"/>
+        app:srcCompat="@android:drawable/ic_dialog_info" />
 </android.support.design.widget.CoordinatorLayout>
