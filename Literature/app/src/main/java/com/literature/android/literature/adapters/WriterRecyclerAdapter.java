@@ -17,10 +17,12 @@ import java.util.List;
 
 public class WriterRecyclerAdapter extends RecyclerView.Adapter<WriterViewHolder> {
     private List<Drawable> mAuthorsImages;
+    private List<String> mAboutShort;
     private Context mContext;
 
-    public WriterRecyclerAdapter(List<Drawable> itemsImageList, Context context) {
+    public WriterRecyclerAdapter(List<Drawable> itemsImageList, List<String> aboutShort, Context context) {
         mAuthorsImages = itemsImageList;
+        mAboutShort = aboutShort;
         mContext = context;
     }
 
@@ -33,7 +35,8 @@ public class WriterRecyclerAdapter extends RecyclerView.Adapter<WriterViewHolder
     @Override
     public void onBindViewHolder(WriterViewHolder holder, int position) {
         Drawable authorImage = mAuthorsImages.get(position);
-        holder.bindDrawable(authorImage);
+        String aboutShort = mAboutShort.get(position);
+        holder.bindDrawable(authorImage, aboutShort);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.literature.android.literature.R;
 import com.literature.android.literature.activities.CaptionActivity;
@@ -16,11 +17,13 @@ import com.literature.android.literature.activities.CaptionActivity;
 
 public class WriterViewHolder extends RecyclerView.ViewHolder {
     private ImageView mItemImageView;
+    private TextView mItemTextView;
     private Context mContext;
 
     public WriterViewHolder(View itemView, final Context context) {
         super(itemView);
         mItemImageView = (ImageView) itemView.findViewById(R.id.author_item_image_view);
+        mItemTextView = (TextView) itemView.findViewById(R.id.author_item_text_view);
         mContext = context;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +36,8 @@ public class WriterViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bindDrawable(Drawable authorImage) {
+    public void bindDrawable(Drawable authorImage, String aboutShort) {
         mItemImageView.setImageDrawable(authorImage);
+        mItemTextView.setText(aboutShort);
     }
 }

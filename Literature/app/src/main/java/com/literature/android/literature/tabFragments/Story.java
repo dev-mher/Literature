@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.literature.android.literature.Manager;
+import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.WriterRecyclerAdapter;
 import com.literature.android.literature.adapters.PagerAdapter;
@@ -48,6 +49,7 @@ public class Story extends Fragment {
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.story_recycler_view);
         literatureRecyclerView.setLayoutManager((new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)));
         List<Drawable> autorsImages = new ArrayList<>();
+        List<String> aboutShort = new ArrayList<>();
         List<String> authorsFileNames = Manager.sharedManager(getContext()).getAuthorsFilesNames();
         for (int i = 0; i < authorsFileNames.size(); ++i) {
             int id = getResources().getIdentifier(authorsFileNames.get(i), "drawable", getContext().getPackageName());
@@ -57,7 +59,15 @@ public class Story extends Fragment {
                 autorsImages.add(getResources().getDrawable(id));
             }
         }
-        literatureRecyclerView.setAdapter(new WriterRecyclerAdapter(autorsImages, getContext()));
+        List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
+        for (int i = 0; i < allInfo.size(); ++i) {
+            List<Model> authorInfo = allInfo.get(i);
+            if (null != authorInfo && !authorInfo.isEmpty()) {
+                String aboutAuthorShort = authorInfo.get(0).getAboutShort();
+                aboutShort.add(aboutAuthorShort);
+            }
+        }
+        literatureRecyclerView.setAdapter(new WriterRecyclerAdapter(autorsImages, aboutShort, getContext()));
         return view;
     }
 }

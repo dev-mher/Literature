@@ -80,6 +80,7 @@ public class Manager {
         private static final String AUTHOR_FILE_NAME_KEY = "file";
         private static final String AUTHOR_NAME_KEY = "author";
         private static final String LIST_KEY = "list";
+        private static final String ABOUT_SHORT_KEY = "about_short";
         private static final String ABOUT_KEY = "about";
         private static final String CAPTION_KEY = "caption";
         private static final String CONTENT_KEY = "content";
@@ -129,6 +130,7 @@ public class Manager {
                 Model model;
                 final String authorFileName = mainObject.getString(AUTHOR_FILE_NAME_KEY);
                 final String authorName = mainObject.getString(AUTHOR_NAME_KEY);
+                final String aboutShort = mainObject.getString(ABOUT_SHORT_KEY);
                 final String about = mainObject.getString(ABOUT_KEY);
                 final JSONArray authorList = mainObject.getJSONArray(LIST_KEY);
                 for (int i = 0; i < authorList.length(); ++i) {
@@ -140,6 +142,7 @@ public class Manager {
                     final String content = listObject.getString(CONTENT_KEY);
                     model.setAuthorFileName(authorFileName);
                     model.setAuthorName(authorName);
+                    model.setAboutShort(aboutShort);
                     model.setAbout(about);
                     captionMap.put(CAPTION_KEY, caption);
                     contentMap.put(CONTENT_KEY, content);

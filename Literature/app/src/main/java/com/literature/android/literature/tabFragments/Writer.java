@@ -3,14 +3,17 @@ package com.literature.android.literature.tabFragments;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.literature.android.literature.Manager;
+import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.WriterRecyclerAdapter;
 import com.literature.android.literature.adapters.PagerAdapter;
@@ -47,6 +50,7 @@ public class Writer extends Fragment {
         RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.writer_recycler_view);
         literatureRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         List<Drawable> autorsImages = new ArrayList<>();
+        List<String> aboutShort = new ArrayList<>();
         List<String> authorsFileNames = Manager.sharedManager().getAuthorsFilesNames();
         for (int i = 0; i < authorsFileNames.size(); ++i) {
             int id = getResources().getIdentifier(authorsFileNames.get(i), "drawable", getContext().getPackageName());
@@ -56,7 +60,15 @@ public class Writer extends Fragment {
                 autorsImages.add(getResources().getDrawable(id));
             }
         }
-        literatureRecyclerView.setAdapter(new WriterRecyclerAdapter(autorsImages, getContext()));
+        List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
+        for (int i = 0; i < allInfo.size(); ++i) {
+            List<Model> authorInfo = allInfo.get(i);
+            if (null != authorInfo && !authorInfo.isEmpty()) {
+                String aboutAuthorShort = authorInfo.get(0).getAboutShort();
+                aboutShort.add(aboutAuthorShort);
+            }
+        }
+        literatureRecyclerView.setAdapter(new WriterRecyclerAdapter(autorsImages, aboutShort, getContext()));
         return view;
     }
 }
