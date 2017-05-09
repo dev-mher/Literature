@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:lineSpacingMultiplier="1.5"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textIsSelectable="true"
             android:textSize="14sp" />
     </ScrollView>

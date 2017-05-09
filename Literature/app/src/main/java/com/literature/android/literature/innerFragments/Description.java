@@ -68,12 +68,11 @@ public class Description extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.hide();
         mAuthorId = getArguments().getInt(AUTHOR_ID);
         mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
         toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
+        toolbar.collapseActionView();
         toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
         toolBarText.setSelected(true);
     }
@@ -82,6 +81,8 @@ public class Description extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         titleTextView = (TextView) view.findViewById(R.id.description_title_text_view);
@@ -107,13 +108,13 @@ public class Description extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem favItem = menu.findItem(R.id.favorite_menu_item);
         favItem.setIcon(Manager.sharedManager().getFavoriteDrawable(isFavorite));
-        super.onPrepareOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.search_menu_item);
+        searchItem.setVisible(false);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.caption_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

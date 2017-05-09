@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +19,14 @@ import java.util.List;
 
 public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHolder> {
     private List<String> mCaptions;
+    private List<String> mCaptionsCopy;
     private FragmentManager mFragmentManager;
     private int mAuthorId;
     private Context mContext;
 
     public CaptionRecyclerAdapter(List<String> itemsCaptionList, FragmentManager fragmentManager, int authorId, Context context) {
         mCaptions = itemsCaptionList;
+        mCaptionsCopy = itemsCaptionList;
         mFragmentManager = fragmentManager;
         mAuthorId = authorId;
         mContext = context;
@@ -46,5 +49,16 @@ public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHold
     @Override
     public int getItemCount() {
         return mCaptions.size();
+    }
+
+    public void setFilter(List<String> searchCaptions) {
+        mCaptions = new ArrayList<>();
+        mCaptions.addAll(searchCaptions);
+        notifyDataSetChanged();
+    }
+
+    public void setFilterDefaultValue() {
+        mCaptions = mCaptionsCopy;
+        notifyDataSetChanged();
     }
 }
