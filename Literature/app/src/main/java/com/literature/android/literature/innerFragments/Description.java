@@ -174,13 +174,16 @@ public class Description extends Fragment {
             return;
         }
         Bundle postContent = new Bundle();
-        postContent.putString("message", mContent);
+        String postMsg = String.format(getString(R.string.post_message), mCaption, mContent);
+        postContent.putString("message", postMsg);
         GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
                 "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
                 if (null == response.getError()) {
                     Toast.makeText(getContext(), "Your post succeed!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "An error occured while posting!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

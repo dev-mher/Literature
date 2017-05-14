@@ -23,7 +23,7 @@ import com.facebook.GraphResponse;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
-import com.literature.android.literature.tabFragments.Story;
+import com.literature.android.literature.tabFragments.Map;
 import com.literature.android.literature.tabFragments.Writer;
 import com.squareup.picasso.Picasso;
 
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PagerAdapter adapterViewPager = new PagerAdapter(getSupportFragmentManager());
         adapterViewPager.addTabPages(Writer.newInstance(getString(R.string.writer_title)));
-        adapterViewPager.addTabPages(Story.newInstance(Story.class.getSimpleName()));
+        adapterViewPager.addTabPages(Map.newInstance(getString(R.string.map_title)));
         viewPager.setAdapter(adapterViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);

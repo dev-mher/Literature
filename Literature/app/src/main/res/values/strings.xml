@@ -4,14 +4,17 @@
     <string name="app_name">Գրականություն</string>
     <string name="action_settings">Կարգավորումներ</string>
     <string name="writer_title">Բանաստեղծներ</string>
+    <string name="map_title">Քարտեզ</string>
     <string name="caption_title">Ստեղծագործություն</string>
     <string name="about_title">Կենսագրություն</string>
     <string name="favorite_title">Ընտրյալներ</string>
     <string name="about">Մեր մասին</string>
     <string name="nav_facebook">Մուտք / Ելք</string>
-    <string name="facebook_app_id">166087673913779</string>
+    <string name="facebook_app_id">169744846889273</string>
     <string name="share_menu_title">Share</string>
     <string name="facebook_default_user">User</string>
     <string name="facebook_share_menu_title">Share FB</string>
     <string name="search_menu_title">Search</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA118InUqVk5zrIfEn4sVg-p8FBkoKAlrE</string>
+    <string name="post_message">%1$s\n\n%2$s</string>
 </resources>

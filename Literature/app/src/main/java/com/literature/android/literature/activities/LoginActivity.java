@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mLoginButton = (LoginButton) findViewById(R.id.fb_login_button);
-        mLoginButton.setReadPermissions("email");
+        mLoginButton.setPublishPermissions("publish_actions");
         mLoginStatus = (TextView) findViewById(R.id.fb_login_status_text_view);
         mCallbackManager = CallbackManager.Factory.create();
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
