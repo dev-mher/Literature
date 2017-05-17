@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                mLoginStatus.setText("Login success");
                 Intent intent = new Intent(getContext(), HomeActivity.class);
                 getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
                         .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).commit();

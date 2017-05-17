@@ -15,15 +15,17 @@
         android:id="@+id/fb_login_status_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
         android:gravity="center"
-        android:text="Login Status"
-        android:textStyle="bold" />
+        android:text="@string/login_text"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/fb_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="44dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/fb_login_status_text_view"/>
 </RelativeLayout>

@@ -196,9 +196,9 @@ public class HomeActivity extends AppCompatActivity
         }
         mFacebookUserName.setText(getResources().getString(R.string.facebook_default_user));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFacebookUserPicture.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon, getTheme()));
+            mFacebookUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.header_icon, getTheme()));
         } else {
-            mFacebookUserPicture.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_def_app_icon));
+            mFacebookUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.header_icon));
         }
     }
 }
