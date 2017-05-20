@@ -2,21 +2,31 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="app_name">Գրականություն</string>
+    <string name="facebook_default_user">Անուն Ազգանուն</string>
+    <string name="favorite_title">Ընտրյալներ</string>
+    <string name="nav_facebook">Մուտք / Ելք</string>
     <string name="action_settings">Կարգավորումներ</string>
+    <string name="about">Մեր մասին</string>
     <string name="writer_title">Բանաստեղծներ</string>
     <string name="map_title">Քարտեզ</string>
     <string name="caption_title">Ստեղծագործություն</string>
     <string name="about_title">Կենսագրություն</string>
-    <string name="favorite_title">Ընտրյալներ</string>
-    <string name="about">Մեր մասին</string>
-    <string name="nav_facebook">Մուտք / Ելք</string>
-    <string name="facebook_app_id">169744846889273</string>
-    <string name="share_menu_title">Share</string>
-    <string name="facebook_default_user">Անուն Ազգանուն</string>
-    <string name="facebook_share_menu_title">Share FB</string>
-    <string name="search_menu_title">Search</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA118InUqVk5zrIfEn4sVg-p8FBkoKAlrE</string>
+    <string name="share_menu_title">Տարածել</string>
+    <string name="facebook_share_menu_title">Տարածել ՖԲ</string>
+    <string name="connect_facebook">Խնդրում ենք մուտք գործել ՖԲ</string>
+    <string name="search_menu_title">Փնտրել</string>
+    <string name="added_into_favorites">\"%1$s\" հաջողությամբ ավելացվեց Ընտրյալների մեջ</string>
+    <string name="removed_from_favorites">\"%1$s\" հաջողությամբ ջնջվեց Ընտրյալներից</string>
+    <string name="err_adding_favorites">\"%1$s\" ավելացումը Ընտրյալների մեջ ձախողվել է</string>
     <string name="post_message">%1$s\n\n%2$s</string>
+    <string name="post_message_dialog_title">Համոզվա՞ծ եք</string>
+    <string name="post_message_dialog_msg">Դուք պատրաստվում եք տարածել \"%1$s\"</string>
+    <string name="post_message_dialog_yes">Այո</string>
+    <string name="post_message_dialog_no">Ոչ</string>
+    <string name="post_message_success">\"%1$s\" հաջողությամբ տարածվեց ՖԲ</string>
+    <string name="post_message_error">\"%1$s\" չհաջողվեց տարածել ՖԲ</string>
+    <string name="facebook_app_id">169744846889273</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA118InUqVk5zrIfEn4sVg-p8FBkoKAlrE</string>
     <string name="login_text"> Մուտք գործելով Facebook սոցիալական կայք Դուք հնարավորություն կունենաք կիսվել Ձեզ դուր եկած բանաստեղծություններով։\n
         \nՄենք չենք օգտագործում Ձեր հաշիվը սոցիալական կայքերում սպամ ուղարկելու համար։\n
         \nՄենք չենք պահում Ձեր գաղտնաբառերը և անձնական այլ տվյալներ։ </string>

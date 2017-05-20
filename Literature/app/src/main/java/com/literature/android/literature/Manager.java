@@ -177,17 +177,20 @@ public class Manager {
         return mDb.getAuthorsFileNames();
     }
 
-    public void changeFavoriteStatus(int authorId, String caption, boolean isFavorite, Context cxt) {
+    public void changeFavoriteStatus(int authorId, String caption, boolean isFavorite, Context ctx) {
         int numberOfUpdatedRows = mDb.changeFavoriteStatus(authorId, caption, isFavorite);
         if (0 < numberOfUpdatedRows) {
             if (isFavorite) {
-                Toast.makeText(cxt, caption + " added into your Favorite list successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, String.format(ctx.getString(R.string.added_into_favorites),
+                        caption), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(cxt, caption + " removed from your Favorite list successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, String.format(ctx.getString(R.string.removed_from_favorites),
+                        caption), Toast.LENGTH_LONG).show();
             }
         } else {
-            System.out.println("ERROR! Update falied");
-            Toast.makeText(cxt, "ERROR! Sorry but " + caption + " can't add into your Favorite list", Toast.LENGTH_SHORT).show();
+            System.out.println("ERROR! Favorite status update is failed");
+            Toast.makeText(ctx, String.format(ctx.getString(R.string.err_adding_favorites),caption),
+                    Toast.LENGTH_LONG).show();
         }
     }
 

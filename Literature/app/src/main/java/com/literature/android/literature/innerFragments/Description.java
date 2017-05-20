@@ -1,5 +1,6 @@
 package com.literature.android.literature.innerFragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -159,7 +161,7 @@ public class Description extends Fragment {
                 targets.add(target);
             }
         }
-        Intent chooser = Intent.createChooser(targets.remove(0), "Share Via");
+        Intent chooser = Intent.createChooser(targets.remove(0), getString(R.string.share_menu_title));
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targets.toArray(new Parcelable[]{}));
         startActivity(chooser);
     }
@@ -168,25 +170,44 @@ public class Description extends Fragment {
         boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
                 MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
         if (!isconnected) {
-            Toast.makeText(getContext(), "Please connect with Facebook", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.connect_facebook), Toast.LENGTH_LONG).show();
             Intent goToLoginPage = new Intent(getContext(), LoginActivity.class);
             startActivity(goToLoginPage);
             return;
         }
-        Bundle postContent = new Bundle();
-        String postMsg = String.format(getString(R.string.post_message), mCaption, mContent);
-        postContent.putString("message", postMsg);
-        GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
-                "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        View alertDialogLayout = LayoutInflater.from(getContext()).inflate(R.layout.alert_dialog_post, null);
+        TextView msg = (TextView) alertDialogLayout.findViewById(R.id.post_msg_alert_content);
+        msg.setText(String.format(getString(R.string.post_message_dialog_msg), mCaption));
+        dialog.setView(alertDialogLayout);
+        dialog.setPositiveButton(getString(R.string.post_message_dialog_yes), new DialogInterface.OnClickListener() {
             @Override
-            public void onCompleted(GraphResponse response) {
-                if (null == response.getError()) {
-                    Toast.makeText(getContext(), "Your post succeed!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "An error occured while posting!", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(DialogInterface dialog, int which) {
+                Bundle postContent = new Bundle();
+                String postMsg = String.format(getString(R.string.post_message), mCaption, mContent);
+                postContent.putString("message", postMsg);
+                GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
+                        "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        if (null == response.getError()) {
+                            Toast.makeText(getContext(), String.format(getString(R.string.post_message_success), mCaption),
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(), String.format(getString(R.string.post_message_error), mCaption),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                request.executeAsync();
             }
-        });
-        request.executeAsync();
+        }).setNegativeButton(getString(R.string.post_message_dialog_no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).setCancelable(false);
+        AlertDialog alert = dialog.create();
+        alert.show();
     }
 }
