@@ -43,7 +43,7 @@ public class CaptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaptionActivity.this);
-                View layout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.alert_dialog, null);
+                View layout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.alert_dialog_life, null);
                 builder.setView(layout);
                 final AlertDialog alert = builder.create();
                 ImageView close = (ImageView) layout.findViewById(R.id.alert_dialog_close_image_view);

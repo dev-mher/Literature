@@ -16,7 +16,7 @@
         android:textColor="@android:color/holo_red_dark"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:background="@color/alert_post_title_bckgr"/>
+        android:background="@color/alert_bckgr_color"/>
 
     <TextView
         android:id="@+id/post_msg_alert_content"

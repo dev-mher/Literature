@@ -3,5 +3,5 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="alert_post_title_bckgr">#68d1d0d0</color>
+    <color name="alert_bckgr_color">#68d1d0d0</color>
 </resources>
