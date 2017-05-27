@@ -129,8 +129,6 @@ public class HomeActivity extends AppCompatActivity
                 Intent fbIntent = new Intent(this, LoginActivity.class);
                 startActivity(fbIntent);
                 break;
-            case R.id.nav_manage:
-                //TODO some action
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

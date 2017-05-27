@@ -5,7 +5,6 @@
     <string name="facebook_default_user">Անուն Ազգանուն</string>
     <string name="favorite_title">Ընտրյալներ</string>
     <string name="nav_facebook">Մուտք / Ելք</string>
-    <string name="action_settings">Կարգավորումներ</string>
     <string name="about">Մեր մասին</string>
     <string name="writer_title">Բանաստեղծներ</string>
     <string name="map_title">Քարտեզ</string>
@@ -30,4 +29,8 @@
     <string name="login_text"> Մուտք գործելով Facebook սոցիալական կայք Դուք հնարավորություն կունենաք կիսվել Ձեզ դուր եկած բանաստեղծություններով։\n
         \nՄենք չենք օգտագործում Ձեր հաշիվը սոցիալական կայքերում սպամ ուղարկելու համար։\n
         \nՄենք չենք պահում Ձեր գաղտնաբառերը և անձնական այլ տվյալներ։ </string>
+    <string name="hovhannes_tumanyan">Հովհաննես Թումանյան</string>
+    <string name="paruyr_sevak">Պարույր Սևակ</string>
+    <string name="hovhannes_shiraz">Հովհաննես Շիրազ</string>
+    <string name="vahan_teryan">Վահան Տերյան</string>
 </resources>

@@ -61,11 +61,15 @@ public class Map extends Fragment implements OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(armenia, (float) 7.3));
         LatLng h_tumanyan = new LatLng(40.9599027, 44.6315716);
         LatLng p_sevak = new LatLng(39.8210616, 45.0324869);
+        LatLng h_shiraz = new LatLng(40.792592, 43.846966);
+        LatLng v_teryan = new LatLng(41.348349, 43.751403);
         Bitmap tumanyanIcon = BitmapFactory.decodeResource(getResources(), R.drawable.h_tumanyan_marker);
         BitmapDescriptor tumanyanMarker = BitmapDescriptorFactory.fromBitmap(tumanyanIcon);
         Bitmap sevakIcon = BitmapFactory.decodeResource(getResources(), R.drawable.p_sevak_marker);
         BitmapDescriptor sevakMarker = BitmapDescriptorFactory.fromBitmap(sevakIcon);
-        map.addMarker(new MarkerOptions().position(h_tumanyan).title("Հովհաննես Թումանյան").icon(tumanyanMarker));
-        map.addMarker(new MarkerOptions().position(p_sevak).title("Պարույր Սևակ").icon(sevakMarker));
+        map.addMarker(new MarkerOptions().position(h_tumanyan).title(getString(R.string.hovhannes_tumanyan)).icon(tumanyanMarker));
+        map.addMarker(new MarkerOptions().position(p_sevak).title(getString(R.string.paruyr_sevak)).icon(sevakMarker));
+        map.addMarker(new MarkerOptions().position(h_shiraz).title(getString(R.string.hovhannes_shiraz)).icon(sevakMarker));
+        map.addMarker(new MarkerOptions().position(v_teryan).title(getString(R.string.vahan_teryan)).icon(sevakMarker));
     }
 }

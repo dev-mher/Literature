@@ -182,15 +182,15 @@ public class Manager {
         if (0 < numberOfUpdatedRows) {
             if (isFavorite) {
                 Toast.makeText(ctx, String.format(ctx.getString(R.string.added_into_favorites),
-                        caption), Toast.LENGTH_LONG).show();
+                        caption), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(ctx, String.format(ctx.getString(R.string.removed_from_favorites),
-                        caption), Toast.LENGTH_LONG).show();
+                        caption), Toast.LENGTH_SHORT).show();
             }
         } else {
             System.out.println("ERROR! Favorite status update is failed");
             Toast.makeText(ctx, String.format(ctx.getString(R.string.err_adding_favorites),caption),
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
