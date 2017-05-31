@@ -176,8 +176,10 @@ public class Description extends Fragment {
             return;
         }
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        View alertDialogLayout = LayoutInflater.from(getContext()).inflate(R.layout.alert_dialog_post, null);
-        TextView msg = (TextView) alertDialogLayout.findViewById(R.id.post_msg_alert_content);
+        View alertDialogLayout = LayoutInflater.from(getContext()).inflate(R.layout.alert_dialog_common, null);
+        TextView title = (TextView) alertDialogLayout.findViewById(R.id.msg_alert_title);
+        title.setText(R.string.post_message_dialog_title);
+        TextView msg = (TextView) alertDialogLayout.findViewById(R.id.msg_alert_content);
         msg.setText(String.format(getString(R.string.post_message_dialog_msg), mCaption));
         dialog.setView(alertDialogLayout);
         dialog.setPositiveButton(getString(R.string.post_message_dialog_yes), new DialogInterface.OnClickListener() {

@@ -24,6 +24,11 @@
     <string name="post_message_dialog_no">Ոչ</string>
     <string name="post_message_success">\"%1$s\"  հաջողությամբ տարածվեց Facebook</string>
     <string name="post_message_error">\"%1$s\"  չհաջողվեց տարածել Facebook</string>
+    <string name="rate_dialog_title">Խնդրում ենք գնահատել !</string>
+    <string name="rate_dialog_content">Եթե հավանել եք ծրագիրը, ապա խնդրում ենք գնահատել այն</string>
+    <string name="rate_dialog_rate_btn">Գնահատել</string>
+    <string name="rate_dialog_later_btn">Հետո</string>
+    <string name="rate_dialog_no_btn">Ոչ</string>
     <string name="facebook_app_id">169744846889273</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA118InUqVk5zrIfEn4sVg-p8FBkoKAlrE</string>
     <string name="login_text"> Մուտք գործելով Facebook սոցիալական կայք Դուք հնարավորություն կունենաք կիսվել Ձեզ դուր եկած բանաստեղծություններով։\n

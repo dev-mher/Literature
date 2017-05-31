@@ -1,6 +1,10 @@
 package com.literature.android.literature.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,8 +13,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +27,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.literature.android.literature.Manager;
+import com.literature.android.literature.MyApplication;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
 import com.literature.android.literature.tabFragments.Map;
@@ -69,6 +76,7 @@ public class HomeActivity extends AppCompatActivity
         mFacebookUserName = (TextView) header.findViewById(R.id.nav_facebook_user_name);
         mFacebookUserPicture = (ImageView) header.findViewById(R.id.nav_facebook_user_picture);
         initializeSharedPreferences();
+        rateUs();
     }
 
     private TabLayout.OnTabSelectedListener listener(final ViewPager pager) {
@@ -147,7 +155,7 @@ public class HomeActivity extends AppCompatActivity
             }
         } else {
             getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                    .edit().putBoolean(FACEBOOK_USER_ISCONNECTED, false).commit();
+                    .edit().putBoolean(FACEBOOK_USER_ISCONNECTED, false).apply();
             setUserProfile(null, null);
         }
     }
@@ -166,7 +174,7 @@ public class HomeActivity extends AppCompatActivity
                         JSONObject userProfilePicUrl = new JSONObject(userPicData.getString("data"));
                         String url = userProfilePicUrl.getString("url");
                         getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                                .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).commit();
+                                .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).apply();
                         setUserProfile(userName, url);
                         return;
                     } catch (Exception e) {
@@ -198,5 +206,72 @@ public class HomeActivity extends AppCompatActivity
         } else {
             mFacebookUserPicture.setImageDrawable(getResources().getDrawable(R.drawable.header_icon));
         }
+    }
+
+    private void rateUs() {
+        SharedPreferences prefs = getSharedPreferences(MyApplication.RATE_US_PREFS, MODE_PRIVATE);
+        if (null != prefs) {
+            SharedPreferences.Editor editor = prefs.edit();
+            if (prefs.getBoolean(MyApplication.DONT_SHOW_KEY, false)) {
+                return;
+            }
+            int launchCount = prefs.getInt(MyApplication.LAUNCH_COUNT_KEY, 0) + 1;
+            editor.putInt(MyApplication.LAUNCH_COUNT_KEY, launchCount).apply();
+            if (launchCount > 3) {
+                editor.putInt(MyApplication.LAUNCH_COUNT_KEY, 0).apply();
+                long firsLaunch = prefs.getLong(MyApplication.FIRST_LAUNCH_KEY, 0);
+                int daysCount = prefs.getInt(MyApplication.DAYS_COUNT_KEY, 2);
+                if (System.currentTimeMillis() > firsLaunch + (daysCount * 24 * 60 * 60 * 1000)) {
+                    showAlertRate(prefs);
+                }
+            }
+        }
+    }
+
+    private void showAlertRate(final SharedPreferences prefs) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View alertView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_common, null);
+        TextView title = (TextView) alertView.findViewById(R.id.msg_alert_title);
+        title.setText(R.string.rate_dialog_title);
+        TextView msg = (TextView) alertView.findViewById(R.id.msg_alert_content);
+        msg.setText(R.string.rate_dialog_content);
+        builder.setView(alertView);
+        builder.setCancelable(false)
+                .setPositiveButton(R.string.rate_dialog_rate_btn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //turn off reminder
+                        prefs.edit().putBoolean(MyApplication.DONT_SHOW_KEY, true).apply();
+                        try {
+                            //open through Play Market app
+                            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                            Intent market = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(market);
+                        } catch (final ActivityNotFoundException ex) {
+                            //open through browser
+                            Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName());
+                            Intent market = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(market);
+                        }
+                        dialog.dismiss();
+                    }
+                }).setNeutralButton(R.string.rate_dialog_no_btn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //turn off reminder
+                prefs.edit().putBoolean(MyApplication.DONT_SHOW_KEY, true).apply();
+                dialog.dismiss();
+            }
+        }).setNegativeButton(R.string.rate_dialog_later_btn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int daysCount = prefs.getInt(MyApplication.DAYS_COUNT_KEY, 2);
+                //remind after 2 days
+                prefs.edit().putInt(MyApplication.DAYS_COUNT_KEY, daysCount + 2).apply();
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }
