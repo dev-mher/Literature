@@ -118,6 +118,8 @@ public class HomeActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.about_us) {
+            Intent about = new Intent(this, AboutActivity.class);
+            startActivity(about);
             return true;
         }
 
