@@ -3,6 +3,7 @@
     package="com.literature.android.literature">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -52,6 +53,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="84062d3737d6ede8513971466c334005f35a1b11" />
     </application>
 
 </manifest>
