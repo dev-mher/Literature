@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 
@@ -23,19 +24,22 @@ public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHold
     private FragmentManager mFragmentManager;
     private int mAuthorId;
     private Context mContext;
+    private InterstitialAd mInterstitial;
 
-    public CaptionRecyclerAdapter(List<String> itemsCaptionList, FragmentManager fragmentManager, int authorId, Context context) {
+    public CaptionRecyclerAdapter(List<String> itemsCaptionList, FragmentManager fragmentManager,
+                                  int authorId, Context context, InterstitialAd interstitial) {
         mCaptions = itemsCaptionList;
         mCaptionsCopy = itemsCaptionList;
         mFragmentManager = fragmentManager;
         mAuthorId = authorId;
         mContext = context;
+        mInterstitial = interstitial;
     }
 
     @Override
     public CaptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
-        return new CaptionViewHolder(view, mFragmentManager, mAuthorId, mContext);
+        return new CaptionViewHolder(view, mFragmentManager, mAuthorId, mContext, mInterstitial);
     }
 
     @Override

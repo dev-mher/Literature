@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -36,6 +38,7 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
     private List<String> captionList;
     private CaptionRecyclerAdapter adapter;
     private FloatingActionButton fab;
+    private InterstitialAd interstitial;
 
     public static Caption newInstance(String title, int authorId) {
         Caption captionFragment = new Caption();
@@ -64,6 +67,7 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
                              Bundle savedInstanceState) {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.show();
+        loadAdBanners();
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
         RecyclerView captionRecyclerView = (RecyclerView) view.findViewById(R.id.caption_recycler_view);
         captionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -75,9 +79,18 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
         for (int i = 0; i < authorInfo.size(); ++i) {
             captionList.add(authorInfo.get(i).getCaption().get("caption"));
         }
-        adapter = new CaptionRecyclerAdapter(captionList, getFragmentManager(), mAuthorId, getContext());
+        adapter = new CaptionRecyclerAdapter(captionList, getFragmentManager(), mAuthorId, getContext(), interstitial);
         captionRecyclerView.setAdapter(adapter);
         return view;
+    }
+
+    private void loadAdBanners() {
+        interstitial = new InterstitialAd(getActivity());
+        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
+        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
+        adRequestInterstitial.addTestDevice(getString(R.string.ads_device));
+        adRequestInterstitial.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+        interstitial.loadAd(adRequestInterstitial.build());
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -54,6 +55,7 @@ public class Description extends Fragment {
     TextView titleTextView;
     Toolbar toolbar;
     AdView mAdView;
+    InterstitialAd interstitial;
 
     private static final String IS_FAVORITE = "isFavorite";
 
@@ -90,8 +92,7 @@ public class Description extends Fragment {
         fab.hide();
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
         mAdView = (AdView) view.findViewById(R.id.description_adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        loadAdBanners();
         descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         titleTextView = (TextView) view.findViewById(R.id.description_title_text_view);
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
@@ -110,6 +111,19 @@ public class Description extends Fragment {
             System.out.println("ERROR! an error occurred while getting the author name");
         }
         return view;
+    }
+
+    private void loadAdBanners() {
+        AdRequest.Builder adRequest = new AdRequest.Builder();
+        adRequest.addTestDevice(getString(R.string.ads_device));
+        adRequest.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+        mAdView.loadAd(adRequest.build());
+        interstitial = new InterstitialAd(getActivity());
+        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
+        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
+        adRequestInterstitial.addTestDevice(getString(R.string.ads_device));
+        adRequestInterstitial.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+        interstitial.loadAd(adRequestInterstitial.build());
     }
 
     @Override
@@ -135,6 +149,7 @@ public class Description extends Fragment {
                 item.setIcon(favImage);
                 int authorIdForDb = mAuthorId + 1;
                 Manager.sharedManager().changeFavoriteStatus(authorIdForDb, mCaption, isFavorite, getActivity());
+                showInterstitial();
                 return true;
             case R.id.share_menu_item:
                 share();
@@ -144,6 +159,12 @@ public class Description extends Fragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showInterstitial() {
+        if (interstitial.isLoaded()) {
+            interstitial.show();
         }
     }
 

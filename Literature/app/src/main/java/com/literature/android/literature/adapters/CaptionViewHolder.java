@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -29,15 +30,18 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
     private Context mContext;
     private boolean mIsFavorite;
     private String mCaption;
+    private InterstitialAd mInterstitial;
 
 
-    public CaptionViewHolder(View itemView, FragmentManager fragmentManager, final int authorId, Context context) {
+    public CaptionViewHolder(View itemView, FragmentManager fragmentManager,
+                             final int authorId, Context context, InterstitialAd interstitial) {
         super(itemView);
         mContext = context;
         mItemTextView = (TextView) itemView.findViewById(R.id.caption_item_text_view);
         mItemFavImageButton = (ImageButton) itemView.findViewById(R.id.caption_item_favorite_button);
         mFragmentManager = fragmentManager;
         mAuthorId = authorId;
+        mInterstitial = interstitial;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,8 +77,15 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
                 mIsFavorite = !mIsFavorite;
                 Manager.sharedManager().changeFavoriteStatus(mAuthorId + 1, mCaption, mIsFavorite, mContext);
                 setFavImage();
+                showInterstitial();
             }
         });
+    }
+
+    private void showInterstitial() {
+        if (mInterstitial.isLoaded()) {
+            mInterstitial.show();
+        }
     }
 
     private void setFavImage() {
