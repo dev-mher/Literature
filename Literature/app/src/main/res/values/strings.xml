@@ -30,7 +30,8 @@
     <string name="rate_dialog_later_btn">Հետո</string>
     <string name="rate_dialog_no_btn">Ոչ</string>
     <string name="facebook_app_id">169744846889273</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA118InUqVk5zrIfEn4sVg-p8FBkoKAlrE</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDftTRa-_DVH0w-p8fGJSTSlNGYma3IqI4</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3672689963733371/1945577044</string>
     <string name="login_text"> Մուտք գործելով Facebook սոցիալական կայք Դուք հնարավորություն կունենաք կիսվել Ձեզ դուր եկած բանաստեղծություններով։\n
         \nՄենք չենք օգտագործում Ձեր հաշիվը սոցիալական կայքերում սպամ ուղարկելու համար։\n
         \nՄենք չենք պահում Ձեր գաղտնաբառերը և անձնական այլ տվյալներ։ </string>

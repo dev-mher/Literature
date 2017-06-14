@@ -23,6 +23,8 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -51,6 +53,7 @@ public class Description extends Fragment {
     TextView descriptionText;
     TextView titleTextView;
     Toolbar toolbar;
+    AdView mAdView;
 
     private static final String IS_FAVORITE = "isFavorite";
 
@@ -86,6 +89,9 @@ public class Description extends Fragment {
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.hide();
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
+        mAdView = (AdView) view.findViewById(R.id.description_adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         titleTextView = (TextView) view.findViewById(R.id.description_title_text_view);
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
@@ -211,5 +217,23 @@ public class Description extends Fragment {
         }).setCancelable(false);
         AlertDialog alert = dialog.create();
         alert.show();
+    }
+
+    @Override
+    public void onResume() {
+        mAdView.resume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mAdView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mAdView.destroy();
+        super.onDestroy();
     }
 }
