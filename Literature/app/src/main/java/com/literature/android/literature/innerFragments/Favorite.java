@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -24,6 +26,7 @@ import java.util.List;
 
 public class Favorite extends Fragment {
     private TextView toolBarText;
+    private InterstitialAd interstitial;
 
     public static Favorite newInstance(String title) {
         Favorite favoriteFragment = new Favorite();
@@ -46,12 +49,22 @@ public class Favorite extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         toolBarText.setText(getContext().getString(R.string.favorite_title));
+        loadAdBanners();
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
         RecyclerView favoriteRecyclerView = (RecyclerView) view.findViewById(R.id.caption_recycler_view);
         favoriteRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<Model> favoriteList = Manager.sharedManager().getFavoriteList();
-        favoriteRecyclerView.setAdapter(new FavoriteRecyclerAdapter(favoriteList, getContext(), getFragmentManager()));
+        favoriteRecyclerView.setAdapter(new FavoriteRecyclerAdapter(favoriteList, getContext(),
+                getFragmentManager(), interstitial));
         return view;
     }
 
+    private void loadAdBanners() {
+        interstitial = new InterstitialAd(getActivity());
+        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
+        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
+        adRequestInterstitial.addTestDevice(getString(R.string.ads_device));
+        adRequestInterstitial.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+        interstitial.loadAd(adRequestInterstitial.build());
+    }
 }

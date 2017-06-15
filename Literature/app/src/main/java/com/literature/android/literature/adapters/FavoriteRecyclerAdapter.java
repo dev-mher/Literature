@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 
@@ -20,17 +21,21 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
     private List<Model> mFavModelList;
     private Context mContext;
     private FragmentManager mFragmentManager;
+    private InterstitialAd mInterstitial;
 
-    public FavoriteRecyclerAdapter(List<Model> FavModels, Context ctx, FragmentManager fm) {
+    public FavoriteRecyclerAdapter(List<Model> FavModels, Context ctx,
+                                   FragmentManager fm, InterstitialAd interstitial) {
         mFavModelList = FavModels;
         mContext = ctx;
         mFragmentManager = fm;
+        mInterstitial = interstitial;
     }
 
     @Override
     public FavoriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
-        FavoriteViewHolder holder = new FavoriteViewHolder(view, mFavModelList, mContext, mFragmentManager);
+        FavoriteViewHolder holder = new FavoriteViewHolder(view, mFavModelList, mContext,
+                mFragmentManager, mInterstitial);
         holder.setRemoveItemListener(new FavoriteViewHolder.RemoveItemCallBack() {
             @Override
             public void removeItem(int position) {
