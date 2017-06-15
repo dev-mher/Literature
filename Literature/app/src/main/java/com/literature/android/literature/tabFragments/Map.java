@@ -61,15 +61,35 @@ public class Map extends Fragment implements OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(armenia, (float) 7.3));
         LatLng h_tumanyan = new LatLng(40.9599027, 44.6315716);
         LatLng p_sevak = new LatLng(39.8210616, 45.0324869);
-        LatLng h_shiraz = new LatLng(40.792592, 43.846966);
+        LatLng h_shiraz = new LatLng(40.826682, 43.810191);
         LatLng v_teryan = new LatLng(41.348349, 43.751403);
+        LatLng a_isahakyan = new LatLng(40.754942, 43.854823);
+        LatLng e_charenc = new LatLng(40.5966918,43.0667679);
+        LatLng s_kaputikyan = new LatLng(40.153306,44.3484816);
+        LatLng h_sahyan = new LatLng(39.4153313,46.1204145);
         Bitmap tumanyanIcon = BitmapFactory.decodeResource(getResources(), R.drawable.h_tumanyan_marker);
         BitmapDescriptor tumanyanMarker = BitmapDescriptorFactory.fromBitmap(tumanyanIcon);
         Bitmap sevakIcon = BitmapFactory.decodeResource(getResources(), R.drawable.p_sevak_marker);
         BitmapDescriptor sevakMarker = BitmapDescriptorFactory.fromBitmap(sevakIcon);
+        Bitmap shirazIcon = BitmapFactory.decodeResource(getResources(), R.drawable.h_shiraz_marker);
+        BitmapDescriptor shirazMarker = BitmapDescriptorFactory.fromBitmap(shirazIcon);
+        Bitmap teryanIcon = BitmapFactory.decodeResource(getResources(), R.drawable.v_teryan_marker);
+        BitmapDescriptor teryanMarker = BitmapDescriptorFactory.fromBitmap(teryanIcon);
+        Bitmap isahakyanIcon = BitmapFactory.decodeResource(getResources(), R.drawable.a_isahakyan_marker);
+        BitmapDescriptor isahakyanMarker = BitmapDescriptorFactory.fromBitmap(isahakyanIcon);
+        Bitmap charencIcon = BitmapFactory.decodeResource(getResources(), R.drawable.e_charenc_marker);
+        BitmapDescriptor charencMarker = BitmapDescriptorFactory.fromBitmap(charencIcon);
+        Bitmap kaputikyanIcon = BitmapFactory.decodeResource(getResources(), R.drawable.s_kaputikyan_marker);
+        BitmapDescriptor kaputikyanMarker = BitmapDescriptorFactory.fromBitmap(kaputikyanIcon);
+        Bitmap sahyanIcon = BitmapFactory.decodeResource(getResources(), R.drawable.h_sahyan_marker);
+        BitmapDescriptor sahyanMarker = BitmapDescriptorFactory.fromBitmap(sahyanIcon);
         map.addMarker(new MarkerOptions().position(h_tumanyan).title(getString(R.string.hovhannes_tumanyan)).icon(tumanyanMarker));
         map.addMarker(new MarkerOptions().position(p_sevak).title(getString(R.string.paruyr_sevak)).icon(sevakMarker));
-        map.addMarker(new MarkerOptions().position(h_shiraz).title(getString(R.string.hovhannes_shiraz)).icon(sevakMarker));
-        map.addMarker(new MarkerOptions().position(v_teryan).title(getString(R.string.vahan_teryan)).icon(sevakMarker));
+        map.addMarker(new MarkerOptions().position(h_shiraz).title(getString(R.string.hovhannes_shiraz)).icon(shirazMarker));
+        map.addMarker(new MarkerOptions().position(v_teryan).title(getString(R.string.vahan_teryan)).icon(teryanMarker));
+        map.addMarker(new MarkerOptions().position(a_isahakyan).title(getString(R.string.avetiq_isahakyan)).icon(isahakyanMarker));
+        map.addMarker(new MarkerOptions().position(e_charenc).title(getString(R.string.exishe_charenc)).icon(charencMarker));
+        map.addMarker(new MarkerOptions().position(s_kaputikyan).title(getString(R.string.silva_kaputikyan)).icon(kaputikyanMarker));
+        map.addMarker(new MarkerOptions().position(h_sahyan).title(getString(R.string.hamo_sahyan)).icon(sahyanMarker));
     }
 }
