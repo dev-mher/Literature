@@ -34,6 +34,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String AUTHOR_NAME = "authorName";
 
     //related table's columns
+    private static final String CAPTION_ID = "captionId";
     private static final String CAPTION = "caption";
     private static final String IS_FAVORITE = "isFavorite";
 
@@ -59,6 +60,8 @@ public class Database extends SQLiteOpenHelper {
             = "CREATE TABLE IF NOT EXISTS "
             + RELATED_TABLE_NAME
             + "("
+            + CAPTION_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + AUTHOR_ID
             + " INTEGER,"
             + CAPTION
@@ -280,5 +283,27 @@ public class Database extends SQLiteOpenHelper {
             }
         }
         return null;
+    }
+
+    public int getCaptionIdByAuthorIdCaption(int authorId, String caption) {
+        final String[] condition = new String[]{String.valueOf(authorId), caption};
+        Cursor cursor = null;
+        try {
+            cursor = _db.rawQuery("SELECT "
+                    + CAPTION_ID
+                    + " FROM "
+                    + RELATED_TABLE_NAME
+                    + " WHERE "
+                    + AUTHOR_ID + " = ? AND "
+                    + CAPTION + " = ? ", condition);
+            while (cursor.moveToFirst()) {
+                return cursor.getInt(cursor.getColumnIndex(CAPTION_ID));
+            }
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+        }
+        return -1;
     }
 }

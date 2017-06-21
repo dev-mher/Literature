@@ -47,7 +47,12 @@ public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHold
         String caption = mCaptions.get(position);
         int authorIdForDb = mAuthorId + 1;
         boolean isFavorite = Manager.sharedManager().getCaptionStatus(authorIdForDb, caption);
-        holder.bindDrawable(caption, position, isFavorite);
+        int captionId = Manager.sharedManager().getCaptionId(authorIdForDb, caption);
+        if (-1 == captionId) {
+            return;
+        }
+        captionId -= 1;
+        holder.bindDrawable(caption, captionId, isFavorite);
     }
 
     @Override

@@ -189,13 +189,17 @@ public class Manager {
             }
         } else {
             System.out.println("ERROR! Favorite status update is failed");
-            Toast.makeText(ctx, String.format(ctx.getString(R.string.err_adding_favorites),caption),
+            Toast.makeText(ctx, String.format(ctx.getString(R.string.err_adding_favorites), caption),
                     Toast.LENGTH_SHORT).show();
         }
     }
 
     public boolean getCaptionStatus(int authorId, String caption) {
         return mDb.checkCaptionStatus(authorId, caption);
+    }
+
+    public int getCaptionId(int authorId, String caption) {
+        return mDb.getCaptionIdByAuthorIdCaption(authorId, caption);
     }
 
     public Drawable getFavoriteDrawable(boolean isFavorite) {
