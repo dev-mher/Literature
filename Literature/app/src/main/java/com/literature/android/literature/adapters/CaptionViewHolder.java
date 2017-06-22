@@ -27,6 +27,7 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
     private Context mContext;
     private boolean mIsFavorite;
     private int mCaptionId;
+    private String mCaption;
     private InterstitialAd mInterstitial;
 
 
@@ -46,12 +47,12 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
                 if (null != mFragmentManager.findFragmentById(R.id.caption_activity_fragment_container)) {
                     fragmentTransaction.replace(R.id.caption_activity_fragment_container
                             , Description.newInstance(Description.class.getSimpleName(),
-                                    mAuthorId, mCaptionId, mIsFavorite)
+                                    mAuthorId, mCaptionId, mCaption, mIsFavorite)
                             , Description.class.getSimpleName());
                 } else {
                     fragmentTransaction.add(R.id.caption_activity_fragment_container
                             , Description.newInstance(Description.class.getSimpleName(),
-                                    mAuthorId, mCaptionId, mIsFavorite)
+                                    mAuthorId, mCaptionId, mCaption, mIsFavorite)
                             , Description.class.getSimpleName());
                 }
                 fragmentTransaction.addToBackStack(null).commit();
@@ -64,6 +65,7 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
         mItemTextView.setText(captionText);
         setFavImage();
         mCaptionId = captionId;
+        mCaption = captionText;
         mItemFavImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

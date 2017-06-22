@@ -61,7 +61,7 @@ public class Database extends SQLiteOpenHelper {
             + RELATED_TABLE_NAME
             + "("
             + CAPTION_ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + " INTEGER,"
             + AUTHOR_ID
             + " INTEGER,"
             + CAPTION
@@ -100,6 +100,7 @@ public class Database extends SQLiteOpenHelper {
             return true;
         }
         for (int i = 0; i < allInfo.size(); ++i) {
+            int captionId = -1;
             List<Model> author = allInfo.get(i);
             if (null != author.get(0) && null != author.get(0).getAuthorName()) {
                 String authorName = (author.get(0).getAuthorName());
@@ -113,7 +114,8 @@ public class Database extends SQLiteOpenHelper {
                 for (int j = 0; j < author.size(); ++j) {
                     String caption = author.get(j).getCaption().get("caption");
                     int authorId = i + 1;
-                    boolean isSaved = saveRelatedDataToDB(authorId, caption, 0);
+                    ++captionId;
+                    boolean isSaved = saveRelatedDataToDB(authorId, captionId, caption, 0);
                     if (!isSaved) {
                         System.out.println("ERROR: an error occurred while "
                                 + authorName + " author's "
@@ -152,9 +154,10 @@ public class Database extends SQLiteOpenHelper {
         return isOK;
     }
 
-    private boolean saveRelatedDataToDB(int authorId, String caption, int isFavorite) {
+    private boolean saveRelatedDataToDB(int authorId, int captionId, String caption, int isFavorite) {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(AUTHOR_ID, authorId);
+        contentValues.put(CAPTION_ID, captionId);
         contentValues.put(CAPTION, caption);
         contentValues.put(IS_FAVORITE, isFavorite);
         long result = _db.insert(RELATED_TABLE_NAME, null, contentValues);

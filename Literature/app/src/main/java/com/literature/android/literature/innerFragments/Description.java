@@ -44,7 +44,6 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class Description extends Fragment {
-    public static final String AUTHOR_ID = "authorId";
     private int mAuthorId;
     private int mCaptionId;
     private boolean isFavorite;
@@ -57,13 +56,17 @@ public class Description extends Fragment {
     AdView mAdView;
     InterstitialAd interstitial;
 
+    public static final String AUTHOR_ID = "authorId";
+    private static final String CAPTION = "caption";
     private static final String IS_FAVORITE = "isFavorite";
 
-    public static Description newInstance(String title, int authorId, int captionId, boolean isFavorite) {
+    public static Description newInstance(String title, int authorId, int captionId, String caption,
+                                          boolean isFavorite) {
         Description descriptionFragment = new Description();
         Bundle args = new Bundle();
         args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
         args.putInt(AUTHOR_ID, authorId);
+        args.putString(CAPTION, caption);
         args.putInt(CaptionActivity.CLICKED_ITEM_ID, captionId);
         args.putBoolean(IS_FAVORITE, isFavorite);
         descriptionFragment.setArguments(args);
@@ -77,6 +80,7 @@ public class Description extends Fragment {
         setHasOptionsMenu(true);
         mAuthorId = getArguments().getInt(AUTHOR_ID);
         mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
+        mCaption = getArguments().getString(CAPTION);
         isFavorite = getArguments().getBoolean(IS_FAVORITE);
         toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
         toolbar.collapseActionView();
@@ -100,7 +104,6 @@ public class Description extends Fragment {
         if (null != authorModels) {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
             authorName = authorModel.getAuthorName();
-            mCaption = authorModel.getCaption().get("caption");
             titleTextView.setText(mCaption);
             mContent = authorModel.getContent().get("content");
             descriptionText.setText(mContent);

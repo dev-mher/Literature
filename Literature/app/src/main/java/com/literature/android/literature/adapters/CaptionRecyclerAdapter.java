@@ -51,7 +51,6 @@ public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHold
         if (-1 == captionId) {
             return;
         }
-        captionId -= 1;
         holder.bindDrawable(caption, captionId, isFavorite);
     }
 

@@ -39,6 +39,7 @@
                 android:id="@+id/alert_dialog_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.5"
                 android:textColor="@android:color/black" />
         </LinearLayout>
     </ScrollView>
