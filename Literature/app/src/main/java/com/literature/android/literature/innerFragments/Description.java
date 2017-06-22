@@ -47,6 +47,7 @@ public class Description extends Fragment {
     private int mAuthorId;
     private int mCaptionId;
     private boolean isFavorite;
+    private String mAuthorName;
     private String mCaption;
     private String mContent;
     private TextView toolBarText;
@@ -100,16 +101,15 @@ public class Description extends Fragment {
         descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
         titleTextView = (TextView) view.findViewById(R.id.description_title_text_view);
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
-        String authorName = null;
         if (null != authorModels) {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
-            authorName = authorModel.getAuthorName();
+            mAuthorName = authorModel.getAuthorName();
             titleTextView.setText(mCaption);
             mContent = authorModel.getContent().get("content");
             descriptionText.setText(mContent);
         }
-        if (null != authorName) {
-            toolBarText.setText(authorName);
+        if (null != mAuthorName) {
+            toolBarText.setText(mAuthorName);
         } else {
             System.out.println("ERROR! an error occurred while getting the author name");
         }
@@ -185,8 +185,8 @@ public class Description extends Fragment {
             if (!packageName.equals("com.facebook.katana")) {
                 Intent target = new Intent(android.content.Intent.ACTION_SEND);
                 target.setType("text/plain");
-                target.putExtra(Intent.EXTRA_SUBJECT, mCaption);
-                target.putExtra(Intent.EXTRA_TEXT, mContent);
+                String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
+                target.putExtra(Intent.EXTRA_TEXT, postMsg);
                 target.setPackage(packageName);
                 targets.add(target);
             }
@@ -216,7 +216,7 @@ public class Description extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Bundle postContent = new Bundle();
-                String postMsg = String.format(getString(R.string.post_message), mCaption, mContent);
+                String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
                 postContent.putString("message", postMsg);
                 GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
                         "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {

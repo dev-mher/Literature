@@ -17,7 +17,7 @@
     <string name="added_into_favorites">\"%1$s\"  հաջողությամբ ավելացվեց Ընտրյալների մեջ</string>
     <string name="removed_from_favorites">\"%1$s\"  հաջողությամբ ջնջվեց Ընտրյալներից</string>
     <string name="err_adding_favorites">\"%1$s\"  ավելացումը Ընտրյալների մեջ ձախողվել է</string>
-    <string name="post_message">%1$s\n\n%2$s</string>
+    <string name="post_message">%1$s\n\n%2$s\n\n%3$s</string>
     <string name="post_message_dialog_title">Համոզվա՞ծ  եք</string>
     <string name="post_message_dialog_msg">Դուք պատրաստվում եք տարածել  \"%1$s\"</string>
     <string name="post_message_dialog_yes">Այո</string>
