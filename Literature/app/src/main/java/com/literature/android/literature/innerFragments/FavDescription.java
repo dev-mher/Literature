@@ -25,6 +25,7 @@ import com.facebook.HttpMethod;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -42,25 +43,23 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class FavDescription extends Fragment {
-    public static final String AUTHOR_ID = "authorId";
-    public static final String CAPTION = "caption";
+
     private int mAuthorId;
     private boolean isFavorite;
     private String mCaption;
+    private String mAuthorName;
     private TextView toolBarText;
     private String mContent;
     AdView mAdView;
     InterstitialAd interstitial;
 
-    private static final String IS_FAVORITE = "isFavorite";
-
     public static FavDescription newInstance(String title, int authorId, String caption, boolean isFavorite) {
         FavDescription favDescFragment = new FavDescription();
         Bundle args = new Bundle();
-        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
-        args.putInt(AUTHOR_ID, authorId);
-        args.putString(CAPTION, caption);
-        args.putBoolean(IS_FAVORITE, isFavorite);
+        args.putString(Constants.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putInt(Constants.AUTHOR_ID, authorId);
+        args.putString(Constants.CAPTION_KEY, caption);
+        args.putBoolean(Constants.IS_FAVORITE, isFavorite);
         favDescFragment.setArguments(args);
         return favDescFragment;
     }
@@ -70,9 +69,9 @@ public class FavDescription extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAuthorId = getArguments().getInt(AUTHOR_ID);
-        mCaption = getArguments().getString(CAPTION);
-        isFavorite = getArguments().getBoolean(IS_FAVORITE);
+        mAuthorId = getArguments().getInt(Constants.AUTHOR_ID);
+        mCaption = getArguments().getString(Constants.CAPTION_KEY);
+        isFavorite = getArguments().getBoolean(Constants.IS_FAVORITE);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.favorite_toolbar);
         toolBarText = (TextView) toolbar.findViewById(R.id.favorite_activity_title);
         toolBarText.setSelected(true);
@@ -89,17 +88,16 @@ public class FavDescription extends Fragment {
         TextView titleText = (TextView) view.findViewById(R.id.description_title_text_view);
         List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
         List<Model> authorModels = allInfo.get(mAuthorId);
-        String authorName = null;
         for (int i = 0; i < authorModels.size(); ++i) {
-            if (authorModels.get(i).getCaption().get("caption").equals(mCaption)) {
-                authorName = authorModels.get(i).getAuthorName();
+            if (authorModels.get(i).getCaption().get(Constants.CAPTION_KEY).equals(mCaption)) {
+                mAuthorName = authorModels.get(i).getAuthorName();
                 titleText.setText(mCaption);
-                mContent = authorModels.get(i).getContent().get("content");
+                mContent = authorModels.get(i).getContent().get(Constants.CONTENT_KEY);
                 descriptionText.setText(mContent);
             }
         }
-        if (null != authorName) {
-            toolBarText.setText(authorName);
+        if (null != mAuthorName) {
+            toolBarText.setText(mAuthorName);
         } else {
             System.out.println("ERROR! an error occurred while getting the author name");
         }
@@ -177,8 +175,8 @@ public class FavDescription extends Fragment {
             if (!packageName.equals("com.facebook.katana")) {
                 Intent target = new Intent(android.content.Intent.ACTION_SEND);
                 target.setType("text/plain");
-                target.putExtra(Intent.EXTRA_SUBJECT, mCaption);
-                target.putExtra(Intent.EXTRA_TEXT, mContent);
+                String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
+                target.putExtra(Intent.EXTRA_TEXT, postMsg);
                 target.setPackage(packageName);
                 targets.add(target);
             }
@@ -189,8 +187,8 @@ public class FavDescription extends Fragment {
     }
 
     private void shareFacebook() {
-        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
-                MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+        boolean isconnected = getContext().getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                MODE_PRIVATE).getBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false);
         if (!isconnected) {
             Toast.makeText(getContext(), getString(R.string.connect_facebook), Toast.LENGTH_LONG).show();
             Intent goToLoginPage = new Intent(getContext(), LoginActivity.class);
@@ -208,8 +206,8 @@ public class FavDescription extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Bundle postContent = new Bundle();
-                String postMsg = String.format(getString(R.string.post_message), mCaption, mContent);
-                postContent.putString("message", postMsg);
+                String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
+                postContent.putString(Constants.FACEBOOK_MESSAGE, postMsg);
                 GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
                         "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
                     @Override

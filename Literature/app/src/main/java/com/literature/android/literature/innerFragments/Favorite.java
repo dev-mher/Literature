@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -31,7 +32,7 @@ public class Favorite extends Fragment {
     public static Favorite newInstance(String title) {
         Favorite favoriteFragment = new Favorite();
         Bundle args = new Bundle();
-        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putString(Constants.TAB_FRAGMENT_PAGE_TITLE, title);
         favoriteFragment.setArguments(args);
         return favoriteFragment;
     }

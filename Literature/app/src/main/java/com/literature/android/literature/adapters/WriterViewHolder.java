@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.R;
 import com.literature.android.literature.activities.CaptionActivity;
 
@@ -30,7 +31,7 @@ public class WriterViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 int authorId = getAdapterPosition();
                 Intent intent = new Intent(mContext, CaptionActivity.class);
-                intent.putExtra(CaptionActivity.CLICKED_ITEM_ID, authorId);
+                intent.putExtra(Constants.CLICKED_ITEM_ID, authorId);
                 mContext.startActivity(intent);
             }
         });

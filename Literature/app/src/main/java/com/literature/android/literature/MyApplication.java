@@ -11,11 +11,6 @@ import io.fabric.sdk.android.Fabric;
  */
 
 public class MyApplication extends Application {
-    public static final String RATE_US_PREFS = "rate.us";
-    public static final String FIRST_LAUNCH_KEY = "first.launch";
-    public static final String DAYS_COUNT_KEY = "days.count";
-    public static final String DONT_SHOW_KEY = "dont.show.again";
-    public static final String LAUNCH_COUNT_KEY = "launch.count";
 
     @Override
     public void onCreate() {
@@ -23,8 +18,8 @@ public class MyApplication extends Application {
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
-        SharedPreferences prefs = getSharedPreferences(RATE_US_PREFS, MODE_PRIVATE);
-        prefs.edit().putLong(FIRST_LAUNCH_KEY, System.currentTimeMillis()).apply();
-        prefs.edit().putInt(DAYS_COUNT_KEY, 2).apply();
+        SharedPreferences prefs = getSharedPreferences(Constants.RATE_US_PREFS, MODE_PRIVATE);
+        prefs.edit().putLong(Constants.FIRST_LAUNCH_KEY, System.currentTimeMillis()).apply();
+        prefs.edit().putInt(Constants.DAYS_COUNT_KEY, 2).apply();
     }
 }

@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.literature.android.literature.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +14,6 @@ import java.util.List;
  */
 
 public class PagerAdapter extends FragmentPagerAdapter {
-
-    public static final String TAB_FRAGMENT_PAGE_TITLE = "TabFragmentTitle";
 
     private List<Fragment> tabPages = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         Fragment fragment = tabPages.get(position);
         if (null != fragment.getArguments()) {
-            return fragment.getArguments().getString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE);
+            return fragment.getArguments().getString(Constants.TAB_FRAGMENT_PAGE_TITLE);
         }
         return "Page " + position;
     }

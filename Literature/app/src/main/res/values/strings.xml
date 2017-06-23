@@ -34,6 +34,7 @@
     <string name="banner_ad_unit_id">ca-app-pub-3672689963733371/1945577044</string>
     <string name="banner_ad_interstitial_unit_id">ca-app-pub-3672689963733371/6910500246</string>
     <string name="ads_device">2276B966E4A0B0D6B15EFB53A157A4AC</string>
+    <string name="facebook_cancelled">Չեղյալ հայտարարվեց</string>
     <string name="login_text"> Մուտք գործելով Facebook սոցիալական կայք Դուք հնարավորություն կունենաք կիսվել Ձեզ դուր եկած բանաստեղծություններով։\n
         \nՄենք չենք օգտագործում Ձեր հաշիվը սոցիալական կայքերում սպամ ուղարկելու համար։\n
         \nՄենք չենք պահում Ձեր գաղտնաբառերը և անձնական այլ տվյալներ։ </string>

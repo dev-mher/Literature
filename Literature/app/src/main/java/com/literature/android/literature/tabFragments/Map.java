@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
 
@@ -32,7 +33,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
     public static Map newInstance(String title) {
         Map mapFragment = new Map();
         Bundle args = new Bundle();
-        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putString(Constants.TAB_FRAGMENT_PAGE_TITLE, title);
         mapFragment.setArguments(args);
         return mapFragment;
     }

@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.InterstitialAd;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -72,7 +73,7 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindDrawable(final Model favModel) {
-        mCaption = favModel.getCaption().get("caption");
+        mCaption = favModel.getCaption().get(Constants.CAPTION_KEY);
         final int[] authorIdForDb = new int[1];
         mItemTextView.setText(mCaption);
         setFavImage();

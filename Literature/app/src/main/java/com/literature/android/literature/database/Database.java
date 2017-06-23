@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 
@@ -24,6 +25,7 @@ public class Database extends SQLiteOpenHelper {
     private static Context sContext;
 
     private static final int VERSION = 1;
+    //database name and tables names
     private static final String DATABASE_NAME = "literatureBase.sqlite";
     private static final String AUTHORS_TABLE_NAME = "authors";
     private static final String RELATED_TABLE_NAME = "related";
@@ -37,10 +39,6 @@ public class Database extends SQLiteOpenHelper {
     private static final String CAPTION_ID = "captionId";
     private static final String CAPTION = "caption";
     private static final String IS_FAVORITE = "isFavorite";
-
-    //user table's columns
-    private static final String USER_NAME = "userName";
-    private static final String PIC_URL = "url";
 
     //create authors table
     private static final String CREATE_AUTHORS_TABLE
@@ -112,7 +110,7 @@ public class Database extends SQLiteOpenHelper {
                     return false;
                 }
                 for (int j = 0; j < author.size(); ++j) {
-                    String caption = author.get(j).getCaption().get("caption");
+                    String caption = author.get(j).getCaption().get(Constants.CAPTION_KEY);
                     int authorId = i + 1;
                     ++captionId;
                     boolean isSaved = saveRelatedDataToDB(authorId, captionId, caption, 0);
@@ -244,14 +242,14 @@ public class Database extends SQLiteOpenHelper {
                 String caption = cursor.getString(cursor.getColumnIndex(CAPTION));
                 List<Model> authorModel = allInfo.get(authorIdForList);
                 for (int i = 0; i < authorModel.size(); ++i) {
-                    if (authorModel.get(i).getCaption().get("caption").equals(caption)) {
+                    if (authorModel.get(i).getCaption().get(Constants.CAPTION_KEY).equals(caption)) {
                         String authorName = getAuthorNameById(authorIdForDb);
                         model = new Model();
                         captionMap = new HashMap<>();
-                        captionMap.put("caption", caption);
+                        captionMap.put(Constants.CAPTION_KEY, caption);
                         model.setCaption(captionMap);
                         contentMap = new HashMap<>();
-                        contentMap.put("content", authorModel.get(i).getContent().get("content"));
+                        contentMap.put(Constants.CONTENT_KEY, authorModel.get(i).getContent().get(Constants.CONTENT_KEY));
                         model.setContent(contentMap);
                         model.setAuthorName(authorName);
                         model.setAuthorId(authorIdForDb);

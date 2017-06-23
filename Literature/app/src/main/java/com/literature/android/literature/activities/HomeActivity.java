@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.MyApplication;
 import com.literature.android.literature.R;
@@ -41,8 +42,6 @@ public class HomeActivity extends AppCompatActivity
 
     TextView mFacebookUserName;
     ImageView mFacebookUserPicture;
-    public static final String FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME = "facebook.shared.user.connection.status";
-    public static final String FACEBOOK_USER_ISCONNECTED = "facebook.user.isconnected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,18 +145,18 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void initializeSharedPreferences() {
-        if (getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                .contains(FACEBOOK_USER_ISCONNECTED)) {
-            boolean isconnected = getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                    .getBoolean(FACEBOOK_USER_ISCONNECTED, false);
+        if (getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                .contains(Constants.FACEBOOK_USER_ISCONNECTED)) {
+            boolean isconnected = getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                    .getBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false);
             if (isconnected) {
                 setUserProfileData();
             } else {
                 setUserProfile(null, null);
             }
         } else {
-            getSharedPreferences(FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                    .edit().putBoolean(FACEBOOK_USER_ISCONNECTED, false).apply();
+            getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                    .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false).apply();
             setUserProfile(null, null);
         }
     }
@@ -171,12 +170,12 @@ public class HomeActivity extends AppCompatActivity
                 public void onCompleted(JSONObject object, GraphResponse response) {
                     try {
                         JSONObject userData = new JSONObject(object.toString());
-                        String userName = userData.getString("name");
-                        JSONObject userPicData = new JSONObject(userData.get("picture").toString());
-                        JSONObject userProfilePicUrl = new JSONObject(userPicData.getString("data"));
-                        String url = userProfilePicUrl.getString("url");
-                        getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                                .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).apply();
+                        String userName = userData.getString(Constants.FACEBOOK_USER_NAME);
+                        JSONObject userPicData = new JSONObject(userData.get(Constants.FACEBOOK_USER_PICTURE).toString());
+                        JSONObject userProfilePicUrl = new JSONObject(userPicData.getString(Constants.FACEBOOK_USER_DATA));
+                        String url = userProfilePicUrl.getString(Constants.FACEBOOK_USER_PICTURE_URL);
+                        getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                                .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, true).apply();
                         setUserProfile(userName, url);
                         return;
                     } catch (Exception e) {
@@ -185,9 +184,9 @@ public class HomeActivity extends AppCompatActivity
                     }
                 }
             });
-            Bundle b = new Bundle();
-            b.putString("fields", "id,name,email,picture.width(100).height(100)");
-            request.setParameters(b);
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.FACEBOOK_FIELDS, "id,name,email,picture.width(100).height(100)");
+            request.setParameters(bundle);
             request.executeAsync();
         }
         setUserProfile(null, null);
@@ -211,18 +210,18 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void rateUs() {
-        SharedPreferences prefs = getSharedPreferences(MyApplication.RATE_US_PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(Constants.RATE_US_PREFS, MODE_PRIVATE);
         if (null != prefs) {
             SharedPreferences.Editor editor = prefs.edit();
-            if (prefs.getBoolean(MyApplication.DONT_SHOW_KEY, false)) {
+            if (prefs.getBoolean(Constants.DONT_SHOW_KEY, false)) {
                 return;
             }
-            int launchCount = prefs.getInt(MyApplication.LAUNCH_COUNT_KEY, 0) + 1;
-            editor.putInt(MyApplication.LAUNCH_COUNT_KEY, launchCount).apply();
+            int launchCount = prefs.getInt(Constants.LAUNCH_COUNT_KEY, 0) + 1;
+            editor.putInt(Constants.LAUNCH_COUNT_KEY, launchCount).apply();
             if (launchCount > 3) {
-                editor.putInt(MyApplication.LAUNCH_COUNT_KEY, 0).apply();
-                long firsLaunch = prefs.getLong(MyApplication.FIRST_LAUNCH_KEY, 0);
-                int daysCount = prefs.getInt(MyApplication.DAYS_COUNT_KEY, 2);
+                editor.putInt(Constants.LAUNCH_COUNT_KEY, 0).apply();
+                long firsLaunch = prefs.getLong(Constants.FIRST_LAUNCH_KEY, 0);
+                int daysCount = prefs.getInt(Constants.DAYS_COUNT_KEY, 2);
                 if (System.currentTimeMillis() > firsLaunch + (daysCount * 24 * 60 * 60 * 1000)) {
                     showAlertRate(prefs);
                 }
@@ -243,7 +242,7 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //turn off reminder
-                        prefs.edit().putBoolean(MyApplication.DONT_SHOW_KEY, true).apply();
+                        prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
                         try {
                             //open through Play Market app
                             Uri uri = Uri.parse("market://details?id=" + getPackageName());
@@ -261,15 +260,15 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //turn off reminder
-                prefs.edit().putBoolean(MyApplication.DONT_SHOW_KEY, true).apply();
+                prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
                 dialog.dismiss();
             }
         }).setNegativeButton(R.string.rate_dialog_later_btn, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int daysCount = prefs.getInt(MyApplication.DAYS_COUNT_KEY, 2);
+                int daysCount = prefs.getInt(Constants.DAYS_COUNT_KEY, 2);
                 //remind after 2 days
-                prefs.edit().putInt(MyApplication.DAYS_COUNT_KEY, daysCount + 2).apply();
+                prefs.edit().putInt(Constants.DAYS_COUNT_KEY, daysCount + 2).apply();
                 dialog.dismiss();
             }
         });

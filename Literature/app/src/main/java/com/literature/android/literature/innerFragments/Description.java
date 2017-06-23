@@ -26,6 +26,7 @@ import com.facebook.HttpMethod;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -57,19 +58,15 @@ public class Description extends Fragment {
     AdView mAdView;
     InterstitialAd interstitial;
 
-    public static final String AUTHOR_ID = "authorId";
-    private static final String CAPTION = "caption";
-    private static final String IS_FAVORITE = "isFavorite";
-
     public static Description newInstance(String title, int authorId, int captionId, String caption,
                                           boolean isFavorite) {
         Description descriptionFragment = new Description();
         Bundle args = new Bundle();
-        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
-        args.putInt(AUTHOR_ID, authorId);
-        args.putString(CAPTION, caption);
-        args.putInt(CaptionActivity.CLICKED_ITEM_ID, captionId);
-        args.putBoolean(IS_FAVORITE, isFavorite);
+        args.putString(Constants.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putInt(Constants.AUTHOR_ID, authorId);
+        args.putString(Constants.CAPTION_KEY, caption);
+        args.putInt(Constants.CLICKED_ITEM_ID, captionId);
+        args.putBoolean(Constants.IS_FAVORITE, isFavorite);
         descriptionFragment.setArguments(args);
         return descriptionFragment;
     }
@@ -79,10 +76,10 @@ public class Description extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAuthorId = getArguments().getInt(AUTHOR_ID);
-        mCaptionId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
-        mCaption = getArguments().getString(CAPTION);
-        isFavorite = getArguments().getBoolean(IS_FAVORITE);
+        mAuthorId = getArguments().getInt(Constants.AUTHOR_ID);
+        mCaptionId = getArguments().getInt(Constants.CLICKED_ITEM_ID);
+        mCaption = getArguments().getString(Constants.CAPTION_KEY);
+        isFavorite = getArguments().getBoolean(Constants.IS_FAVORITE);
         toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
         toolbar.collapseActionView();
         toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
@@ -105,7 +102,7 @@ public class Description extends Fragment {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
             mAuthorName = authorModel.getAuthorName();
             titleTextView.setText(mCaption);
-            mContent = authorModel.getContent().get("content");
+            mContent = authorModel.getContent().get(Constants.CONTENT_KEY);
             descriptionText.setText(mContent);
         }
         if (null != mAuthorName) {
@@ -197,8 +194,8 @@ public class Description extends Fragment {
     }
 
     private void shareFacebook() {
-        boolean isconnected = getContext().getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
-                MODE_PRIVATE).getBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false);
+        boolean isconnected = getContext().getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME,
+                MODE_PRIVATE).getBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false);
         if (!isconnected) {
             Toast.makeText(getContext(), getString(R.string.connect_facebook), Toast.LENGTH_LONG).show();
             Intent goToLoginPage = new Intent(getContext(), LoginActivity.class);
@@ -217,7 +214,7 @@ public class Description extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 Bundle postContent = new Bundle();
                 String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
-                postContent.putString("message", postMsg);
+                postContent.putString(Constants.FACEBOOK_MESSAGE, postMsg);
                 GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
                         "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
                     @Override

@@ -12,6 +12,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.R;
 
 import static com.literature.android.literature.Manager.getContext;
@@ -30,21 +31,21 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mLoginButton = (LoginButton) findViewById(R.id.fb_login_button);
-        mLoginButton.setPublishPermissions("publish_actions");
+        mLoginButton.setPublishPermissions(Constants.FACEBOOK_PUBLISH_ACTIONS);
         mLoginStatus = (TextView) findViewById(R.id.fb_login_status_text_view);
         mCallbackManager = CallbackManager.Factory.create();
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Intent intent = new Intent(getContext(), HomeActivity.class);
-                getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                        .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, true).commit();
+                getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                        .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, true).commit();
                 startActivity(intent);
             }
 
             @Override
             public void onCancel() {
-                mLoginStatus.setText("Cancelled");
+                mLoginStatus.setText(getString(R.string.facebook_cancelled));
             }
 
             @Override
@@ -57,8 +58,8 @@ public class LoginActivity extends AppCompatActivity {
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if (currentAccessToken == null) {
                     Intent intent = new Intent(getContext(), HomeActivity.class);
-                    getSharedPreferences(HomeActivity.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                            .edit().putBoolean(HomeActivity.FACEBOOK_USER_ISCONNECTED, false).commit();
+                    getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                            .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false).commit();
                     startActivity(intent);
                 }
             }

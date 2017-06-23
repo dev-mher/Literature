@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -31,7 +32,7 @@ public class Writer extends Fragment {
     public static Writer newInstance(String title) {
         Writer writerFragment = new Writer();
         Bundle args = new Bundle();
-        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putString(Constants.TAB_FRAGMENT_PAGE_TITLE, title);
         writerFragment.setArguments(args);
         return writerFragment;
     }

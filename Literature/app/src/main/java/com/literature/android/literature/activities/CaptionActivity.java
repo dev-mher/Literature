@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -20,7 +21,6 @@ import java.util.List;
 
 public class CaptionActivity extends AppCompatActivity {
 
-    public static final String CLICKED_ITEM_ID = "clickedItemID";
     int mAuthorId;
 
     @Override
@@ -32,7 +32,7 @@ public class CaptionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mAuthorId = getIntent().getIntExtra(CLICKED_ITEM_ID, 0);
+        mAuthorId = getIntent().getIntExtra(Constants.CLICKED_ITEM_ID, 0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.caption_activity_fragment_container
                 , Caption.newInstance(Caption.class.getSimpleName(), mAuthorId))

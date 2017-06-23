@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
@@ -43,8 +44,8 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
     public static Caption newInstance(String title, int authorId) {
         Caption captionFragment = new Caption();
         Bundle args = new Bundle();
-        args.putString(PagerAdapter.TAB_FRAGMENT_PAGE_TITLE, title);
-        args.putInt(CaptionActivity.CLICKED_ITEM_ID, authorId);
+        args.putString(Constants.TAB_FRAGMENT_PAGE_TITLE, title);
+        args.putInt(Constants.CLICKED_ITEM_ID, authorId);
         captionFragment.setArguments(args);
         return captionFragment;
     }
@@ -55,7 +56,7 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (null != getArguments()) {
-            mAuthorId = getArguments().getInt(CaptionActivity.CLICKED_ITEM_ID);
+            mAuthorId = getArguments().getInt(Constants.CLICKED_ITEM_ID);
         }
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
         toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
@@ -77,7 +78,7 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
         toolBarText.setText(authorName);
         captionList = new ArrayList<>();
         for (int i = 0; i < authorInfo.size(); ++i) {
-            captionList.add(authorInfo.get(i).getCaption().get("caption"));
+            captionList.add(authorInfo.get(i).getCaption().get(Constants.CAPTION_KEY));
         }
         adapter = new CaptionRecyclerAdapter(captionList, getFragmentManager(), mAuthorId, getContext(), interstitial);
         captionRecyclerView.setAdapter(adapter);

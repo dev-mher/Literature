@@ -58,7 +58,7 @@ public class Manager {
 
     private List<List<Model>> runParserThread() {
         try {
-            return new JsonParser().execute(JsonParser.BASE_FILE_NAME).get();
+            return new JsonParser().execute(Constants.BASE_FILE_NAME).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -73,17 +73,6 @@ public class Manager {
     }
 
     private class JsonParser extends AsyncTask<String, Void, List<List<Model>>> {
-
-        public static final String BASE_FILE_NAME = "authors_names";
-        private static final String ALL_AUTHORS_NAMES_KEY = "names";
-        //keys to parse author json
-        private static final String AUTHOR_FILE_NAME_KEY = "file";
-        private static final String AUTHOR_NAME_KEY = "author";
-        private static final String LIST_KEY = "list";
-        private static final String ABOUT_SHORT_KEY = "about_short";
-        private static final String ABOUT_KEY = "about";
-        private static final String CAPTION_KEY = "caption";
-        private static final String CONTENT_KEY = "content";
 
         @Override
         protected List<List<Model>> doInBackground(String... strings) {
@@ -109,7 +98,7 @@ public class Manager {
             String allNames = loadJson(fileName);
             try {
                 JSONObject mainObject = new JSONObject(allNames);
-                JSONArray names = mainObject.getJSONArray(ALL_AUTHORS_NAMES_KEY);
+                JSONArray names = mainObject.getJSONArray(Constants.ALL_AUTHORS_NAMES_KEY);
                 for (int i = 0; i < names.length(); ++i) {
                     namesList.add(names.getString(i));
                 }
@@ -128,24 +117,24 @@ public class Manager {
                 JSONObject mainObject = new JSONObject(loadJson(fileName));
                 authorModels = new ArrayList<>();
                 Model model;
-                final String authorFileName = mainObject.getString(AUTHOR_FILE_NAME_KEY);
-                final String authorName = mainObject.getString(AUTHOR_NAME_KEY);
-                final String aboutShort = mainObject.getString(ABOUT_SHORT_KEY);
-                final String about = mainObject.getString(ABOUT_KEY);
-                final JSONArray authorList = mainObject.getJSONArray(LIST_KEY);
+                final String authorFileName = mainObject.getString(Constants.AUTHOR_FILE_NAME_KEY);
+                final String authorName = mainObject.getString(Constants.AUTHOR_NAME_KEY);
+                final String aboutShort = mainObject.getString(Constants.ABOUT_SHORT_KEY);
+                final String about = mainObject.getString(Constants.ABOUT_KEY);
+                final JSONArray authorList = mainObject.getJSONArray(Constants.LIST_KEY);
                 for (int i = 0; i < authorList.length(); ++i) {
                     model = new Model();
                     captionMap = new HashMap<>();
                     contentMap = new HashMap<>();
                     final JSONObject listObject = authorList.getJSONObject(i);
-                    final String caption = listObject.getString(CAPTION_KEY);
-                    final String content = listObject.getString(CONTENT_KEY);
+                    final String caption = listObject.getString(Constants.CAPTION_KEY);
+                    final String content = listObject.getString(Constants.CONTENT_KEY);
                     model.setAuthorFileName(authorFileName);
                     model.setAuthorName(authorName);
                     model.setAboutShort(aboutShort);
                     model.setAbout(about);
-                    captionMap.put(CAPTION_KEY, caption);
-                    contentMap.put(CONTENT_KEY, content);
+                    captionMap.put(Constants.CAPTION_KEY, caption);
+                    contentMap.put(Constants.CONTENT_KEY, content);
                     model.setCaption(captionMap);
                     model.setContent(contentMap);
                     authorModels.add(model);
