@@ -146,6 +146,7 @@ public class FavDescription extends Fragment {
                 return true;
             case R.id.share_menu_item:
                 share();
+                showInterstitial();
                 return true;
             case R.id.share_facebook_menu_item:
                 shareFacebook();
@@ -222,6 +223,7 @@ public class FavDescription extends Fragment {
                     }
                 });
                 request.executeAsync();
+                showInterstitial();
             }
         }).setNegativeButton(getString(R.string.post_message_dialog_no), new DialogInterface.OnClickListener() {
             @Override

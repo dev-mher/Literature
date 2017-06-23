@@ -30,10 +30,7 @@ import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
-import com.literature.android.literature.activities.CaptionActivity;
-import com.literature.android.literature.activities.HomeActivity;
 import com.literature.android.literature.activities.LoginActivity;
-import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +150,7 @@ public class Description extends Fragment {
                 return true;
             case R.id.share_menu_item:
                 share();
+                showInterstitial();
                 return true;
             case R.id.share_facebook_menu_item:
                 shareFacebook();
@@ -229,6 +227,7 @@ public class Description extends Fragment {
                     }
                 });
                 request.executeAsync();
+                showInterstitial();
             }
         }).setNegativeButton(getString(R.string.post_message_dialog_no), new DialogInterface.OnClickListener() {
             @Override
