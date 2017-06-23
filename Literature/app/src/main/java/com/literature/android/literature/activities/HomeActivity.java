@@ -27,8 +27,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.literature.android.literature.Constants;
-import com.literature.android.literature.Manager;
-import com.literature.android.literature.MyApplication;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
 import com.literature.android.literature.tabFragments.Map;
@@ -47,7 +45,6 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Manager.sharedManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -103,7 +100,7 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            finishAffinity();
         }
     }
 
