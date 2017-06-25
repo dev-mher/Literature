@@ -42,7 +42,7 @@ public class Database extends SQLiteOpenHelper {
 
     //create authors table
     private static final String CREATE_AUTHORS_TABLE
-            = "CREATE TABLE IF NOT EXISTS "
+            = "CREATE TABLE "
             + AUTHORS_TABLE_NAME
             + "("
             + AUTHOR_ID
@@ -55,7 +55,7 @@ public class Database extends SQLiteOpenHelper {
 
     //create related table
     private static final String CREATE_RELATED_TABLE
-            = "CREATE TABLE IF NOT EXISTS "
+            = "CREATE TABLE "
             + RELATED_TABLE_NAME
             + "("
             + CAPTION_ID
@@ -94,7 +94,7 @@ public class Database extends SQLiteOpenHelper {
 
     public boolean saveAllInfo(List<List<Model>> allInfo) {
         boolean isAuthorsNamesExist = checkAuthorsExisting();
-        if (isAuthorsNamesExist) {
+        if (isAuthorsNamesExist && !Manager.isNeedToUpdate) {
             return true;
         }
         for (int i = 0; i < allInfo.size(); ++i) {

@@ -25,7 +25,6 @@ public class AnimActivity extends AppCompatActivity {
         TextView animText = (TextView) findViewById(R.id.anim_text_view);
         Animation scaleText = AnimationUtils.loadAnimation(this, R.anim.translate);
         animText.startAnimation(scaleText);
-        Manager.sharedManager(this);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

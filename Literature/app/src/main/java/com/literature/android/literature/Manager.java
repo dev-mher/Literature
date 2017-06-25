@@ -28,6 +28,7 @@ public class Manager {
     private List<List<Model>> allAuthorsInfo;
     private Database mDb;
     private static Context context;
+    public static boolean isNeedToUpdate;
 
     private static class SingletonHolder {
         private static final Manager INSTANCE = new Manager();

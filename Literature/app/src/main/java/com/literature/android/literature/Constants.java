@@ -23,6 +23,11 @@ public class Constants {
     public static final String IS_FAVORITE = "isFavorite";
     public static final String TAB_FRAGMENT_PAGE_TITLE = "TabFragmentTitle";
 
+    //keys related to the app version
+    public static final String APP_VERSION_SHARED_PREFS_NAME = "app.version.shared.prefs";
+    public static final String APP_VERSION_SHARED_KEY = "appVersionKey";
+    public static final String APP_VERSION = "1.0.0";
+
     //keys related to the rate
     public static final String RATE_US_PREFS = "rate.us";
     public static final String FIRST_LAUNCH_KEY = "first.launch";
