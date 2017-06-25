@@ -182,7 +182,7 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
             Bundle bundle = new Bundle();
-            bundle.putString(Constants.FACEBOOK_FIELDS, "id,name,email,picture.width(100).height(100)");
+            bundle.putString(Constants.FACEBOOK_FIELDS, "id,name,email,picture.width(600).height(600)");
             request.setParameters(bundle);
             request.executeAsync();
         }
