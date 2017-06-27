@@ -127,18 +127,35 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.nav_fb_login:
+                Intent fbIntent = new Intent(this, LoginActivity.class);
+                startActivity(fbIntent);
+                break;
             case R.id.nav_favorite:
                 Intent favIntent = new Intent(this, FavoriteActivity.class);
                 startActivity(favIntent);
                 break;
-            case R.id.nav_fb_login:
-                Intent fbIntent = new Intent(this, LoginActivity.class);
-                startActivity(fbIntent);
+            case R.id.nav_rate:
+                openRatePage();
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void openRatePage() {
+        try {
+            //open through Play Market app
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent market = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(market);
+        } catch (final ActivityNotFoundException ex) {
+            //open through browser
+            Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName());
+            Intent market = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(market);
+        }
     }
 
     public void initializeSharedPreferences() {
@@ -240,17 +257,7 @@ public class HomeActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         //turn off reminder
                         prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
-                        try {
-                            //open through Play Market app
-                            Uri uri = Uri.parse("market://details?id=" + getPackageName());
-                            Intent market = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(market);
-                        } catch (final ActivityNotFoundException ex) {
-                            //open through browser
-                            Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName());
-                            Intent market = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(market);
-                        }
+                        openRatePage();
                         dialog.dismiss();
                     }
                 }).setNeutralButton(R.string.rate_dialog_no_btn, new DialogInterface.OnClickListener() {
