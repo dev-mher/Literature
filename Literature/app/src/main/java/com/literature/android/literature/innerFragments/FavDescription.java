@@ -29,9 +29,7 @@ import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
-import com.literature.android.literature.activities.HomeActivity;
 import com.literature.android.literature.activities.LoginActivity;
-import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,14 +104,10 @@ public class FavDescription extends Fragment {
 
     private void loadAdBanners() {
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice(getString(R.string.ads_device));
-        adRequest.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
         mAdView.loadAd(adRequest.build());
         interstitial = new InterstitialAd(getActivity());
         interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
         AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
-        adRequestInterstitial.addTestDevice(getString(R.string.ads_device));
-        adRequestInterstitial.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
         interstitial.loadAd(adRequestInterstitial.build());
     }
 

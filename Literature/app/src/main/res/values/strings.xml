@@ -33,7 +33,6 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDftTRa-_DVH0w-p8fGJSTSlNGYma3IqI4</string>
     <string name="banner_ad_unit_id">ca-app-pub-3672689963733371/1945577044</string>
     <string name="banner_ad_interstitial_unit_id">ca-app-pub-3672689963733371/6910500246</string>
-    <string name="ads_device">2276B966E4A0B0D6B15EFB53A157A4AC</string>
     <string name="facebook_cancelled">Չեղյալ հայտարարվեց</string>
     <string name="login_text"> Մուտք գործելով Facebook սոցիալական կայք Դուք հնարավորություն կունենաք կիսվել Ձեզ դուր եկած բանաստեղծություններով։\n
         \nՄենք չենք օգտագործում Ձեր պրոֆիլը սոցիալական կայքերում սպամ ուղարկելու համար։\n
