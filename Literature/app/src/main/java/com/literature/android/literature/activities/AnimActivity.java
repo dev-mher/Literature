@@ -1,6 +1,7 @@
 package com.literature.android.literature.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 
 
@@ -23,6 +23,8 @@ public class AnimActivity extends AppCompatActivity {
         appFullScreen();
         setContentView(R.layout.activity_anim);
         TextView animText = (TextView) findViewById(R.id.anim_text_view);
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/ArmBook.ttf");
+        animText.setTypeface(font);
         Animation scaleText = AnimationUtils.loadAnimation(this, R.anim.translate);
         animText.startAnimation(scaleText);
         new Handler().postDelayed(new Runnable() {
