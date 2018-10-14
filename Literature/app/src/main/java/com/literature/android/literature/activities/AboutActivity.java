@@ -18,7 +18,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_about);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Button rateBtn = (Button) findViewById(R.id.about_rate_btn);
+        Button rateBtn = findViewById(R.id.about_rate_btn);
         rateBtn.setOnClickListener(this);
     }
 

@@ -12,6 +12,7 @@ import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,6 +68,11 @@ public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHold
 
     public void setFilterDefaultValue() {
         mCaptions = mCaptionsCopy;
+        notifyDataSetChanged();
+    }
+
+    public void setFilterEmptyValue() {
+        mCaptions = Collections.emptyList();
         notifyDataSetChanged();
     }
 }

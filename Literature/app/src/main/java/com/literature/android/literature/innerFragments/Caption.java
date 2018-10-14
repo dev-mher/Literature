@@ -1,13 +1,16 @@
 package com.literature.android.literature.innerFragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,13 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.CaptionRecyclerAdapter;
+import com.literature.android.literature.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,19 +59,24 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
         if (null != getArguments()) {
             mAuthorId = getArguments().getInt(Constants.CLICKED_ITEM_ID);
         }
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
-        toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
+        if (getActivity() == null) {
+            return;
+        }
+        Toolbar toolbar = getActivity().findViewById(R.id.caption_activity_toolbar);
+        toolBarText = toolbar.findViewById(R.id.caption_activity_title);
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.show();
+        if (getActivity() != null) {
+            fab = getActivity().findViewById(R.id.fab);
+            fab.show();
+        }
         loadAdBanners();
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
-        RecyclerView captionRecyclerView = (RecyclerView) view.findViewById(R.id.caption_recycler_view);
+        RecyclerView captionRecyclerView = view.findViewById(R.id.caption_recycler_view);
         captionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
         List<Model> authorInfo = allInfo.get(mAuthorId);
@@ -84,10 +92,11 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
     }
 
     private void loadAdBanners() {
-        interstitial = new InterstitialAd(getActivity());
-        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
-        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
-        interstitial.loadAd(adRequestInterstitial.build());
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        interstitial = Utils.loadInterstitialAd(activity);
     }
 
     @Override
@@ -125,18 +134,20 @@ public class Caption extends Fragment implements SearchView.OnQueryTextListener 
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if (TextUtils.isEmpty(newText)) {
+            adapter.setFilterDefaultValue();
+            return true;
+        }
         List<String> searchCaptions = new ArrayList<>();
         for (String caption : captionList) {
-            if (0 < newText.length()) {
-                if (caption.toLowerCase().contains(newText.toLowerCase())) {
-                    searchCaptions.add(caption);
-                }
+            if (caption.toLowerCase().contains(newText.toLowerCase())) {
+                searchCaptions.add(caption);
             }
         }
         if (0 < searchCaptions.size()) {
             adapter.setFilter(searchCaptions);
         } else {
-            adapter.setFilterDefaultValue();
+            adapter.setFilterEmptyValue();
         }
         return true;
     }

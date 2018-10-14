@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.literature.android.literature">
+          package="com.literature.android.literature">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".MyApplication"
@@ -17,9 +17,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Launcher">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -30,40 +30,44 @@
         <activity
             android:name=".activities.CaptionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.FavoriteActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/nav_facebook"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.AboutActivity"
             android:label="@string/about"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <!--Facebook-->
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"/>
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider166087673913779"
-            android:exported="true" />
+            android:exported="true"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_app_id"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="84062d3737d6ede8513971466c334005f35a1b11" />
+            android:value="84062d3737d6ede8513971466c334005f35a1b11"/>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.com.literature.android.literature"
+            android:value="ca-app-pub-3672689963733371~9608444643"/>
     </application>
 
 </manifest>

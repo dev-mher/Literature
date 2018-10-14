@@ -1,7 +1,9 @@
 package com.literature.android.literature.innerFragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -10,13 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.FavoriteRecyclerAdapter;
+import com.literature.android.literature.utils.Utils;
 
 import java.util.List;
 
@@ -40,13 +42,15 @@ public class Favorite extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.favorite_toolbar);
-        toolBarText = (TextView) toolbar.findViewById(R.id.favorite_activity_title);
+        if (getActivity() != null) {
+            Toolbar toolbar = getActivity().findViewById(R.id.favorite_toolbar);
+            toolBarText = toolbar.findViewById(R.id.favorite_activity_title);
+        }
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         toolBarText.setText(getContext().getString(R.string.favorite_title));
         loadAdBanners();
@@ -60,9 +64,10 @@ public class Favorite extends Fragment {
     }
 
     private void loadAdBanners() {
-        interstitial = new InterstitialAd(getActivity());
-        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
-        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
-        interstitial.loadAd(adRequestInterstitial.build());
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        interstitial = Utils.loadInterstitialAd(activity);
     }
 }

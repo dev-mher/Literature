@@ -46,8 +46,8 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
         mFragmentManager = fm;
         mFavModelList = FavModels;
         mInterstitial = interstitial;
-        mItemTextView = (TextView) itemView.findViewById(R.id.caption_item_text_view);
-        mItemFavImageButton = (ImageButton) itemView.findViewById(R.id.caption_item_favorite_button);
+        mItemTextView = itemView.findViewById(R.id.caption_item_text_view);
+        mItemFavImageButton = itemView.findViewById(R.id.caption_item_favorite_button);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +96,7 @@ public class FavoriteViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void showInterstitial() {
-        if (mInterstitial.isLoaded()) {
+        if (mInterstitial != null && mInterstitial.isLoaded()) {
             mInterstitial.show();
         }
     }

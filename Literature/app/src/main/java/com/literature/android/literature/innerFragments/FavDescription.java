@@ -6,7 +6,9 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -22,7 +24,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Constants;
@@ -30,6 +31,7 @@ import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.activities.LoginActivity;
+import com.literature.android.literature.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,23 +69,28 @@ public class FavDescription extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (getArguments() == null) {
+            return;
+        }
         mAuthorId = getArguments().getInt(Constants.AUTHOR_ID);
         mCaption = getArguments().getString(Constants.CAPTION_KEY);
         isFavorite = getArguments().getBoolean(Constants.IS_FAVORITE);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.favorite_toolbar);
-        toolBarText = (TextView) toolbar.findViewById(R.id.favorite_activity_title);
-        toolBarText.setSelected(true);
+        if (getActivity() != null) {
+            Toolbar toolbar = getActivity().findViewById(R.id.favorite_toolbar);
+            toolBarText = toolbar.findViewById(R.id.favorite_activity_title);
+            toolBarText.setSelected(true);
+        }
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
-        mAdView = (AdView) view.findViewById(R.id.description_adView);
+        mAdView = view.findViewById(R.id.description_adView);
         loadAdBanners();
-        TextView descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
-        TextView titleText = (TextView) view.findViewById(R.id.description_title_text_view);
+        TextView descriptionText = view.findViewById(R.id.description_item_text_view);
+        TextView titleText = view.findViewById(R.id.description_title_text_view);
         List<List<Model>> allInfo = Manager.sharedManager().getAllAuthorsInfo();
         List<Model> authorModels = allInfo.get(mAuthorId);
         for (int i = 0; i < authorModels.size(); ++i) {
@@ -103,12 +110,12 @@ public class FavDescription extends Fragment {
     }
 
     private void loadAdBanners() {
-        AdRequest.Builder adRequest = new AdRequest.Builder();
-        mAdView.loadAd(adRequest.build());
-        interstitial = new InterstitialAd(getActivity());
-        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
-        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
-        interstitial.loadAd(adRequestInterstitial.build());
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        Utils.loadAdView(activity, mAdView);
+        interstitial = Utils.loadInterstitialAd(activity);
     }
 
     @Override
@@ -151,7 +158,7 @@ public class FavDescription extends Fragment {
     }
 
     private void showInterstitial() {
-        if (interstitial.isLoaded()) {
+        if (interstitial != null && interstitial.isLoaded()) {
             interstitial.show();
         }
     }

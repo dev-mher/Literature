@@ -35,8 +35,8 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
                              final int authorId, Context context, InterstitialAd interstitial) {
         super(itemView);
         mContext = context;
-        mItemTextView = (TextView) itemView.findViewById(R.id.caption_item_text_view);
-        mItemFavImageButton = (ImageButton) itemView.findViewById(R.id.caption_item_favorite_button);
+        mItemTextView = itemView.findViewById(R.id.caption_item_text_view);
+        mItemFavImageButton = itemView.findViewById(R.id.caption_item_favorite_button);
         mFragmentManager = fragmentManager;
         mAuthorId = authorId;
         mInterstitial = interstitial;
@@ -78,7 +78,7 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void showInterstitial() {
-        if (mInterstitial.isLoaded()) {
+        if (mInterstitial != null && mInterstitial.isLoaded()) {
             mInterstitial.show();
         }
     }
@@ -86,5 +86,6 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
     private void setFavImage() {
         Drawable favImage = Manager.sharedManager().getFavoriteDrawable(mIsFavorite);
         mItemFavImageButton.setBackground(favImage);
+
     }
 }

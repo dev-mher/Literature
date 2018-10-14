@@ -6,8 +6,10 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -23,7 +25,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Constants;
@@ -31,6 +32,7 @@ import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.activities.LoginActivity;
+import com.literature.android.literature.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,27 +75,34 @@ public class Description extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (getArguments() == null) {
+            return;
+        }
         mAuthorId = getArguments().getInt(Constants.AUTHOR_ID);
         mCaptionId = getArguments().getInt(Constants.CLICKED_ITEM_ID);
         mCaption = getArguments().getString(Constants.CAPTION_KEY);
         isFavorite = getArguments().getBoolean(Constants.IS_FAVORITE);
-        toolbar = (Toolbar) getActivity().findViewById(R.id.caption_activity_toolbar);
-        toolbar.collapseActionView();
-        toolBarText = (TextView) toolbar.findViewById(R.id.caption_activity_title);
-        toolBarText.setSelected(true);
+        if (getActivity() != null) {
+            toolbar = getActivity().findViewById(R.id.caption_activity_toolbar);
+            toolbar.collapseActionView();
+            toolBarText = toolbar.findViewById(R.id.caption_activity_title);
+            toolBarText.setSelected(true);
+        }
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.hide();
+        if (getActivity() != null) {
+            FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+            fab.hide();
+        }
         View view = inflater.inflate(R.layout.description_fragment_layout, container, false);
-        mAdView = (AdView) view.findViewById(R.id.description_adView);
+        mAdView = view.findViewById(R.id.description_adView);
         loadAdBanners();
-        descriptionText = (TextView) view.findViewById(R.id.description_item_text_view);
-        titleTextView = (TextView) view.findViewById(R.id.description_title_text_view);
+        descriptionText = view.findViewById(R.id.description_item_text_view);
+        titleTextView = view.findViewById(R.id.description_title_text_view);
         List<List<Model>> authorModels = Manager.sharedManager().getAllAuthorsInfo();
         if (null != authorModels) {
             Model authorModel = authorModels.get(mAuthorId).get(mCaptionId);
@@ -111,12 +120,12 @@ public class Description extends Fragment {
     }
 
     private void loadAdBanners() {
-        AdRequest.Builder adRequest = new AdRequest.Builder();
-        mAdView.loadAd(adRequest.build());
-        interstitial = new InterstitialAd(getActivity());
-        interstitial.setAdUnitId(getContext().getString(R.string.banner_ad_interstitial_unit_id));
-        AdRequest.Builder adRequestInterstitial = new AdRequest.Builder();
-        interstitial.loadAd(adRequestInterstitial.build());
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        Utils.loadAdView(activity, mAdView);
+        interstitial = Utils.loadInterstitialAd(activity);
     }
 
     @Override
@@ -157,7 +166,7 @@ public class Description extends Fragment {
     }
 
     private void showInterstitial() {
-        if (interstitial.isLoaded()) {
+        if (interstitial != null && interstitial.isLoaded()) {
             interstitial.show();
         }
     }
