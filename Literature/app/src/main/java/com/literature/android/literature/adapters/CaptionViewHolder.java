@@ -2,9 +2,6 @@ package com.literature.android.literature.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -13,6 +10,10 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
 import com.literature.android.literature.innerFragments.Description;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by mher on 3/26/17.
@@ -66,14 +67,11 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
         setFavImage();
         mCaptionId = captionId;
         mCaption = captionText;
-        mItemFavImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mIsFavorite = !mIsFavorite;
-                Manager.sharedManager().changeFavoriteStatus(mAuthorId + 1, captionText, mIsFavorite, mContext);
-                setFavImage();
-                showInterstitial();
-            }
+        mItemFavImageButton.setOnClickListener(v -> {
+            mIsFavorite = !mIsFavorite;
+            Manager.sharedManager().changeFavoriteStatus(mAuthorId + 1, captionText, mIsFavorite, mContext);
+            setFavImage();
+            showInterstitial();
         });
     }
 

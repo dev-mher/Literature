@@ -2,7 +2,9 @@ package com.literature.android.literature.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +28,15 @@ public class WriterRecyclerAdapter extends RecyclerView.Adapter<WriterViewHolder
         mContext = context;
     }
 
+    @NonNull
     @Override
-    public WriterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WriterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.writer_tab_item, null);
         return new WriterViewHolder(view, mContext);
     }
 
     @Override
-    public void onBindViewHolder(WriterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WriterViewHolder holder, int position) {
         Drawable authorImage = mAuthorsImages.get(position);
         String aboutShort = mAboutShort.get(position);
         holder.bindDrawable(authorImage, aboutShort);

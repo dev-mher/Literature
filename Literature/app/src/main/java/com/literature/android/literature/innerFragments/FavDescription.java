@@ -6,11 +6,11 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,8 +50,8 @@ public class FavDescription extends Fragment {
     private String mAuthorName;
     private TextView toolBarText;
     private String mContent;
-    AdView mAdView;
-    InterstitialAd interstitial;
+    private AdView mAdView;
+    private InterstitialAd interstitial;
 
     public static FavDescription newInstance(String title, int authorId, String caption, boolean isFavorite) {
         FavDescription favDescFragment = new FavDescription();
@@ -204,16 +204,12 @@ public class FavDescription extends Fragment {
         TextView msg = (TextView) alertDialogLayout.findViewById(R.id.msg_alert_content);
         msg.setText(String.format(getString(R.string.post_message_dialog_msg), mCaption));
         dialog.setView(alertDialogLayout);
-        dialog.setPositiveButton(getString(R.string.post_message_dialog_yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Bundle postContent = new Bundle();
-                String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
-                postContent.putString(Constants.FACEBOOK_MESSAGE, postMsg);
-                GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
-                        "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse response) {
+        dialog.setPositiveButton(getString(R.string.post_message_dialog_yes), (dialog1, which) -> {
+            Bundle postContent = new Bundle();
+            String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
+            postContent.putString(Constants.FACEBOOK_MESSAGE, postMsg);
+            GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
+                    "me/feed", postContent, HttpMethod.POST, response -> {
                         if (null == response.getError()) {
                             Toast.makeText(getContext(), String.format(getString(R.string.post_message_success), mCaption),
                                     Toast.LENGTH_SHORT).show();
@@ -221,17 +217,10 @@ public class FavDescription extends Fragment {
                             Toast.makeText(getContext(), String.format(getString(R.string.post_message_error), mCaption),
                                     Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
-                request.executeAsync();
-                showInterstitial();
-            }
-        }).setNegativeButton(getString(R.string.post_message_dialog_no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).setCancelable(false);
+                    });
+            request.executeAsync();
+            showInterstitial();
+        }).setNegativeButton(getString(R.string.post_message_dialog_no), (cancelDialog, which) -> cancelDialog.cancel()).setCancelable(false);
         AlertDialog alert = dialog.create();
         alert.show();
     }

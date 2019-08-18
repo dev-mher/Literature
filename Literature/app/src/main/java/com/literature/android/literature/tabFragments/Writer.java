@@ -2,22 +2,20 @@ package com.literature.android.literature.tabFragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.literature.android.literature.Constants;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.WriterRecyclerAdapter;
-import com.literature.android.literature.adapters.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +43,10 @@ public class Writer extends Fragment {
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.writer_tab_layout, container, false);
-        RecyclerView literatureRecyclerView = (RecyclerView) view.findViewById(R.id.writer_recycler_view);
+        RecyclerView literatureRecyclerView = view.findViewById(R.id.writer_recycler_view);
         literatureRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         List<Drawable> autorsImages = new ArrayList<>();
         List<String> aboutShort = new ArrayList<>();

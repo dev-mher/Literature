@@ -1,8 +1,6 @@
 package com.literature.android.literature.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +10,10 @@ import com.literature.android.literature.Model;
 import com.literature.android.literature.R;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by mher on 4/4/17.
@@ -31,24 +33,22 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteViewHo
         mInterstitial = interstitial;
     }
 
+    @NonNull
     @Override
-    public FavoriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
         FavoriteViewHolder holder = new FavoriteViewHolder(view, mFavModelList, mContext,
                 mFragmentManager, mInterstitial);
-        holder.setRemoveItemListener(new FavoriteViewHolder.RemoveItemCallBack() {
-            @Override
-            public void removeItem(int position) {
-                mFavModelList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mFavModelList.size());
-            }
+        holder.setRemoveItemListener(position -> {
+            mFavModelList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, mFavModelList.size());
         });
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(FavoriteViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
         Model favModel = mFavModelList.get(position);
         holder.bindDrawable(favModel);
     }

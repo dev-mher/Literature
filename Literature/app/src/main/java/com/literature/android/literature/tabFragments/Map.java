@@ -3,8 +3,10 @@ package com.literature.android.literature.tabFragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.literature.android.literature.Constants;
 import com.literature.android.literature.R;
-import com.literature.android.literature.adapters.PagerAdapter;
 
 /**
  * Created by mher on 3/24/17.
@@ -27,8 +28,8 @@ import com.literature.android.literature.adapters.PagerAdapter;
 
 public class Map extends Fragment implements OnMapReadyCallback {
 
-    MapView mapView;
-    GoogleMap map;
+    private MapView mapView;
+    private GoogleMap map;
 
     public static Map newInstance(String title) {
         Map mapFragment = new Map();
@@ -46,9 +47,9 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.map_tab_layout, null);
-        mapView = (MapView) view.findViewById(R.id.map);
+        mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);

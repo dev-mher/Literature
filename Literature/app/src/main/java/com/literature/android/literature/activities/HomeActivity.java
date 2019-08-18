@@ -1,22 +1,12 @@
 package com.literature.android.literature.activities;
 
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +16,8 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.literature.android.literature.Constants;
 import com.literature.android.literature.R;
 import com.literature.android.literature.adapters.PagerAdapter;
@@ -35,6 +26,14 @@ import com.literature.android.literature.tabFragments.Writer;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,37 +45,37 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_text_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView textView = toolbar.findViewById(R.id.toolbar_text_view);
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/ArmBook.ttf");
         textView.setTypeface(font);
         textView.setText(R.string.app_name);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         PagerAdapter adapterViewPager = new PagerAdapter(getSupportFragmentManager());
         adapterViewPager.addTabPages(Writer.newInstance(getString(R.string.writer_title)));
         adapterViewPager.addTabPages(Map.newInstance(getString(R.string.map_title)));
         viewPager.setAdapter(adapterViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(listener(viewPager));
 
         View header = navigationView.getHeaderView(0);
-        mFacebookUserName = (TextView) header.findViewById(R.id.nav_facebook_user_name);
-        mFacebookUserPicture = (ImageView) header.findViewById(R.id.nav_facebook_user_picture);
+        mFacebookUserName = header.findViewById(R.id.nav_facebook_user_name);
+        mFacebookUserPicture = header.findViewById(R.id.nav_facebook_user_picture);
         initializeSharedPreferences();
         rateUs();
     }
@@ -102,7 +101,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -145,7 +144,7 @@ public class HomeActivity extends AppCompatActivity
                 openRatePage();
                 break;
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -182,26 +181,22 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void setUserProfileData() {
+        setUserProfile(null, null);
         AccessToken token = AccessToken.getCurrentAccessToken();
         if (null != token) {
-            GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
-
-                @Override
-                public void onCompleted(JSONObject object, GraphResponse response) {
-                    try {
-                        JSONObject userData = new JSONObject(object.toString());
-                        String userName = userData.getString(Constants.FACEBOOK_USER_NAME);
-                        JSONObject userPicData = new JSONObject(userData.get(Constants.FACEBOOK_USER_PICTURE).toString());
-                        JSONObject userProfilePicUrl = new JSONObject(userPicData.getString(Constants.FACEBOOK_USER_DATA));
-                        String url = userProfilePicUrl.getString(Constants.FACEBOOK_USER_PICTURE_URL);
-                        getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                                .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, true).apply();
-                        setUserProfile(userName, url);
-                        return;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.out.println("ERROR! an error occurred while getting user data");
-                    }
+            GraphRequest request = GraphRequest.newMeRequest(token, (object, response) -> {
+                try {
+                    JSONObject userData = new JSONObject(object.toString());
+                    String userName = userData.getString(Constants.FACEBOOK_USER_NAME);
+                    JSONObject userPicData = new JSONObject(userData.get(Constants.FACEBOOK_USER_PICTURE).toString());
+                    JSONObject userProfilePicUrl = new JSONObject(userPicData.getString(Constants.FACEBOOK_USER_DATA));
+                    String url = userProfilePicUrl.getString(Constants.FACEBOOK_USER_PICTURE_URL);
+                    getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
+                            .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, true).apply();
+                    setUserProfile(userName, url);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("ERROR! an error occurred while getting user data");
                 }
             });
             Bundle bundle = new Bundle();
@@ -209,7 +204,6 @@ public class HomeActivity extends AppCompatActivity
             request.setParameters(bundle);
             request.executeAsync();
         }
-        setUserProfile(null, null);
     }
 
     /*
@@ -252,35 +246,26 @@ public class HomeActivity extends AppCompatActivity
     private void showAlertRate(final SharedPreferences prefs) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View alertView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_common, null);
-        TextView title = (TextView) alertView.findViewById(R.id.msg_alert_title);
+        TextView title = alertView.findViewById(R.id.msg_alert_title);
         title.setText(R.string.rate_dialog_title);
         TextView msg = (TextView) alertView.findViewById(R.id.msg_alert_content);
         msg.setText(R.string.rate_dialog_content);
         builder.setView(alertView);
         builder.setCancelable(false)
-                .setPositiveButton(R.string.rate_dialog_rate_btn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //turn off reminder
-                        prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
-                        openRatePage();
-                        dialog.dismiss();
-                    }
-                }).setNeutralButton(R.string.rate_dialog_no_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //turn off reminder
-                prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
-                dialog.dismiss();
-            }
-        }).setNegativeButton(R.string.rate_dialog_later_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                int daysCount = prefs.getInt(Constants.DAYS_COUNT_KEY, 2);
-                //remind after 2 days
-                prefs.edit().putInt(Constants.DAYS_COUNT_KEY, daysCount + 2).apply();
-                dialog.dismiss();
-            }
+                .setPositiveButton(R.string.rate_dialog_rate_btn, (dialog, which) -> {
+                    //turn off reminder
+                    prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
+                    openRatePage();
+                    dialog.dismiss();
+                }).setNeutralButton(R.string.rate_dialog_no_btn, (dialog, which) -> {
+            //turn off reminder
+            prefs.edit().putBoolean(Constants.DONT_SHOW_KEY, true).apply();
+            dialog.dismiss();
+        }).setNegativeButton(R.string.rate_dialog_later_btn, (dialog, which) -> {
+            int daysCount = prefs.getInt(Constants.DAYS_COUNT_KEY, 2);
+            //remind after 2 days
+            prefs.edit().putInt(Constants.DAYS_COUNT_KEY, daysCount + 2).apply();
+            dialog.dismiss();
         });
         final AlertDialog alert = builder.create();
         alert.show();

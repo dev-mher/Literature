@@ -6,12 +6,12 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,11 +51,11 @@ public class Description extends Fragment {
     private String mCaption;
     private String mContent;
     private TextView toolBarText;
-    TextView descriptionText;
-    TextView titleTextView;
-    Toolbar toolbar;
-    AdView mAdView;
-    InterstitialAd interstitial;
+    private TextView descriptionText;
+    private TextView titleTextView;
+    private Toolbar toolbar;
+    private AdView mAdView;
+    private InterstitialAd interstitial;
 
     public static Description newInstance(String title, int authorId, int captionId, String caption,
                                           boolean isFavorite) {
@@ -212,16 +212,12 @@ public class Description extends Fragment {
         TextView msg = (TextView) alertDialogLayout.findViewById(R.id.msg_alert_content);
         msg.setText(String.format(getString(R.string.post_message_dialog_msg), mCaption));
         dialog.setView(alertDialogLayout);
-        dialog.setPositiveButton(getString(R.string.post_message_dialog_yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Bundle postContent = new Bundle();
-                String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
-                postContent.putString(Constants.FACEBOOK_MESSAGE, postMsg);
-                GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
-                        "me/feed", postContent, HttpMethod.POST, new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse response) {
+        dialog.setPositiveButton(getString(R.string.post_message_dialog_yes), (dialog1, which) -> {
+            Bundle postContent = new Bundle();
+            String postMsg = String.format(getString(R.string.post_message), mAuthorName, mCaption, mContent);
+            postContent.putString(Constants.FACEBOOK_MESSAGE, postMsg);
+            GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(),
+                    "me/feed", postContent, HttpMethod.POST, response -> {
                         if (null == response.getError()) {
                             Toast.makeText(getContext(), String.format(getString(R.string.post_message_success), mCaption),
                                     Toast.LENGTH_LONG).show();
@@ -229,17 +225,10 @@ public class Description extends Fragment {
                             Toast.makeText(getContext(), String.format(getString(R.string.post_message_error), mCaption),
                                     Toast.LENGTH_LONG).show();
                         }
-                    }
-                });
-                request.executeAsync();
-                showInterstitial();
-            }
-        }).setNegativeButton(getString(R.string.post_message_dialog_no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).setCancelable(false);
+                    });
+            request.executeAsync();
+            showInterstitial();
+        }).setNegativeButton(getString(R.string.post_message_dialog_no), (cancelDialog, which) -> cancelDialog.cancel()).setCancelable(false);
         AlertDialog alert = dialog.create();
         alert.show();
     }

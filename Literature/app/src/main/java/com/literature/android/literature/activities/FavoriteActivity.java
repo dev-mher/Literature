@@ -1,12 +1,13 @@
 package com.literature.android.literature.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.literature.android.literature.R;
 import com.literature.android.literature.innerFragments.Favorite;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 public class FavoriteActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class FavoriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.favorite_toolbar);
+        Toolbar toolbar = findViewById(R.id.favorite_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

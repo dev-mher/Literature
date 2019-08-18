@@ -1,12 +1,12 @@
 package com.literature.android.literature.innerFragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +55,7 @@ public class Favorite extends Fragment {
         toolBarText.setText(getContext().getString(R.string.favorite_title));
         loadAdBanners();
         View view = inflater.inflate(R.layout.caption_fragment_layout, container, false);
-        RecyclerView favoriteRecyclerView = (RecyclerView) view.findViewById(R.id.caption_recycler_view);
+        RecyclerView favoriteRecyclerView = view.findViewById(R.id.caption_recycler_view);
         favoriteRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         List<Model> favoriteList = Manager.sharedManager().getFavoriteList();
         favoriteRecyclerView.setAdapter(new FavoriteRecyclerAdapter(favoriteList, getContext(),

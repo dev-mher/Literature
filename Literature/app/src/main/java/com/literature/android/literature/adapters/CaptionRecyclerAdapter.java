@@ -1,8 +1,10 @@
 package com.literature.android.literature.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +39,15 @@ public class CaptionRecyclerAdapter extends RecyclerView.Adapter<CaptionViewHold
         mInterstitial = interstitial;
     }
 
+    @NonNull
     @Override
-    public CaptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CaptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.caption_fragment_item, null);
         return new CaptionViewHolder(view, mFragmentManager, mAuthorId, mContext, mInterstitial);
     }
 
     @Override
-    public void onBindViewHolder(CaptionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CaptionViewHolder holder, int position) {
         String caption = mCaptions.get(position);
         int authorIdForDb = mAuthorId + 1;
         boolean isFavorite = Manager.sharedManager().getCaptionStatus(authorIdForDb, caption);

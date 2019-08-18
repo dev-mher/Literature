@@ -2,7 +2,6 @@ package com.literature.android.literature.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -14,6 +13,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.literature.android.literature.Constants;
 import com.literature.android.literature.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.literature.android.literature.Manager.getContext;
 
@@ -30,16 +31,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mLoginButton = (LoginButton) findViewById(R.id.fb_login_button);
+        mLoginButton = findViewById(R.id.fb_login_button);
         mLoginButton.setPublishPermissions(Constants.FACEBOOK_PUBLISH_ACTIONS);
-        mLoginStatus = (TextView) findViewById(R.id.fb_login_status_text_view);
+        mLoginStatus = findViewById(R.id.fb_login_status_text_view);
         mCallbackManager = CallbackManager.Factory.create();
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Intent intent = new Intent(getContext(), HomeActivity.class);
                 getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                        .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, true).commit();
+                        .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, true).apply();
                 startActivity(intent);
             }
 
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (currentAccessToken == null) {
                     Intent intent = new Intent(getContext(), HomeActivity.class);
                     getSharedPreferences(Constants.FACEBOOK_USER_CONNECTION_STATUS_SHARED_NAME, MODE_PRIVATE)
-                            .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false).commit();
+                            .edit().putBoolean(Constants.FACEBOOK_USER_ISCONNECTED, false).apply();
                     startActivity(intent);
                 }
             }
