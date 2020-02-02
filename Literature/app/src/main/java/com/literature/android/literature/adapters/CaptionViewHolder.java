@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.google.android.gms.ads.InterstitialAd;
 import com.literature.android.literature.Manager;
 import com.literature.android.literature.R;
@@ -29,6 +31,7 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
     private int mCaptionId;
     private String mCaption;
     private InterstitialAd mInterstitial;
+    private SwipeLayout swipeLayout;
 
 
     public CaptionViewHolder(View itemView, FragmentManager fragmentManager,
@@ -40,7 +43,11 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
         mFragmentManager = fragmentManager;
         mAuthorId = authorId;
         mInterstitial = interstitial;
-        itemView.setOnClickListener(new View.OnClickListener() {
+        swipeLayout = itemView.findViewById(R.id.swipeLayout);
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.vg_plus));
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.vg_minus));
+        swipeLayout.findViewById(R.id.content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
@@ -58,6 +65,15 @@ public class CaptionViewHolder extends RecyclerView.ViewHolder {
                 fragmentTransaction.addToBackStack(null).commit();
             }
         });
+        swipeLayout.findViewById(R.id.vg_minus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(swipeLayout.getContext(), "MINUS", Toast.LENGTH_LONG).show();;
+            }
+        });
+        TextView plus = swipeLayout.findViewById(R.id.pluse);
+        plus.setText("PLUS TEST TEST");
+        swipeLayout.findViewById(R.id.vg_plus);
     }
 
     public void bindDrawable(final String captionText, int captionId, boolean isFavorite) {
